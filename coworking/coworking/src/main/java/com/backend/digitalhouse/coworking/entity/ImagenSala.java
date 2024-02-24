@@ -16,15 +16,15 @@ public class ImagenSala {
     private Imagen imagen;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="tipo_sala_id_tipo_sala")
-    private TipoSala tipoSala;
+    @JoinColumn(name="salas_id_sala")
+    private Sala sala;
 
     public ImagenSala() {
     }
 
-    public ImagenSala(Imagen imagen, TipoSala tipoSala) {
+    public ImagenSala(Imagen imagen, Sala sala) {
         this.imagen = imagen;
-        this.tipoSala = tipoSala;
+        this.sala = sala;
     }
 
     public Long getId() {
@@ -39,11 +39,11 @@ public class ImagenSala {
         this.imagen = imagen;
     }
 
-    public TipoSala getTipoSala() {
-        return tipoSala;
+    public Sala getSala() {
+        return sala;
     }
 
-    public void setTipoSala(TipoSala tipoSala) {
-        this.tipoSala = tipoSala;
+    public void setSala(Sala sala) {
+        this.sala = sala;
     }
 }
