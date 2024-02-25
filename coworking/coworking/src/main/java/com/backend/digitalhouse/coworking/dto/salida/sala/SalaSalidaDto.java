@@ -1,45 +1,38 @@
-package com.backend.digitalhouse.coworking.entity;
+package com.backend.digitalhouse.coworking.dto.salida.sala;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
 
-@Entity
-@Table(name = "SALAS")
-public class Sala {
+public class SalaSalidaDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_SALA")
     private Long id;
-
     private String nombre;
     private String descripcion;
     private int capacidad;
     private int disponible;
     private int estado;
-
-    @Column(name="PROMEDIO_CALIFICACION")
     private BigDecimal promedioCalificacion;
+    private TipoSalaSalidaDto tipoSalaSalidaDto;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="tipo_salas_id_tipo_sala")
-    private TipoSala tipoSala;
-
-    public Sala() {
+    public SalaSalidaDto() {
     }
 
-    public Sala(String nombre, String descripcion, int capacidad, int disponible, int estado, BigDecimal promedioCalificacion, TipoSala tipoSala) {
+    public SalaSalidaDto(Long id, String nombre, String descripcion, int capacidad, int disponible, int estado, BigDecimal promedioCalificacion, TipoSalaSalidaDto tipoSalaSalidaDto) {
+        this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.capacidad = capacidad;
         this.disponible = disponible;
         this.estado = estado;
         this.promedioCalificacion = promedioCalificacion;
-        this.tipoSala = tipoSala;
+        this.tipoSalaSalidaDto = tipoSalaSalidaDto;
     }
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNombre() {
@@ -90,11 +83,16 @@ public class Sala {
         this.promedioCalificacion = promedioCalificacion;
     }
 
-    public TipoSala getTipoSala() {
-        return tipoSala;
+    public TipoSalaSalidaDto getTipoSalaSalidaDto() {
+        return tipoSalaSalidaDto;
     }
 
-    public void setTipoSala(TipoSala tipoSala) {
-        this.tipoSala = tipoSala;
+    public void setTipoSalaSalidaDto(TipoSalaSalidaDto tipoSalaSalidaDto) {
+        this.tipoSalaSalidaDto = tipoSalaSalidaDto;
+    }
+
+    @Override
+    public String toString() {
+        return "Id: " + id + " - Nombre: " + nombre + " - Descripción: " + descripcion + " - Capacidad: " + capacidad + " - Disponible: " + disponible + " - Estado: " + estado + " - Promedio de Calificación: " + promedioCalificacion + " - Categoría a la que pertenece: " + tipoSalaSalidaDto;
     }
 }
