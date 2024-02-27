@@ -19,7 +19,7 @@ public class Sala {
     private int estado;
 
     @Column(name="PROMEDIO_CALIFICACION")
-    private BigDecimal promedioCalificacion;
+    private double promedioCalificacion;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="tipo_salas_id_tipo_sala")
@@ -28,7 +28,7 @@ public class Sala {
     public Sala() {
     }
 
-    public Sala(String nombre, String descripcion, int capacidad, int disponible, int estado, BigDecimal promedioCalificacion, TipoSala tipoSala) {
+    public Sala(String nombre, String descripcion, int capacidad, int disponible, int estado, double promedioCalificacion, TipoSala tipoSala) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.capacidad = capacidad;
@@ -82,11 +82,11 @@ public class Sala {
         this.estado = estado;
     }
 
-    public BigDecimal getPromedioCalificacion() {
+    public double getPromedioCalificacion() {
         return promedioCalificacion;
     }
 
-    public void setPromedioCalificacion(BigDecimal promedioCalificacion) {
+    public void setPromedioCalificacion(double promedioCalificacion) {
         this.promedioCalificacion = promedioCalificacion;
     }
 

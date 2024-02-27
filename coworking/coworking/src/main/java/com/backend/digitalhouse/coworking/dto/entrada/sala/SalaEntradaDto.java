@@ -35,7 +35,7 @@ public class SalaEntradaDto {
 
     @NotNull(message = "El campo no puede ser nulo")
     @Digits(integer = 3, fraction = 2, message = "El número debe tener como máximo 3 dígitos y 2 decimales")
-    private BigDecimal promedioCalificacion;
+    private double promedioCalificacion;
 
     @NotNull(message = "El tipo de categoría no puede ser nulo")
     private long idTipoSala;
@@ -43,7 +43,7 @@ public class SalaEntradaDto {
     public SalaEntradaDto() {
     }
 
-    public SalaEntradaDto(String nombre, String descripcion, int capacidad, int disponible, int estado, BigDecimal promedioCalificacion, long idTipoSala) {
+    public SalaEntradaDto(String nombre, String descripcion, int capacidad, int disponible, int estado, double promedioCalificacion, long idTipoSala) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.capacidad = capacidad;
@@ -93,11 +93,11 @@ public class SalaEntradaDto {
         this.estado = estado;
     }
 
-    public BigDecimal getPromedioCalificacion() {
+    public double getPromedioCalificacion() {
         return promedioCalificacion;
     }
 
-    public void setPromedioCalificacion(BigDecimal promedioCalificacion) {
+    public void setPromedioCalificacion(double promedioCalificacion) {
         this.promedioCalificacion = promedioCalificacion;
     }
 

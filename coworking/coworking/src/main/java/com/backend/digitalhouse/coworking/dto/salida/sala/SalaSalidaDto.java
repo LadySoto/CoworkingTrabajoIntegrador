@@ -10,13 +10,13 @@ public class SalaSalidaDto {
     private int capacidad;
     private int disponible;
     private int estado;
-    private BigDecimal promedioCalificacion;
+    private double promedioCalificacion;
     private TipoSalaSalidaDto tipoSalaSalidaDto;
 
     public SalaSalidaDto() {
     }
 
-    public SalaSalidaDto(Long id, String nombre, String descripcion, int capacidad, int disponible, int estado, BigDecimal promedioCalificacion, TipoSalaSalidaDto tipoSalaSalidaDto) {
+    public SalaSalidaDto(Long id, String nombre, String descripcion, int capacidad, int disponible, int estado, double promedioCalificacion, TipoSalaSalidaDto tipoSalaSalidaDto) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -75,11 +75,11 @@ public class SalaSalidaDto {
         this.estado = estado;
     }
 
-    public BigDecimal getPromedioCalificacion() {
+    public double getPromedioCalificacion() {
         return promedioCalificacion;
     }
 
-    public void setPromedioCalificacion(BigDecimal promedioCalificacion) {
+    public void setPromedioCalificacion(double promedioCalificacion) {
         this.promedioCalificacion = promedioCalificacion;
     }
 
