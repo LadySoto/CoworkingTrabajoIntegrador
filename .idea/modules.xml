@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/CoworkingTrabajoIntegrador.iml" filepath="$PROJECT_DIR$/.idea/CoworkingTrabajoIntegrador.iml" />
+      <module fileurl="file://$PROJECT_DIR$/coworking/coworking/coworking.iml" filepath="$PROJECT_DIR$/coworking/coworking/coworking.iml" />
     </modules>
   </component>
 </project>
