@@ -1,2 +1,4 @@
-package com.backend.digitalhouse.coworking.service;public interface ISalaService {
+package com.backend.digitalhouse.coworking.service;
+
+public interface ISalaService {
 }

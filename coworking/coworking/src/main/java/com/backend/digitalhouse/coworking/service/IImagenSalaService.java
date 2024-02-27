@@ -1,2 +1,4 @@
-package com.backend.digitalhouse.coworking.service;public interface IImagenSalaService {
+package com.backend.digitalhouse.coworking.service;
+
+public interface IImagenSalaService {
 }

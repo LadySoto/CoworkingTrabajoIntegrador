@@ -1,2 +1,4 @@
-package com.backend.digitalhouse.coworking.service;public interface IReservaEspacioService {
+package com.backend.digitalhouse.coworking.service;
+
+public interface IReservaEspacioService {
 }
