@@ -1,7 +1,6 @@
 package com.backend.digitalhouse.coworking.dto.entrada.imagen;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -10,8 +9,8 @@ import javax.validation.constraints.Size;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ImagenEntradaDto {
 
-    @Size(max = 100, message = "El nombre debe tener hasta 100 caracteres")
-    @NotNull(message = "El nombre no puede ser nulo")
+    @Size(max = 100, message = "El nombre de la imagen debe tener hasta 100 caracteres")
+    @NotNull(message = "El nombre de la imagen no puede ser nulo")
     @NotBlank(message = "Debe especificarse el nombre de la imagen")
     private String nombre;
 
@@ -36,7 +35,6 @@ public class ImagenEntradaDto {
     public String getNombre() {
         return nombre;
     }
-
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
@@ -44,7 +42,6 @@ public class ImagenEntradaDto {
     public String getImagen() {
         return imagen;
     }
-
     public void setImagen(String imagen) {
         this.imagen = imagen;
     }
@@ -52,7 +49,6 @@ public class ImagenEntradaDto {
     public int getEstado() {
         return estado;
     }
-
     public void setEstado(int estado) {
         this.estado = estado;
     }

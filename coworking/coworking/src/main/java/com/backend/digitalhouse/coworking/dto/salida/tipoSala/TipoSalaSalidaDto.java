@@ -1,4 +1,4 @@
-package com.backend.digitalhouse.coworking.dto.salida.sala;
+package com.backend.digitalhouse.coworking.dto.salida.tipoSala;
 
 public class TipoSalaSalidaDto {
 

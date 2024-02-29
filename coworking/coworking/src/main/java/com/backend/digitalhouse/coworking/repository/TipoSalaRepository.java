@@ -7,5 +7,3 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TipoSalaRepository extends JpaRepository<TipoSala, Long> {
 }
-
-//* OJOOOOO ARREGLAR CATEGORIA CON SALA

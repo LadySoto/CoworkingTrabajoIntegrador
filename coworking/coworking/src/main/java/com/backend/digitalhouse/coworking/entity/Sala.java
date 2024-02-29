@@ -11,18 +11,22 @@ public class Sala {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_SALA")
     private Long id;
-
+    @Column(name = "NOMBRE")
     private String nombre;
+    @Column(name = "DESCRIPCION")
     private String descripcion;
+    @Column(name = "CAPACIDAD")
     private int capacidad;
+    @Column(name = "DISPONIBLE")
     private int disponible;
+    @Column(name = "ESTADO")
     private int estado;
 
     @Column(name="PROMEDIO_CALIFICACION")
     private double promedioCalificacion;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="tipo_salas_id_tipo_sala")
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name="tipo_salas_id_tipo_sala", referencedColumnName = "id_tipo_sala")
     private TipoSala tipoSala;
 
     public Sala() {

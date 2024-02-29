@@ -10,7 +10,7 @@ public class TipoSala {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_TIPO_SALA")
     private Long id;
-
+    @Column(name = "NOMBRE")
     private String nombre;
 
     public TipoSala() {

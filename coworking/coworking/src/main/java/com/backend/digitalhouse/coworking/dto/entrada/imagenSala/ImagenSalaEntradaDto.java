@@ -1,14 +1,13 @@
-package com.backend.digitalhouse.coworking.dto.entrada.imagen;
+package com.backend.digitalhouse.coworking.dto.entrada.imagenSala;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import javax.validation.constraints.NotNull;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ImagenSalaEntradaDto {
 
     @NotNull(message = "Este campo no puede ser nulo")
-    private long idImagen;
+    private long idImagenes;
 
     @NotNull(message = "Este campo no puede ser nulo")
     private long idSala;
@@ -17,22 +16,20 @@ public class ImagenSalaEntradaDto {
     }
 
     public ImagenSalaEntradaDto(long idImagen, long idSala) {
-        this.idImagen = idImagen;
+        this.idImagenes = idImagen;
         this.idSala = idSala;
     }
 
     public long getIdImagen() {
-        return idImagen;
+        return idImagenes;
     }
-
     public void setIdImagen(long idImagen) {
-        this.idImagen = idImagen;
+        this.idImagenes = idImagen;
     }
 
     public long getIdSala() {
         return idSala;
     }
-
     public void setIdSala(long idSala) {
         this.idSala = idSala;
     }
