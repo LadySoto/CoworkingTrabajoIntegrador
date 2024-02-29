@@ -15,7 +15,7 @@ public class Usuario {
 
     private String correo;
 
-    private String contasena;
+    private String contrasena;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tipo_identificaciones_id_identificacion")
@@ -36,7 +36,7 @@ public class Usuario {
     public Usuario(String nombre, String correo, String contasena, TipoIdentificacion tipoIdentificacion, String numeroIdentificacion, int estado, Rol rol) {
         this.nombre = nombre;
         this.correo = correo;
-        this.contasena = contasena;
+        this.contrasena = contasena;
         this.tipoIdentificacion = tipoIdentificacion;
         this.numeroIdentificacion = numeroIdentificacion;
         this.estado = estado;
@@ -64,11 +64,11 @@ public class Usuario {
     }
 
     public String getContasena() {
-        return contasena;
+        return contrasena;
     }
 
     public void setContasena(String contasena) {
-        this.contasena = contasena;
+        this.contrasena = contasena;
     }
 
     public TipoIdentificacion getTipoIdentificacion() {

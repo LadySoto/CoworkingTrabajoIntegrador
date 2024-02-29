@@ -1,23 +1,21 @@
 package com.backend.digitalhouse.coworking.dto.entrada.sala;
 
+import com.backend.digitalhouse.coworking.dto.entrada.tipoSala.TipoSalaEntradaDto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.math.BigDecimal;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SalaEntradaDto {
-
     @Size(max = 100, message = "El nombre debe tener hasta 100 caracteres")
     @NotNull(message = "El nombre no puede ser nulo")
     @NotBlank(message = "Debe especificarse el nombre de la sala")
     private String nombre;
 
     @Size(max = 500, message = "La descripción debe tener hasta 500 caracteres")
-    @NotNull(message = "La descripción no puede ser nulo")
+    @NotNull(message = "La descripción no puede ser nula")
     @NotBlank(message = "Debe especificarse la descripición de la sala")
     private String descripcion;
 
@@ -38,25 +36,24 @@ public class SalaEntradaDto {
     private double promedioCalificacion;
 
     @NotNull(message = "El tipo de categoría no puede ser nulo")
-    private long idTipoSala;
+    private long tipoSala;
 
     public SalaEntradaDto() {
     }
 
-    public SalaEntradaDto(String nombre, String descripcion, int capacidad, int disponible, int estado, double promedioCalificacion, long idTipoSala) {
+    public SalaEntradaDto(String nombre, String descripcion, int capacidad, int disponible, int estado, double promedioCalificacion, long tipoSala) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.capacidad = capacidad;
         this.disponible = disponible;
         this.estado = estado;
         this.promedioCalificacion = promedioCalificacion;
-        this.idTipoSala = idTipoSala;
+        this.tipoSala = tipoSala;
     }
 
     public String getNombre() {
         return nombre;
     }
-
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
@@ -64,7 +61,6 @@ public class SalaEntradaDto {
     public String getDescripcion() {
         return descripcion;
     }
-
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
@@ -72,7 +68,6 @@ public class SalaEntradaDto {
     public int getCapacidad() {
         return capacidad;
     }
-
     public void setCapacidad(int capacidad) {
         this.capacidad = capacidad;
     }
@@ -80,7 +75,6 @@ public class SalaEntradaDto {
     public int getDisponible() {
         return disponible;
     }
-
     public void setDisponible(int disponible) {
         this.disponible = disponible;
     }
@@ -88,7 +82,6 @@ public class SalaEntradaDto {
     public int getEstado() {
         return estado;
     }
-
     public void setEstado(int estado) {
         this.estado = estado;
     }
@@ -96,16 +89,8 @@ public class SalaEntradaDto {
     public double getPromedioCalificacion() {
         return promedioCalificacion;
     }
+    public void setPromedioCalificacion(double promedioCalificacion) {this.promedioCalificacion = promedioCalificacion;}
 
-    public void setPromedioCalificacion(double promedioCalificacion) {
-        this.promedioCalificacion = promedioCalificacion;
-    }
-
-    public long getIdTipoSala() {
-        return idTipoSala;
-    }
-
-    public void setIdTipoSala(long idTipoSala) {
-        this.idTipoSala = idTipoSala;
-    }
+    public long getTipoSala() {return tipoSala;}
+    public void setTipoSala(long tipoSala) {this.tipoSala = tipoSala;}
 }

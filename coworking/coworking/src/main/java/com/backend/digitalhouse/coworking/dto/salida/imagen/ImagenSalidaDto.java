@@ -1,7 +1,6 @@
 package com.backend.digitalhouse.coworking.dto.salida.imagen;
 
 public class ImagenSalidaDto {
-
     private Long id;
     private String nombre;
     private String imagen;
@@ -20,7 +19,6 @@ public class ImagenSalidaDto {
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -28,7 +26,6 @@ public class ImagenSalidaDto {
     public String getNombre() {
         return nombre;
     }
-
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
@@ -36,7 +33,6 @@ public class ImagenSalidaDto {
     public String getImagen() {
         return imagen;
     }
-
     public void setImagen(String imagen) {
         this.imagen = imagen;
     }
@@ -44,7 +40,6 @@ public class ImagenSalidaDto {
     public int getEstado() {
         return estado;
     }
-
     public void setEstado(int estado) {
         this.estado = estado;
     }

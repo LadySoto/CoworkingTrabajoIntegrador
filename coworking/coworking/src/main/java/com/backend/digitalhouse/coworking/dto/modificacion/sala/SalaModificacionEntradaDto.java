@@ -1,38 +1,36 @@
-package com.backend.digitalhouse.coworking.entity;
+package com.backend.digitalhouse.coworking.dto.modificacion.sala;
 
-import javax.persistence.*;
-import java.math.BigDecimal;
+import com.backend.digitalhouse.coworking.dto.entrada.tipoSala.TipoSalaEntradaDto;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.Size;
 
-@Entity
-@Table(name = "SALAS")
-public class Sala {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_SALA")
-    private Long id;
-    @Column(name = "NOMBRE")
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class SalaModificacionEntradaDto {
+    @Size(max = 100, message = "El nombre debe tener hasta 100 caracteres")
     private String nombre;
-    @Column(name = "DESCRIPCION")
+
+    @Size(max = 500, message = "La descripción debe tener hasta 500 caracteres")
     private String descripcion;
-    @Column(name = "CAPACIDAD")
+
+    @Digits(integer = 2, fraction = 0, message = "El numero debe tener como maximo 2 dígitos")
     private int capacidad;
-    @Column(name = "DISPONIBLE")
+
+    @Digits(integer = 1, fraction = 0, message = "El numero debe tener como maximo 1 dígito")
     private int disponible;
-    @Column(name = "ESTADO")
+
+    @Digits(integer = 1, fraction = 0, message = "El numero debe tener como maximo 1 dígito")
     private int estado;
 
-    @Column(name="PROMEDIO_CALIFICACION")
+    @Digits(integer = 3, fraction = 2, message = "El número debe tener como máximo 3 dígitos y 2 decimales")
     private double promedioCalificacion;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name="tipo_salas_id_tipo_sala", referencedColumnName = "id_tipo_sala")
-    private TipoSala tipoSala;
+    private long tipoSala;
 
-    public Sala() {
+    public SalaModificacionEntradaDto() {
     }
 
-    public Sala(String nombre, String descripcion, int capacidad, int disponible, int estado, double promedioCalificacion, TipoSala tipoSala) {
+    public SalaModificacionEntradaDto(String nombre, String descripcion, int capacidad, int disponible, int estado, double promedioCalificacion, long tipoSala) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.capacidad = capacidad;
@@ -42,14 +40,9 @@ public class Sala {
         this.tipoSala = tipoSala;
     }
 
-    public Long getId() {
-        return id;
-    }
-
     public String getNombre() {
         return nombre;
     }
-
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
@@ -57,7 +50,6 @@ public class Sala {
     public String getDescripcion() {
         return descripcion;
     }
-
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
@@ -65,7 +57,6 @@ public class Sala {
     public int getCapacidad() {
         return capacidad;
     }
-
     public void setCapacidad(int capacidad) {
         this.capacidad = capacidad;
     }
@@ -73,7 +64,6 @@ public class Sala {
     public int getDisponible() {
         return disponible;
     }
-
     public void setDisponible(int disponible) {
         this.disponible = disponible;
     }
@@ -81,7 +71,6 @@ public class Sala {
     public int getEstado() {
         return estado;
     }
-
     public void setEstado(int estado) {
         this.estado = estado;
     }
@@ -89,16 +78,12 @@ public class Sala {
     public double getPromedioCalificacion() {
         return promedioCalificacion;
     }
+    public void setPromedioCalificacion(double promedioCalificacion) {this.promedioCalificacion = promedioCalificacion;}
 
-    public void setPromedioCalificacion(double promedioCalificacion) {
-        this.promedioCalificacion = promedioCalificacion;
-    }
-
-    public TipoSala getTipoSala() {
+    public long getTipoSala() {
         return tipoSala;
     }
-
-    public void setTipoSala(TipoSala tipoSala) {
+    public void setTipoSala(long tipoSala) {
         this.tipoSala = tipoSala;
     }
 }
