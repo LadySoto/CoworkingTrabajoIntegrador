@@ -94,7 +94,7 @@ public class SalaController {
                     content = @Content)
     })
 
-    @GetMapping()
+    @GetMapping("listar")
     public ResponseEntity<List<SalaSalidaDto>> listarSalas() {
         return new ResponseEntity<>(salaService.listarSalas(), HttpStatus.OK);
     }

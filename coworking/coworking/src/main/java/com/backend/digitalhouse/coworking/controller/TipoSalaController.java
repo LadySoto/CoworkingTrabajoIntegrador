@@ -94,7 +94,7 @@ public class TipoSalaController {
                     content = @Content)
     })
 
-    @GetMapping()
+    @GetMapping("listar")
     public ResponseEntity<List<TipoSalaSalidaDto>> listarTipoSala() {
         return new ResponseEntity<>(tipoSalaService.listarTipoSala(), HttpStatus.OK);
     }

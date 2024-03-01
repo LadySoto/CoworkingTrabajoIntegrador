@@ -2,9 +2,12 @@ package com.backend.digitalhouse.coworking.dto.modificacion.imagenSala;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import javax.validation.constraints.NotNull;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ImagenSalaModificacionEntradaDto {
-
+    @NotNull(message = "El campo no puede ser nulo")
+    private Long id;
     private long idImagenes;
     private long idSala;
     public ImagenSalaModificacionEntradaDto() {

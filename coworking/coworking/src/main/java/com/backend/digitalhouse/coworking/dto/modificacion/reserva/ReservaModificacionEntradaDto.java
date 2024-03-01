@@ -3,9 +3,12 @@ package com.backend.digitalhouse.coworking.dto.modificacion.reserva;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import javax.validation.constraints.NotNull;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ReservaModificacionEntradaDto {
-
+    @NotNull(message = "El campo no puede ser nulo")
+    private Long id;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private long fechaHoraInicio;
 

@@ -2,10 +2,13 @@ package com.backend.digitalhouse.coworking.dto.modificacion.sala;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SalaModificacionEntradaDto {
+    @NotNull(message = "El campo no puede ser nulo")
+    private Long id;
     @Size(max = 100, message = "El nombre debe tener hasta 100 caracteres")
     private String nombre;
 
@@ -37,6 +40,14 @@ public class SalaModificacionEntradaDto {
         this.estado = estado;
         this.promedioCalificacion = promedioCalificacion;
         this.tipoSala = tipoSala;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNombre() {
@@ -77,7 +88,9 @@ public class SalaModificacionEntradaDto {
     public double getPromedioCalificacion() {
         return promedioCalificacion;
     }
-    public void setPromedioCalificacion(double promedioCalificacion) {this.promedioCalificacion = promedioCalificacion;}
+    public void setPromedioCalificacion(double promedioCalificacion) {
+        this.promedioCalificacion = promedioCalificacion;
+    }
 
     public long getTipoSala() {
         return tipoSala;
@@ -89,7 +102,8 @@ public class SalaModificacionEntradaDto {
     @Override
     public String toString() {
         return "SalaModificacionEntradaDto{" +
-                "nombre='" + nombre + '\'' +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
                 ", descripcion='" + descripcion + '\'' +
                 ", capacidad=" + capacidad +
                 ", disponible=" + disponible +
