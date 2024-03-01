@@ -2,10 +2,13 @@ package com.backend.digitalhouse.coworking.dto.modificacion.rol;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RolModificacionEntradaDto {
+    @NotNull(message = "El campo no puede ser nulo")
+    private Long id;
     @Size(max = 50, message = "El nombre debe tener hasta 50 caracteres")
     private String nombre;
 

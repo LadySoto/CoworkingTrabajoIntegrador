@@ -2,9 +2,12 @@ package com.backend.digitalhouse.coworking.dto.modificacion.reservaEspacio;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import javax.validation.constraints.NotNull;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ReservaEspacioModificacionEntradaDto {
-
+    @NotNull(message = "El campo no puede ser nulo")
+    private Long id;
     private long idUsuario;
     private long idReserva;
     private long idSala;

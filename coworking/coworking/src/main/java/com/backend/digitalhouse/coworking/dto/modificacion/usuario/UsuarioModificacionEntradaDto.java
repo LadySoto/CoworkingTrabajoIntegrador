@@ -5,6 +5,8 @@ import javax.validation.constraints.*;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UsuarioModificacionEntradaDto {
+    @NotNull(message = "El campo no puede ser nulo")
+    private Long id;
     @Size(max = 100, message = "El nombre debe tener hasta 100 caracteres")
     private String nombre;
 

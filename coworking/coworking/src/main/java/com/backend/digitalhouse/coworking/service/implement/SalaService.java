@@ -46,16 +46,36 @@ public class SalaService implements ISalaService {
 
     @Override
     public SalaSalidaDto modificarSala(SalaModificacionEntradaDto salaModificada) throws ResourceNotFoundException {
-        Sala salaRecibida = dtoModificadoAEntidad(salaModificada);
-        Sala salaAModificar = salaRepository.findById(salaRecibida.getId()).orElse(null);
+        Sala salaConModificacion = dtoModificadoAEntidad(salaModificada);
+        Sala salaGuardada = salaRepository.findById(salaConModificacion.getId()).orElse(null);
         SalaSalidaDto salaSalidaDto = null;
 
-        if (salaAModificar != null) {
+        if (salaGuardada != null) {
+            if (salaConModificacion.getNombre() != salaGuardada.getNombre()) {
+                salaGuardada.setNombre(salaConModificacion.getNombre());
+            }
+            if (salaConModificacion.getDescripcion() != salaGuardada.getDescripcion()) {
+                salaGuardada.setDescripcion(salaConModificacion.getDescripcion());
+            }
+            if (salaConModificacion.getCapacidad() != salaGuardada.getCapacidad()) {
+                salaGuardada.setCapacidad(salaConModificacion.getCapacidad());
+            }
+            if (salaConModificacion.getDisponible() != salaGuardada.getDisponible()) {
+                salaGuardada.setDisponible(salaConModificacion.getDisponible());
+            }
+            if (salaConModificacion.getEstado() != salaGuardada.getEstado()) {
+                salaGuardada.setEstado(salaConModificacion.getEstado());
+            }
+            if (salaConModificacion.getPromedioCalificacion() != salaGuardada.getPromedioCalificacion() ) {
+                salaGuardada.setPromedioCalificacion(salaConModificacion.getPromedioCalificacion());
+            }
+            if (salaConModificacion.getTipoSala() != null && salaConModificacion.getTipoSala().getId() != salaGuardada.getTipoSala().getId()) {
+                salaGuardada.setTipoSala(salaConModificacion.getTipoSala());
+            }
 
-            salaAModificar = salaRecibida;
-            salaRepository.save(salaAModificar);
-            salaSalidaDto = entidadADtoSalida(salaAModificar);
-            LOGGER.info("La sala ha sido actualizada: {}", salaAModificar);
+            salaRepository.save(salaGuardada);
+            salaSalidaDto = entidadADtoSalida(salaGuardada);
+            LOGGER.info("La sala ha sido actualizada: {}", salaGuardada);
 
         } else {
 
@@ -112,9 +132,9 @@ public class SalaService implements ISalaService {
 
     private TipoSala tipoSalaEntradaDtoAEntity(Long id) {
         TipoSalaSalidaDto tipoSala = tipoSalaService.buscarTipoSalaPorId(id);
-        System.out.println("JUAN"+tipoSala.toString());
+        System.out.println(tipoSala );
         TipoSala tipoSalaPrueba = modelMapper.map(tipoSala, TipoSala.class);
-        System.out.println("KATE"+tipoSalaPrueba.toString());
+        System.out.println(tipoSalaPrueba);
         return tipoSalaPrueba;
     }
     private TipoSalaSalidaDto entityATipoSalaSalidaDto(TipoSala tipoSala) {
@@ -134,7 +154,11 @@ public class SalaService implements ISalaService {
     }
 
     private Sala dtoModificadoAEntidad(SalaModificacionEntradaDto salaModificacionEntradaDto) {
-        return modelMapper.map(salaModificacionEntradaDto, Sala.class);
+        Sala sala = modelMapper.map(salaModificacionEntradaDto, Sala.class);
+        if (salaModificacionEntradaDto.getTipoSala() != 0){
+            sala.setTipoSala(tipoSalaEntradaDtoAEntity(salaModificacionEntradaDto.getTipoSala()));
+        }
+        return sala;
     }
 }
 
