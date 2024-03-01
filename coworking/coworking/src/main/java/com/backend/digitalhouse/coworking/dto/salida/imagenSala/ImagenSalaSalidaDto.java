@@ -28,6 +28,10 @@ public class ImagenSalaSalidaDto {
 
     @Override
     public String toString() {
-        return "Id: " + id + " - Imagen: " + imagen + "- Sala: " + sala;
+        return "ImagenSalaSalidaDto{" +
+                "id=" + id +
+                ", imagen=" + imagen +
+                ", sala=" + sala +
+                '}';
     }
 }

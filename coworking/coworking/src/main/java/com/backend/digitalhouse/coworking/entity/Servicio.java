@@ -10,9 +10,9 @@ public class Servicio {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_SERVICIO")
     private Long id;
-
+    @Column(name = "NOMBRE")
     private String nombre;
-
+    @Column(name = "ESTADO")
     private int estado;
 
     public Servicio() {
@@ -25,6 +25,10 @@ public class Servicio {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNombre() {
@@ -41,5 +45,14 @@ public class Servicio {
 
     public void setEstado(int estado) {
         this.estado = estado;
+    }
+
+    @Override
+    public String toString() {
+        return "Servicio{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", estado=" + estado +
+                '}';
     }
 }

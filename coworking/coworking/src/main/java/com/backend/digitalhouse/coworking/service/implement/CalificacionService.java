@@ -3,7 +3,6 @@ package com.backend.digitalhouse.coworking.service.implement;
 import com.backend.digitalhouse.coworking.dto.entrada.calificacion.CalificacionEntradaDto;
 import com.backend.digitalhouse.coworking.dto.modificacion.calificacion.CalificacionModificacionEntradaDto;
 import com.backend.digitalhouse.coworking.dto.salida.calificacion.CalificacionSalidaDto;
-import com.backend.digitalhouse.coworking.entity.Calificacion;
 import com.backend.digitalhouse.coworking.exceptions.BadRequestException;
 import com.backend.digitalhouse.coworking.exceptions.ResourceNotFoundException;
 import com.backend.digitalhouse.coworking.repository.CalificacionRepository;

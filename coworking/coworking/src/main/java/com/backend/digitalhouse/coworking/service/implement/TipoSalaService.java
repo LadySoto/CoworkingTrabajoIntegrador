@@ -1,8 +1,11 @@
 package com.backend.digitalhouse.coworking.service.implement;
 
+import com.backend.digitalhouse.coworking.dto.entrada.sala.SalaEntradaDto;
 import com.backend.digitalhouse.coworking.dto.entrada.tipoSala.TipoSalaEntradaDto;
 import com.backend.digitalhouse.coworking.dto.modificacion.tipoSala.TipoSalaModificacionEntradaDto;
+import com.backend.digitalhouse.coworking.dto.salida.sala.SalaSalidaDto;
 import com.backend.digitalhouse.coworking.dto.salida.tipoSala.TipoSalaSalidaDto;
+import com.backend.digitalhouse.coworking.entity.Sala;
 import com.backend.digitalhouse.coworking.entity.TipoSala;
 import com.backend.digitalhouse.coworking.exceptions.BadRequestException;
 import com.backend.digitalhouse.coworking.exceptions.ResourceNotFoundException;
@@ -25,6 +28,12 @@ public class TipoSalaService implements ITipoSalaService {
     public TipoSalaService(TipoSalaRepository tipoSalaRepository, ModelMapper modelMapper) {
         this.tipoSalaRepository = tipoSalaRepository;
         this.modelMapper = modelMapper;
+        configureMappings();
+    }
+
+    private void configureMappings() {
+        modelMapper.typeMap(TipoSalaEntradaDto.class, TipoSala.class);
+        modelMapper.typeMap(TipoSala.class, TipoSalaSalidaDto.class);
     }
 
     @Override
@@ -32,7 +41,7 @@ public class TipoSalaService implements ITipoSalaService {
         if (tipoSala != null) {
             TipoSala tipoSalaGuardada = tipoSalaRepository.save(dtoEntradaAEntidad(tipoSala));
             TipoSalaSalidaDto tipoSalaSalidaDto = entidadADtoSalida(tipoSalaGuardada);
-            LOGGER.info("Sala guardada: {}", tipoSalaSalidaDto);
+            LOGGER.info("Tipo sala guardada: {}", tipoSalaSalidaDto);
             return tipoSalaSalidaDto;
         } else {
             LOGGER.error("No se puede registrar la sala");
@@ -70,18 +79,18 @@ public class TipoSalaService implements ITipoSalaService {
             }catch(Exception e){
                 LOGGER.info("Id de tipo sala no se encuentra");
             }
-            TipoSalaSalidaDto tipoSalaSalidaDto = null;
+            TipoSalaSalidaDto tipoSalaSalida = null;
             if (tipoSalaBuscado != null) {
-                tipoSalaSalidaDto = entidadADtoSalida(tipoSalaBuscado);
-                LOGGER.info("Tipo sala por id: {}", tipoSalaSalidaDto);
+                tipoSalaSalida = entidadADtoSalida(tipoSalaBuscado);
+                LOGGER.info("Tipo sala por id: {}", tipoSalaSalida);
             } else LOGGER.info("Tipo sala por id: {}", id);
-            return tipoSalaSalidaDto;
+            return tipoSalaSalida;
         }
 
         @Override
         public List<TipoSalaSalidaDto> listarTipoSala () {
             List<TipoSalaSalidaDto> tipoSalas = tipoSalaRepository.findAll().stream()
-                    .map(tipoSala -> entidadADtoSalida(tipoSala)).toList();
+                    .map(this::entidadADtoSalida).toList();
             LOGGER.info("Listado de todos los tipos de sala: {}", tipoSalas);
             return tipoSalas;
         }
@@ -103,6 +112,9 @@ public class TipoSalaService implements ITipoSalaService {
 
     private TipoSalaSalidaDto entidadADtoSalida(TipoSala tipoSala) {
         return modelMapper.map(tipoSala, TipoSalaSalidaDto.class);
+    }
+    private TipoSala dtoSalidaAEntidad(TipoSalaSalidaDto tipoSalaSalida) {
+        return modelMapper.map(tipoSalaSalida, TipoSala.class);
     }
 
     private TipoSala dtoModificadoAEntidad(TipoSalaModificacionEntradaDto tipoSalaModificacionEntradaDto) {

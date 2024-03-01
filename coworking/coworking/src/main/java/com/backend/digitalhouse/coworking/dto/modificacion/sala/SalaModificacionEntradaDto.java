@@ -1,6 +1,5 @@
 package com.backend.digitalhouse.coworking.dto.modificacion.sala;
 
-import com.backend.digitalhouse.coworking.dto.entrada.tipoSala.TipoSalaEntradaDto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Size;
@@ -86,4 +85,18 @@ public class SalaModificacionEntradaDto {
     public void setTipoSala(long tipoSala) {
         this.tipoSala = tipoSala;
     }
+
+    @Override
+    public String toString() {
+        return "SalaModificacionEntradaDto{" +
+                "nombre='" + nombre + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                ", capacidad=" + capacidad +
+                ", disponible=" + disponible +
+                ", estado=" + estado +
+                ", promedioCalificacion=" + promedioCalificacion +
+                ", tipoSala=" + tipoSala +
+                '}';
+    }
 }
+

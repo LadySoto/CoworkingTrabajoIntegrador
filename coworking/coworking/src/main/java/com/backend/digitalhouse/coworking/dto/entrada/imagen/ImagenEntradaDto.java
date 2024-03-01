@@ -52,4 +52,13 @@ public class ImagenEntradaDto {
     public void setEstado(int estado) {
         this.estado = estado;
     }
+
+    @Override
+    public String toString() {
+        return "ImagenEntradaDto{" +
+                "nombre='" + nombre + '\'' +
+                ", imagen='" + imagen + '\'' +
+                ", estado=" + estado +
+                '}';
+    }
 }

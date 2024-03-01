@@ -25,6 +25,10 @@ public class RolSalidaDto {
 
     @Override
     public String toString() {
-        return "Id: " + id +  " - Nombre: " + nombre + " - Estado: " + estado;
+        return "RolSalidaDto{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", estado=" + estado +
+                '}';
     }
 }

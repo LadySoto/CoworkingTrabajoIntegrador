@@ -10,9 +10,11 @@ public class Imagen {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_IMAGEN")
     private Long id;
-
+    @Column(name = "NOMBRE")
     private String nombre;
+    @Column(name = "IMAGEN")
     private String imagen;
+    @Column(name = "ESTADO")
     private int estado;
 
     public Imagen() {
@@ -26,6 +28,10 @@ public class Imagen {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNombre() {
@@ -50,5 +56,15 @@ public class Imagen {
 
     public void setEstado(int estado) {
         this.estado = estado;
+    }
+
+    @Override
+    public String toString() {
+        return "Imagen{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", imagen='" + imagen + '\'' +
+                ", estado=" + estado +
+                '}';
     }
 }

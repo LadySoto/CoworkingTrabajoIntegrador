@@ -33,4 +33,12 @@ public class ImagenSalaEntradaDto {
     public void setIdSala(long idSala) {
         this.idSala = idSala;
     }
+
+    @Override
+    public String toString() {
+        return "ImagenSalaEntradaDto{" +
+                "idImagenes=" + idImagenes +
+                ", idSala=" + idSala +
+                '}';
+    }
 }

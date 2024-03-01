@@ -38,9 +38,14 @@ public class ReservaEspacioSalidaDto {
     public ServicioSalidaDto getServicio() {return servicio;}
     public void setServicio(ServicioSalidaDto servicio) {this.servicio = servicio;}
 
-
     @Override
     public String toString() {
-        return "Id: " + id + ", Usuario: " + usuario + ", Reserva: " + reserva + ", Sala: " + sala + ", Servicio: " + servicio;
+        return "ReservaEspacioSalidaDto{" +
+                "id=" + id +
+                ", usuario=" + usuario +
+                ", reserva=" + reserva +
+                ", sala=" + sala +
+                ", servicio=" + servicio +
+                '}';
     }
 }

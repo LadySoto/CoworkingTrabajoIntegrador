@@ -20,6 +20,9 @@ public class CalificacionSalidaDto {
 
     @Override
     public String toString() {
-        return "Id: " + id + " - Puntuacion: " + puntuacion;
+        return "CalificacionSalidaDto{" +
+                "id=" + id +
+                ", puntuacion=" + puntuacion +
+                '}';
     }
 }
