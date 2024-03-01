@@ -41,6 +41,10 @@ public class ReservaEspacio {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Usuario getUsuario() {
         return usuario;
     }
@@ -71,5 +75,16 @@ public class ReservaEspacio {
 
     public void setServicio(Servicio servicio) {
         this.servicio = servicio;
+    }
+
+    @Override
+    public String toString() {
+        return "ReservaEspacio{" +
+                "id=" + id +
+                ", usuario=" + usuario +
+                ", reserva=" + reserva +
+                ", sala=" + sala +
+                ", servicio=" + servicio +
+                '}';
     }
 }

@@ -3,7 +3,9 @@ package com.backend.digitalhouse.coworking.service.implement;
 import com.backend.digitalhouse.coworking.dto.entrada.sala.SalaEntradaDto;
 import com.backend.digitalhouse.coworking.dto.modificacion.sala.SalaModificacionEntradaDto;
 import com.backend.digitalhouse.coworking.dto.salida.sala.SalaSalidaDto;
+import com.backend.digitalhouse.coworking.dto.salida.tipoSala.TipoSalaSalidaDto;
 import com.backend.digitalhouse.coworking.entity.Sala;
+import com.backend.digitalhouse.coworking.entity.TipoSala;
 import com.backend.digitalhouse.coworking.exceptions.BadRequestException;
 import com.backend.digitalhouse.coworking.exceptions.ResourceNotFoundException;
 import com.backend.digitalhouse.coworking.repository.SalaRepository;
@@ -20,19 +22,20 @@ public class SalaService implements ISalaService {
     private final Logger LOGGER = LoggerFactory.getLogger(SalaService.class);
     private final SalaRepository salaRepository;
     private final ModelMapper modelMapper;
+    private final TipoSalaService tipoSalaService;
 
     @Autowired
-    public SalaService(SalaRepository salaRepository, ModelMapper modelMapper) {
+    public SalaService(SalaRepository salaRepository, ModelMapper modelMapper, TipoSalaService tipoSalaService) {
         this.salaRepository = salaRepository;
         this.modelMapper = modelMapper;
+        this.tipoSalaService = tipoSalaService;
         configureMappings();
     }
 
     @Override
     public SalaSalidaDto registrarSala(SalaEntradaDto sala) throws BadRequestException {
         if (sala != null) {
-            Sala salaRegistrada = salaRepository.save(dtoEntradaAEntidad(sala));
-            SalaSalidaDto salaSalidaDto = entidadADtoSalida(salaRegistrada);
+            SalaSalidaDto salaSalidaDto = entidadADtoSalida(salaRepository.save(dtoEntradaAEntidad(sala)));
             LOGGER.info("Sala guardada: {}", salaSalidaDto);
             return salaSalidaDto;
         } else {
@@ -98,20 +101,36 @@ public class SalaService implements ISalaService {
     }
 
     private void configureMappings() {
-       modelMapper.typeMap(SalaEntradaDto.class, Sala.class);
-                //.addMappings(mapper -> mapper.map(SalaEntradaDto::getTipoSala, Sala::setTipoSala));
+       modelMapper.typeMap(SalaEntradaDto.class, Sala.class)
+                .addMappings(mapper -> mapper.map(SalaEntradaDto::getTipoSala, Sala::setTipoSala));
         modelMapper.typeMap(Sala.class, SalaSalidaDto.class);
                 //.addMappings(mapper -> mapper.map(Sala::getTipoSala, SalaSalidaDto::setTipoSala));
         modelMapper.typeMap(SalaModificacionEntradaDto.class, Sala.class);
                 //.addMappings(mapper -> mapper.map(SalaModificacionEntradaDto::getTipoSala, Sala::setTipoSala));
+        modelMapper.typeMap(TipoSalaSalidaDto.class, TipoSala.class);
+    }
+
+    private TipoSala tipoSalaEntradaDtoAEntity(Long id) {
+        TipoSalaSalidaDto tipoSala = tipoSalaService.buscarTipoSalaPorId(id);
+        System.out.println("JUAN"+tipoSala.toString());
+        TipoSala tipoSalaPrueba = modelMapper.map(tipoSala, TipoSala.class);
+        System.out.println("KATE"+tipoSalaPrueba.toString());
+        return tipoSalaPrueba;
+    }
+    private TipoSalaSalidaDto entityATipoSalaSalidaDto(TipoSala tipoSala) {
+        return modelMapper.map(tipoSala, TipoSalaSalidaDto.class);
     }
 
     public Sala dtoEntradaAEntidad(SalaEntradaDto salaEntradaDto) {
-        return modelMapper.map(salaEntradaDto, Sala.class);
+        Sala sala = modelMapper.map(salaEntradaDto, Sala.class);
+        sala.setTipoSala(tipoSalaEntradaDtoAEntity(salaEntradaDto.getTipoSala()));
+        return sala;
     }
 
     public SalaSalidaDto entidadADtoSalida(Sala sala) {
-        return modelMapper.map(sala, SalaSalidaDto.class);
+        SalaSalidaDto salaSalidaDto = modelMapper.map(sala, SalaSalidaDto.class);
+        salaSalidaDto.setTipoSala(entityATipoSalaSalidaDto(sala.getTipoSala()));
+        return salaSalidaDto;
     }
 
     private Sala dtoModificadoAEntidad(SalaModificacionEntradaDto salaModificacionEntradaDto) {

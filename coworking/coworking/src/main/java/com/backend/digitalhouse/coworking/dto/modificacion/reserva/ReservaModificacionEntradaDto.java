@@ -36,4 +36,14 @@ public class ReservaModificacionEntradaDto {
 
     public long getCantidadHora() {return cantidadHora;}
     public void setCantidadHora(long cantidadHora) {this.cantidadHora = cantidadHora;}
+
+    @Override
+    public String toString() {
+        return "ReservaModificacionEntradaDto{" +
+                "fechaHoraInicio=" + fechaHoraInicio +
+                ", fechaHoraFin=" + fechaHoraFin +
+                ", idCalificacion=" + idCalificacion +
+                ", cantidadHora=" + cantidadHora +
+                '}';
+    }
 }

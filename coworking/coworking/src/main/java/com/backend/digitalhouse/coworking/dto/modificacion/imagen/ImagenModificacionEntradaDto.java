@@ -45,4 +45,13 @@ public class ImagenModificacionEntradaDto {
     public void setEstado(int estado) {
         this.estado = estado;
     }
+
+    @Override
+    public String toString() {
+        return "ImagenModificacionEntradaDto{" +
+                "nombre='" + nombre + '\'' +
+                ", imagen='" + imagen + '\'' +
+                ", estado=" + estado +
+                '}';
+    }
 }

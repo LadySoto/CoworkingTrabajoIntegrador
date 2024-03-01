@@ -46,6 +46,12 @@ public class ImagenSalidaDto {
 
     @Override
     public String toString() {
-        return "Id: " + id + ", Nombre: " + nombre + ", Imagen: " + imagen + ", Estado: " + estado;
+        return "ImagenSalidaDto{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", imagen='" + imagen + '\'' +
+                ", estado=" + estado +
+                '}';
     }
 }
+

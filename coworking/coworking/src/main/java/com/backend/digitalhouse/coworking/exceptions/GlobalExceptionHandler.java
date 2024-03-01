@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
         exceptionMessage.put("message", "Bad Request: " + badRequestException.getMessage());
         return exceptionMessage;
     }
-    /*@ExceptionHandler({MethodArgumentNotValidException.class, HttpMessageNotReadableException.class})
+    @ExceptionHandler({MethodArgumentNotValidException.class, HttpMessageNotReadableException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> manejarValidationException(MethodArgumentNotValidException exception) {
         Map<String, String> exceptionMessage = new HashMap<>();
@@ -39,5 +39,5 @@ public class GlobalExceptionHandler {
             exceptionMessage.put(fieldName, errorMessage);
         });
         return exceptionMessage;
-    }*/
+    }
 }

@@ -25,6 +25,10 @@ public class ServicioSalidaDto {
 
     @Override
     public String toString() {
-        return "Id: " + id +  " - Nombre: " + nombre + " - Estado: " + estado;
+        return "ServicioSalidaDto{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", estado=" + estado +
+                '}';
     }
 }

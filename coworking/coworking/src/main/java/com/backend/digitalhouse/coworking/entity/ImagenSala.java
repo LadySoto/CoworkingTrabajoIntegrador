@@ -31,6 +31,10 @@ public class ImagenSala {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Imagen getImagen() {
         return imagen;
     }
@@ -45,5 +49,14 @@ public class ImagenSala {
 
     public void setSala(Sala sala) {
         this.sala = sala;
+    }
+
+    @Override
+    public String toString() {
+        return "ImagenSala{" +
+                "id=" + id +
+                ", imagen=" + imagen +
+                ", sala=" + sala +
+                '}';
     }
 }

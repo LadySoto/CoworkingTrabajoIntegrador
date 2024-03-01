@@ -25,7 +25,7 @@ public class Reserva {
     @Column(name="CANTIDAD_HORA")
     private int cantidadHora;
 
-    public Reserva() {;
+    public Reserva() {
     }
 
     public Reserva(LocalDateTime fechaHoraInicio, LocalDateTime fechaHoraFin, Calificacion calificacion, int cantidadHora) {
@@ -37,6 +37,10 @@ public class Reserva {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public LocalDateTime getFechaHoraInicio() {
@@ -69,5 +73,16 @@ public class Reserva {
 
     public void setCantidadHora(int cantidadHora) {
         this.cantidadHora = cantidadHora;
+    }
+
+    @Override
+    public String toString() {
+        return "Reserva{" +
+                "id=" + id +
+                ", fechaHoraInicio=" + fechaHoraInicio +
+                ", fechaHoraFin=" + fechaHoraFin +
+                ", calificacion=" + calificacion +
+                ", cantidadHora=" + cantidadHora +
+                '}';
     }
 }

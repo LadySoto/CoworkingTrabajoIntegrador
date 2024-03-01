@@ -10,7 +10,7 @@ public class Calificacion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_CALIFICACION")
     private Long id;
-
+    @Column(name = "PUNTUACION")
     private int puntuacion;
 
     public Calificacion() {
@@ -24,11 +24,23 @@ public class Calificacion {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public int getPuntuacion() {
         return puntuacion;
     }
 
     public void setPuntuacion(int puntuacion) {
         this.puntuacion = puntuacion;
+    }
+
+    @Override
+    public String toString() {
+        return "Calificacion{" +
+                "id=" + id +
+                ", puntuacion=" + puntuacion +
+                '}';
     }
 }

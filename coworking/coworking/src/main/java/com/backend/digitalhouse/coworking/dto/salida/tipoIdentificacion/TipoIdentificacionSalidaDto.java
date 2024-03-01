@@ -25,6 +25,10 @@ public class TipoIdentificacionSalidaDto {
 
     @Override
     public String toString() {
-        return "Id: " + id +  " - Nombre: " + nombre + " - Estado: " + estado;
+        return "TipoIdentificacionSalidaDto{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", estado=" + estado +
+                '}';
     }
 }

@@ -37,9 +37,14 @@ public class ReservaSalidaDto {
     public int getCantidadHora() {return cantidadHora;}
     public void setCantidadHora(int cantidadHora) {this.cantidadHora = cantidadHora;}
 
-
     @Override
     public String toString() {
-        return "Id: " + id + ", Fecha y hora inicio: " + fechaHoraInicio + ", Fecha y hora fin: " + fechaHoraFin + ", Calificacion: " + calificacion + ", Cantidad de horas: " + cantidadHora;
+        return "ReservaSalidaDto{" +
+                "id=" + id +
+                ", fechaHoraInicio=" + fechaHoraInicio +
+                ", fechaHoraFin=" + fechaHoraFin +
+                ", calificacion=" + calificacion +
+                ", cantidadHora=" + cantidadHora +
+                '}';
     }
 }

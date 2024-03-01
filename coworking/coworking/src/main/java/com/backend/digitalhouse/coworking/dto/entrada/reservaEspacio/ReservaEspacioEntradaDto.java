@@ -35,4 +35,14 @@ public class ReservaEspacioEntradaDto {
 
     public long getIdServicio() {return idServicio;}
     public void setIdServicio(long idServicio) {this.idServicio = idServicio;}
+
+    @Override
+    public String toString() {
+        return "ReservaEspacioEntradaDto{" +
+                "idUsuario=" + idUsuario +
+                ", idReserva=" + idReserva +
+                ", idSala=" + idSala +
+                ", idServicio=" + idServicio +
+                '}';
+    }
 }

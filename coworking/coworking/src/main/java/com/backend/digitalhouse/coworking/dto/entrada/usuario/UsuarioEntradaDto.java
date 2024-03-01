@@ -70,4 +70,17 @@ public class UsuarioEntradaDto {
 
     public long getIdRol() {return idRol;}
     public void setIdRol(long idRol) {this.idRol = idRol;}
+
+    @Override
+    public String toString() {
+        return "UsuarioEntradaDto{" +
+                "nombre='" + nombre + '\'' +
+                ", correo='" + correo + '\'' +
+                ", contrasena='" + contrasena + '\'' +
+                ", idIdentificacion='" + idIdentificacion + '\'' +
+                ", numeroIdentificacion='" + numeroIdentificacion + '\'' +
+                ", estado=" + estado +
+                ", idRol=" + idRol +
+                '}';
+    }
 }

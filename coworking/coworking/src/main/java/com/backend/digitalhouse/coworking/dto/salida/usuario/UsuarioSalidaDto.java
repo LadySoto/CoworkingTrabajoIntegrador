@@ -53,6 +53,15 @@ public class UsuarioSalidaDto {
 
     @Override
     public String toString() {
-        return "Id: " + id + " - Nombre: " + nombre + " - Correo;: " + correo + " - Contraseña: " + contrasena + " - Tipo de identificacion: " + tipoIdentificacion + " - Numero de identificacion: " + numeroIdentificacion + " - Estado: " + estado + " - Rol: " + rol;
+        return "UsuarioSalidaDto{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", correo='" + correo + '\'' +
+                ", contrasena='" + contrasena + '\'' +
+                ", tipoIdentificacion=" + tipoIdentificacion +
+                ", numeroIdentificacion='" + numeroIdentificacion + '\'' +
+                ", estado=" + estado +
+                ", rol=" + rol +
+                '}';
     }
 }

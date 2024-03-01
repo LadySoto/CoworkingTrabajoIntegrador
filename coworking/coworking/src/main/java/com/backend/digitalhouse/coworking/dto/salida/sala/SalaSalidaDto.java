@@ -78,6 +78,15 @@ public class SalaSalidaDto {
 
     @Override
     public String toString() {
-        return "Id: " + id + " - Nombre: " + nombre + " - Descripción: " + descripcion + " - Capacidad: " + capacidad + " - Disponible: " + disponible + " - Estado: " + estado + " - Promedio de Calificación: " + promedioCalificacion + " - Tipo de sala: " + tipoSala;
+        return "SalaSalidaDto{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                ", capacidad=" + capacidad +
+                ", disponible=" + disponible +
+                ", estado=" + estado +
+                ", promedioCalificacion=" + promedioCalificacion +
+                ", tipoSala=" + tipoSala +
+                '}';
     }
 }

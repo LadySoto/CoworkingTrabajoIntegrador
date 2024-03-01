@@ -25,4 +25,12 @@ public class TipoIdentificacionModificacionEntradaDto {
 
     public int getEstado() {return estado;}
     public void setEstado(int estado) {this.estado = estado;}
+
+    @Override
+    public String toString() {
+        return "TipoIdentificacionModificacionEntradaDto{" +
+                "nombre='" + nombre + '\'' +
+                ", estado=" + estado +
+                '}';
+    }
 }

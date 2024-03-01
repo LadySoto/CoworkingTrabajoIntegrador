@@ -30,4 +30,12 @@ public class RolEntradaDto {
 
     public int getEstado() {return estado;}
     public void setEstado(int estado) {this.estado = estado;}
+
+    @Override
+    public String toString() {
+        return "RolEntradaDto{" +
+                "nombre='" + nombre + '\'' +
+                ", estado=" + estado +
+                '}';
+    }
 }

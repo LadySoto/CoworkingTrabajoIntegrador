@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
-
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CalificacionEntradaDto {
     @NotNull(message = "Este campo no puede ser nulo")
@@ -20,5 +19,12 @@ public class CalificacionEntradaDto {
 
     public long getPuntuacion() {return puntuacion;}
     public void setPuntuacion(long puntuacion) {this.puntuacion = puntuacion;}
+
+    @Override
+    public String toString() {
+        return "CalificacionEntradaDto{" +
+                "puntuacion=" + puntuacion +
+                '}';
+    }
 }
 

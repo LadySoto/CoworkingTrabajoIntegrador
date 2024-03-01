@@ -17,4 +17,11 @@ public class CalificacionModificacionEntradaDto {
 
     public long getPuntuacion() {return puntuacion;}
     public void setPuntuacion(long puntuacion) {this.puntuacion = puntuacion;}
+
+    @Override
+    public String toString() {
+        return "CalificacionModificacionEntradaDto{" +
+                "puntuacion=" + puntuacion +
+                '}';
+    }
 }
