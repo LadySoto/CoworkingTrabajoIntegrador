@@ -1,7 +1,6 @@
 package com.backend.digitalhouse.coworking.entity;
 
 import javax.persistence.*;
-
 @Entity
 @Table(name = "SALAS")
 public class Sala {
@@ -10,18 +9,21 @@ public class Sala {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_SALA")
     private Long id;
-
+    @Column(name = "NOMBRE")
     private String nombre;
+    @Column(name = "DESCRIPCION")
     private String descripcion;
+    @Column(name = "CAPACIDAD")
     private int capacidad;
+    @Column(name = "DISPONIBLE")
     private int disponible;
+    @Column(name = "ESTADO")
     private int estado;
-
     @Column(name="PROMEDIO_CALIFICACION")
     private double promedioCalificacion;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="tipo_salas_id_tipo_sala")
+    @ManyToOne(cascade=CascadeType.DETACH, fetch = FetchType.LAZY)
+    @JoinColumn(name="tipo_salas_id_tipo_sala", referencedColumnName = "id_tipo_sala")
     private TipoSala tipoSala;
 
     public Sala() {
@@ -39,6 +41,9 @@ public class Sala {
 
     public Long getId() {
         return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNombre() {
@@ -95,5 +100,19 @@ public class Sala {
 
     public void setTipoSala(TipoSala tipoSala) {
         this.tipoSala = tipoSala;
+    }
+
+    @Override
+    public String toString() {
+        return "Sala{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                ", capacidad=" + capacidad +
+                ", disponible=" + disponible +
+                ", estado=" + estado +
+                ", promedioCalificacion=" + promedioCalificacion +
+                ", tipoSala=" + tipoSala +
+                '}';
     }
 }

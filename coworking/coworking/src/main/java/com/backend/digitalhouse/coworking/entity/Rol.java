@@ -9,9 +9,9 @@ public class Rol {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_ROL")
     private Long id;
-
+    @Column(name = "NOMBRE")
     private String nombre;
-
+    @Column(name = "ESTADO")
     private int estado;
 
     public Rol() {
@@ -24,6 +24,10 @@ public class Rol {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNombre() {
@@ -40,5 +44,14 @@ public class Rol {
 
     public void setEstado(int estado) {
         this.estado = estado;
+    }
+
+    @Override
+    public String toString() {
+        return "Rol{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", estado=" + estado +
+                '}';
     }
 }

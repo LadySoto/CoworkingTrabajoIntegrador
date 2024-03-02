@@ -10,12 +10,12 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_USUARIO")
     private Long id;
-
+    @Column(name = "NOMBRE")
     private String nombre;
-
+    @Column(name = "CORREO")
     private String correo;
-
-    private String contasena;
+    @Column(name = "CONTRASENA")
+    private String contrasena;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tipo_identificaciones_id_identificacion")
@@ -23,7 +23,7 @@ public class Usuario {
 
     @Column(name = "NUMERO_IDENTIFICACION")
     private String numeroIdentificacion;
-
+    @Column(name = "ESTADO")
     private int estado;
 
     @OneToOne(fetch = FetchType.LAZY)
@@ -36,7 +36,7 @@ public class Usuario {
     public Usuario(String nombre, String correo, String contasena, TipoIdentificacion tipoIdentificacion, String numeroIdentificacion, int estado, Rol rol) {
         this.nombre = nombre;
         this.correo = correo;
-        this.contasena = contasena;
+        this.contrasena = contasena;
         this.tipoIdentificacion = tipoIdentificacion;
         this.numeroIdentificacion = numeroIdentificacion;
         this.estado = estado;
@@ -45,6 +45,10 @@ public class Usuario {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNombre() {
@@ -63,12 +67,12 @@ public class Usuario {
         this.correo = correo;
     }
 
-    public String getContasena() {
-        return contasena;
+    public String getContrasena() {
+        return contrasena;
     }
 
-    public void setContasena(String contasena) {
-        this.contasena = contasena;
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
     }
 
     public TipoIdentificacion getTipoIdentificacion() {
@@ -101,5 +105,19 @@ public class Usuario {
 
     public void setRol(Rol rol) {
         this.rol = rol;
+    }
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", correo='" + correo + '\'' +
+                ", contrasena='" + contrasena + '\'' +
+                ", tipoIdentificacion=" + tipoIdentificacion +
+                ", numeroIdentificacion='" + numeroIdentificacion + '\'' +
+                ", estado=" + estado +
+                ", rol=" + rol +
+                '}';
     }
 }
