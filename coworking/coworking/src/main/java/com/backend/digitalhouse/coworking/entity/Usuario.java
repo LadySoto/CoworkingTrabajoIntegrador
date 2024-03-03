@@ -1,10 +1,13 @@
 package com.backend.digitalhouse.coworking.entity;
 
+import java.util.Collection;
 import javax.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table(name = "USUARIOS")
-public class Usuario {
+public class Usuario implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -119,5 +122,10 @@ public class Usuario {
                 ", estado=" + estado +
                 ", rol=" + rol +
                 '}';
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
     }
 }
