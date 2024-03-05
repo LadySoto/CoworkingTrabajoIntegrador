@@ -15,6 +15,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class SecurityBeansInjector {
 
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
     @Bean
     public AuthenticationManager authenticationManager(
         AuthenticationConfiguration authenticationConfiguration)
@@ -25,9 +28,8 @@ public class SecurityBeansInjector {
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(null);//Seteo Dao acceso a BBDD
-        provider.setPasswordEncoder();//Seteo el encoder para comparar contraseñas;
-
+        provider.setUserDetailsService(userDetailsService());//Seteo Dao acceso a BBDD
+        provider.setPasswordEncoder(passwordEncoder());//Seteo el encoder para comparar contraseñas;
         return provider;
     }
 
@@ -37,7 +39,7 @@ public class SecurityBeansInjector {
     }
 
     @Bean
-    public UserDetailsService userDetailsService(UsuarioRepository usuarioRepository){
+    public UserDetailsService userDetailsService(){
         return nombre -> {
             return usuarioRepository.findByUsername(nombre)
                 .orElseThrow(() -> new RuntimeException("User not found"));

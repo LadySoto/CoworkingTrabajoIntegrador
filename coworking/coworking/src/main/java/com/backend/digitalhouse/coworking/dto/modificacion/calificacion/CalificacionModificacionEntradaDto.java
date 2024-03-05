@@ -1,7 +1,7 @@
 package com.backend.digitalhouse.coworking.dto.modificacion.calificacion;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import javax.validation.constraints.Pattern;
+import jakarta.validation.constraints.Pattern;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CalificacionModificacionEntradaDto {

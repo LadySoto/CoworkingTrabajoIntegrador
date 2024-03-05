@@ -2,7 +2,8 @@ package com.backend.digitalhouse.coworking.dto.entrada.reserva;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
+
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ReservaEntradaDto {

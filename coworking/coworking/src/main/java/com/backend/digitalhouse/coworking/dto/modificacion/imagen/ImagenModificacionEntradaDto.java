@@ -1,8 +1,8 @@
 package com.backend.digitalhouse.coworking.dto.modificacion.imagen;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.Size;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ImagenModificacionEntradaDto {

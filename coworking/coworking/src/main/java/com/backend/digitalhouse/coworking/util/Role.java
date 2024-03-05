@@ -1,17 +1,17 @@
 package com.backend.digitalhouse.coworking.util;
 
-import java.util.Arrays;
-import java.util.List;
+        import java.util.Arrays;
+        import java.util.List;
 
-public enum Rol {
+public enum Role {
 
-    CUSTOMER(Arrays.asList(Permission.READ_ALL_TIPOSSALA)),
+    CUSTOMER(Arrays.asList(Permission.READ_ALL_TIPOSSALAS)),
 
-    ADMINISTRATOR(Arrays.asList(Permission.SAVE_ONE_TIPOSALA, Permission.READ_ALL_TIPOSSALA));
+    ADMINISTRATOR(Arrays.asList(Permission.SAVE_ONE_TIPOSALA, Permission.READ_ALL_TIPOSSALAS));
 
     private List<Permission> permissions;
 
-    Rol(List<Permission> permissions) {
+    Role(List<Permission> permissions) {
         this.permissions = permissions;
     }
 
@@ -23,4 +23,3 @@ public enum Rol {
         this.permissions = permissions;
     }
 }
-

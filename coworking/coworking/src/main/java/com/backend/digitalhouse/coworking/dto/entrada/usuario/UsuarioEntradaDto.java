@@ -1,7 +1,7 @@
 package com.backend.digitalhouse.coworking.dto.entrada.usuario;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import javax.validation.constraints.*;
+import jakarta.validation.constraints.*;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UsuarioEntradaDto {

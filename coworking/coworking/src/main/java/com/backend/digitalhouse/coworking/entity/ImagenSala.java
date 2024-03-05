@@ -1,6 +1,6 @@
 package com.backend.digitalhouse.coworking.entity;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "IMAGENES_SALA")
