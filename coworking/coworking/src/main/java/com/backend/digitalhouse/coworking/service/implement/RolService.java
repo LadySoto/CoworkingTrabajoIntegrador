@@ -24,7 +24,6 @@ public class RolService implements IRolService {
     public RolService(RolRepository rolRepository, ModelMapper modelMapper) {
         this.rolRepository = rolRepository;
         this.modelMapper = modelMapper;
-        configureMappings();
     }
 
     private void configureMappings() {

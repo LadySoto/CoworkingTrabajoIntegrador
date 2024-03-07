@@ -88,9 +88,13 @@ public class SalaEntradaDto {
     public double getPromedioCalificacion() {
         return promedioCalificacion;
     }
-    public void setPromedioCalificacion(double promedioCalificacion) {this.promedioCalificacion = promedioCalificacion;}
+    public void setPromedioCalificacion(double promedioCalificacion) {
+        this.promedioCalificacion = promedioCalificacion;
+    }
 
-    public long getTipoSala() {return tipoSala;}
+    public long getTipoSala() {
+        return tipoSala;
+    }
     public void setTipoSala(long tipoSala) {
         this.tipoSala = tipoSala;
     }

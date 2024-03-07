@@ -16,24 +16,53 @@ public class ReservaEspacioModificacionEntradaDto {
     public ReservaEspacioModificacionEntradaDto() {
     }
 
-    public ReservaEspacioModificacionEntradaDto(long idUsuario, long idReserva, long idSala, long idServicio) {
+    public ReservaEspacioModificacionEntradaDto(Long id, long idUsuario, long idReserva, long idSala, long idServicio) {
+        this.id = id;
         this.idUsuario = idUsuario;
         this.idReserva = idReserva;
         this.idSala = idSala;
         this.idServicio = idServicio;
     }
 
-    public long getIdUsuario() {return idUsuario;}
-    public void setIdUsuario(long idUsuario) {this.idUsuario = idUsuario;}
+    public Long getId() {
+        return id;
+    }
 
-    public long getIdReserva() {return idReserva;}
-    public void setIdReserva(long idReserva) {this.idReserva = idReserva;}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public long getIdSala() {return idSala;}
-    public void setIdSala(long idSala) {this.idSala = idSala;}
+    public long getIdUsuario() {
+        return idUsuario;
+    }
 
-    public long getIdServicio() {return idServicio;}
-    public void setIdServicio(long idServicio) {this.idServicio = idServicio;}
+    public void setIdUsuario(long idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public long getIdReserva() {
+        return idReserva;
+    }
+
+    public void setIdReserva(long idReserva) {
+        this.idReserva = idReserva;
+    }
+
+    public long getIdSala() {
+        return idSala;
+    }
+
+    public void setIdSala(long idSala) {
+        this.idSala = idSala;
+    }
+
+    public long getIdServicio() {
+        return idServicio;
+    }
+
+    public void setIdServicio(long idServicio) {
+        this.idServicio = idServicio;
+    }
 
     @Override
     public String toString() {

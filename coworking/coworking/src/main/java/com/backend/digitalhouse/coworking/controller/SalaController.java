@@ -29,7 +29,7 @@ public class SalaController {
     }
 
     //POST
-    @Operation(summary = "Registro de una sala")
+    @Operation(summary = "Se registro una sala")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Sala registrada correctamente",
                     content = {@Content(mediaType = "application/json",
@@ -85,7 +85,7 @@ public class SalaController {
 
     @Operation(summary = "Listar todas las salas")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Listado de salas obtenido correspondiente",
+            @ApiResponse(responseCode = "200", description = "Listado de salas obtenido correctamente",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = SalaSalidaDto.class))}),
             @ApiResponse(responseCode = "400", description = "Bad request",

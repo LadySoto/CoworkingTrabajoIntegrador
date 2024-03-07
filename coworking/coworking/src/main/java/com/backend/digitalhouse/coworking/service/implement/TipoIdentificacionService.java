@@ -28,6 +28,11 @@ public class TipoIdentificacionService implements ITipoIdentificacionService {
         configureMappings();
     }
 
+    @Override
+    public TipoIdentificacionSalidaDto registrarTipoIdentificacion(TipoIdentificacionEntradaDto tipoIdentificacion) throws BadRequestException {
+        return null;
+    }
+
     private void configureMappings() {
     }
 
@@ -35,12 +40,6 @@ public class TipoIdentificacionService implements ITipoIdentificacionService {
     public List<TipoIdentificacionSalidaDto> listarTiposIdentificacion() {
         return null;
     }
-
-    @Override
-    public TipoIdentificacionSalidaDto registrarTipoIdentificacion(TipoIdentificacionEntradaDto tipoIdentificacion) throws BadRequestException {
-        return null;
-    }
-
     @Override
     public TipoIdentificacionSalidaDto buscarTipoIdentificacionPorId(Long id) {
         return null;
