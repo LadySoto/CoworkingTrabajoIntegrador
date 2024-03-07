@@ -4,6 +4,8 @@ import com.backend.digitalhouse.coworking.dto.AuthenticationRequest;
 import com.backend.digitalhouse.coworking.dto.AuthenticationResponse;
 import com.backend.digitalhouse.coworking.entity.Usuario;
 import com.backend.digitalhouse.coworking.repository.UsuarioRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+
 
 @Service
 public class AuthenticationService {
@@ -22,9 +25,17 @@ public class AuthenticationService {
 
     @Autowired
     private JwtService jwtService;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationService.class);
     public AuthenticationResponse login(AuthenticationRequest authRequest) {
 
+
+        LOGGER.info("Nombre: {}", authRequest.getNombre());
+        LOGGER.info("Contraseña: {}", authRequest.getContraseña());
+
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(authRequest.getNombre(), authRequest.getContraseña());
+
+
         authenticationManager.authenticate(authToken);
 
         Usuario usuario = usuarioRepository.findByNombre(authRequest.getNombre()).get();

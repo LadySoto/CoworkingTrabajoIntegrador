@@ -3,6 +3,7 @@ package com.backend.digitalhouse.coworking.config.security;
 import com.backend.digitalhouse.coworking.util.Permission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -10,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
+@Configuration
 @EnableWebSecurity
 public class HttpSecurityConfig {
 
@@ -31,6 +33,7 @@ public class HttpSecurityConfig {
                     authConfig.requestMatchers(HttpMethod.POST, "/tiposala").hasAuthority(Permission.SAVE_ONE_TIPOSALA.name());
 
                     authConfig.anyRequest().denyAll();
+
                 });
         return http.build();
 
