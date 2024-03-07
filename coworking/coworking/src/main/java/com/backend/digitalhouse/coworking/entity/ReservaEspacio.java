@@ -23,18 +23,13 @@ public class ReservaEspacio {
     @JoinColumn(name="salas_id_sala")
     private Sala sala;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="servicios_id_servicio")
-    private Servicio servicio;
-
     public ReservaEspacio() {
     }
 
-    public ReservaEspacio(Usuario usuario, Reserva reserva, Sala sala, Servicio servicio) {
+    public ReservaEspacio(Usuario usuario, Reserva reserva, Sala sala) {
         this.usuario = usuario;
         this.reserva = reserva;
         this.sala = sala;
-        this.servicio = servicio;
     }
 
     public Long getId() {
@@ -69,14 +64,6 @@ public class ReservaEspacio {
         this.sala = sala;
     }
 
-    public Servicio getServicio() {
-        return servicio;
-    }
-
-    public void setServicio(Servicio servicio) {
-        this.servicio = servicio;
-    }
-
     @Override
     public String toString() {
         return "ReservaEspacio{" +
@@ -84,7 +71,6 @@ public class ReservaEspacio {
                 ", usuario=" + usuario +
                 ", reserva=" + reserva +
                 ", sala=" + sala +
-                ", servicio=" + servicio +
                 '}';
     }
 }
