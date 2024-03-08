@@ -22,11 +22,9 @@ public class UsuarioEntradaDto {
     private String contrasena;
 
     @NotNull(message = "Este campo no puede ser nulo")
-    private String idIdentificacion;
+    private long  idTipoIdentificacion;
 
     @Size(max = 50, message = "El numero de identificacion debe tener hasta 50 caracteres")
-    @NotNull(message = "Este campo no puede ser nulo")
-    @NotBlank(message = "Debe especificarse el numero de identificacion del usuario")
     @Pattern(regexp = "^[0-9]*", message = "El numero de identificacion debe tener solo numeros y sin caracteres especiales")
     private String numeroIdentificacion;
 
@@ -40,36 +38,70 @@ public class UsuarioEntradaDto {
     public UsuarioEntradaDto(){
     }
 
-    public UsuarioEntradaDto(String nombre, String correo, String contrasena, String idIdentificacion, String numeroIdentificacion, int estado, long idRol) {
+    public UsuarioEntradaDto(String nombre, String correo, String contrasena, long idTipoIdentificacion, String numeroIdentificacion, int estado, long idRol) {
         this.nombre = nombre;
         this.correo = correo;
         this.contrasena = contrasena;
-        this.idIdentificacion = idIdentificacion;
+        this.idTipoIdentificacion = idTipoIdentificacion;
         this.numeroIdentificacion = numeroIdentificacion;
         this.estado = estado;
         this.idRol = idRol;
     }
 
-    public String getNombre() {return nombre;}
-    public void setNombre(String nombre) {this.nombre = nombre;}
+    public String getNombre() {
+        return nombre;
+    }
 
-    public String getCorreo() {return correo;}
-    public void setCorreo(String correo) {this.correo = correo;}
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 
-    public String getContrasena() {return contrasena;}
-    public void setContrasena(String contrasena) {this.contrasena = contrasena;}
+    public String getCorreo() {
+        return correo;
+    }
 
-    public String getIdIdentificacion() {return idIdentificacion;}
-    public void setIdIdentificacion(String idIdentificacion) {this.idIdentificacion = idIdentificacion;}
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
 
-    public String getNumeroIdentificacion() {return numeroIdentificacion;}
-    public void setNumeroIdentificacion(String numeroIdentificacion) {this.numeroIdentificacion = numeroIdentificacion;}
+    public String getContrasena() {
+        return contrasena;
+    }
 
-    public int getEstado() {return estado;}
-    public void setEstado(int estado) {this.estado = estado;}
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
+    }
 
-    public long getIdRol() {return idRol;}
-    public void setIdRol(long idRol) {this.idRol = idRol;}
+    public long getIdTipoIdentificacion() {
+        return idTipoIdentificacion;
+    }
+
+    public void setIdTipoIdentificacion(long idTipoIdentificacion) {
+        this.idTipoIdentificacion = idTipoIdentificacion;
+    }
+
+    public String getNumeroIdentificacion() {
+        return numeroIdentificacion;
+    }
+
+    public void setNumeroIdentificacion(String numeroIdentificacion) {
+        this.numeroIdentificacion = numeroIdentificacion;
+    }
+    public int getEstado() {
+        return estado;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
+    }
+
+    public long getIdRol() {
+        return idRol;
+    }
+
+    public void setIdRol(long idRol) {
+        this.idRol = idRol;
+    }
 
     @Override
     public String toString() {
@@ -77,7 +109,7 @@ public class UsuarioEntradaDto {
                 "nombre='" + nombre + '\'' +
                 ", correo='" + correo + '\'' +
                 ", contrasena='" + contrasena + '\'' +
-                ", idIdentificacion='" + idIdentificacion + '\'' +
+                ", idTipoIdentificacion=" + idTipoIdentificacion +
                 ", numeroIdentificacion='" + numeroIdentificacion + '\'' +
                 ", estado=" + estado +
                 ", idRol=" + idRol +

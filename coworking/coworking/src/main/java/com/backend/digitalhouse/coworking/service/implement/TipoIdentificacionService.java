@@ -17,7 +17,7 @@ import java.util.List;
 
 @Service
 public class TipoIdentificacionService implements ITipoIdentificacionService {
-    private final Logger LOGGER = LoggerFactory.getLogger(TipoIdentificacion.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(TipoIdentificacionService.class);
     private final TipoIdentificacionRepository tipoIdentificacionRepository;
     private final ModelMapper modelMapper;
 
@@ -29,30 +29,95 @@ public class TipoIdentificacionService implements ITipoIdentificacionService {
     }
 
     private void configureMappings() {
-    }
-
-    @Override
-    public List<TipoIdentificacionSalidaDto> listarTiposIdentificacion() {
-        return null;
+        modelMapper.typeMap(TipoIdentificacionEntradaDto.class, TipoIdentificacion.class);
+        modelMapper.typeMap(TipoIdentificacion.class, TipoIdentificacionSalidaDto.class);
     }
 
     @Override
     public TipoIdentificacionSalidaDto registrarTipoIdentificacion(TipoIdentificacionEntradaDto tipoIdentificacion) throws BadRequestException {
-        return null;
-    }
-
-    @Override
-    public TipoIdentificacionSalidaDto buscarTipoIdentificacionPorId(Long id) {
-        return null;
-    }
-
-    @Override
-    public void eliminarTipoIdentificacion(Long id) throws ResourceNotFoundException {
-
+        if (tipoIdentificacion != null) {
+            TipoIdentificacion tipoIdentificacionGuardado = tipoIdentificacionRepository.save(dtoEntradaAEntidad(tipoIdentificacion));
+            TipoIdentificacionSalidaDto tipoIdentificacionSalidaDto = entidadADtoSalida(tipoIdentificacionGuardado);
+            LOGGER.info("Tipo de identificacion guardado: {}", tipoIdentificacionSalidaDto);
+            return tipoIdentificacionSalidaDto;
+        } else {
+            LOGGER.error("No se puede registrar el tipo de identificacion");
+            throw new BadRequestException("No se puede registrar el tipo de identificacion");
+        }
     }
 
     @Override
     public TipoIdentificacionSalidaDto modificarTipoIdentificacion(TipoIdentificacionModificacionEntradaDto tipoIdentificacionModificado) throws ResourceNotFoundException {
-        return null;
+        TipoIdentificacion tipoIdentificacionRecibido = dtoModificadoAEntidad(tipoIdentificacionModificado);
+        TipoIdentificacion tipoIdentificacionAModificar = tipoIdentificacionRepository.findById(tipoIdentificacionRecibido.getId()).orElse(null);
+        TipoIdentificacionSalidaDto tipoIdentificacionSalidaDto = null;
+
+        if (tipoIdentificacionAModificar != null) {
+
+            tipoIdentificacionAModificar = tipoIdentificacionRecibido;
+            tipoIdentificacionRepository.save(tipoIdentificacionAModificar);
+            tipoIdentificacionSalidaDto = entidadADtoSalida(tipoIdentificacionAModificar);
+            LOGGER.info("El tipo de identificacion ha sido modificado: {}", tipoIdentificacionAModificar);
+
+        } else {
+            LOGGER.error("No fue posible actualizar los datos, el tipo de identificacion  no se encuentra registrado");
+            throw new ResourceNotFoundException("No fue posible actualizar los datos,  el tipo de identificacion  no se encuentra registrado");
+        }
+        return tipoIdentificacionSalidaDto;
     }
+
+    @Override
+    public TipoIdentificacionSalidaDto buscarTipoIdentificacionPorId(Long id) {
+        TipoIdentificacion tipoIdentificacionBuscado = null;
+        try{
+            tipoIdentificacionBuscado = tipoIdentificacionRepository.findById(id).orElse(null);
+        }catch(Exception e){
+            LOGGER.info("Id de tipo de identificacion no se encuentra");
+        }
+        TipoIdentificacionSalidaDto tipoIdentificacionSalida = null;
+        if (tipoIdentificacionBuscado != null) {
+            tipoIdentificacionSalida = entidadADtoSalida(tipoIdentificacionBuscado);
+            LOGGER.info("Tipo de identificacion por id: {}", tipoIdentificacionSalida);
+        } else LOGGER.info("Tipo de identificacion por id: {}", id);
+        return tipoIdentificacionSalida;
+    }
+
+    @Override
+    public List<TipoIdentificacionSalidaDto> listarTiposIdentificacion() {
+        List<TipoIdentificacionSalidaDto> tiposIdentificacion = tipoIdentificacionRepository.findAll().stream()
+                .map(this::entidadADtoSalida).toList();
+        LOGGER.info("Listado de todos los tipos de identificacion: {}", tiposIdentificacion);
+        return tiposIdentificacion;
+    }
+
+    @Override
+    public void eliminarTipoIdentificacion(Long id) throws ResourceNotFoundException {
+        if (buscarTipoIdentificacionPorId(id) != null) {
+            tipoIdentificacionRepository.deleteById(id);
+            LOGGER.warn("Se ha eliminado el tipo de identificacion con id: {}", id);
+        } else {
+            LOGGER.error("No se ha encontrado el tipo de identificacion con id {}", id);
+            throw new ResourceNotFoundException("No se ha encontrado el tipo de identificacion con id " + id);
+        }
+    }
+
+    private TipoIdentificacion dtoEntradaAEntidad(TipoIdentificacionEntradaDto tipoIdentificacionEntradaDto) {
+        return modelMapper.map(tipoIdentificacionEntradaDto, TipoIdentificacion.class);
+    }
+
+    private TipoIdentificacionSalidaDto entidadADtoSalida(TipoIdentificacion tipoIdentificacion) {
+        return modelMapper.map(tipoIdentificacion, TipoIdentificacionSalidaDto.class);
+    }
+
+    private TipoIdentificacion dtoSalidaAEntidad(TipoIdentificacionSalidaDto tipoIdentificacionSalida) {
+        return modelMapper.map(tipoIdentificacionSalida, TipoIdentificacion.class);
+    }
+
+    private TipoIdentificacion dtoModificadoAEntidad(TipoIdentificacionModificacionEntradaDto tipoIdentificacionModificacionEntradaDto) {
+        return modelMapper.map(tipoIdentificacionModificacionEntradaDto, TipoIdentificacion.class);
+    }
+
+
+
+
 }

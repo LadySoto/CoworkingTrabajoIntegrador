@@ -18,7 +18,8 @@ public class RolModificacionEntradaDto {
     public RolModificacionEntradaDto() {
     }
 
-    public RolModificacionEntradaDto(String nombre, int estado) {
+    public RolModificacionEntradaDto(Long id, String nombre, int estado) {
+        this.id = id;
         this.nombre = nombre;
         this.estado = estado;
     }

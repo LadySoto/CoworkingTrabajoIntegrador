@@ -45,6 +45,42 @@ public class SalaService implements ISalaService {
     }
 
     @Override
+    public List<SalaSalidaDto> listarSalas() {
+        List<SalaSalidaDto> salas = salaRepository.findAll().stream()
+                .map(sala -> entidadADtoSalida(sala)).toList();
+        LOGGER.info("Listado de las salas: {}", salas);
+        return salas;
+    }
+
+    @Override
+    public SalaSalidaDto buscarSalaPorId(Long id) {
+        Sala salaBuscada = null;
+        try{
+            salaBuscada = salaRepository.findById(id).orElse(null);
+        }catch(Exception e){
+            LOGGER.info("el Id de la sala no se encuentra");
+        }
+        SalaSalidaDto salaSalidaDto = null;
+        if (salaBuscada != null) {
+            salaSalidaDto = entidadADtoSalida(salaBuscada);
+            LOGGER.info("Sala por id: {}", salaSalidaDto);
+        } else LOGGER.info("Sala por id: {}", id);
+        return salaSalidaDto;
+    }
+
+    @Override
+    public void eliminarSala(Long id) throws ResourceNotFoundException {
+        if (buscarSalaPorId(id) != null) {
+            salaRepository.deleteById(id);
+            LOGGER.warn("Se ha eliminado la sala con id: {}", id);
+        } else {
+            LOGGER.error("No se ha encontrado la sala con id {}", id);
+            throw new ResourceNotFoundException("No se ha encontrado la sala con id " + id);
+        }
+    }
+
+
+    @Override
     public SalaSalidaDto modificarSala(SalaModificacionEntradaDto salaModificada) throws ResourceNotFoundException {
         Sala salaConModificacion = dtoModificadoAEntidad(salaModificada);
         Sala salaGuardada = salaRepository.findById(salaConModificacion.getId()).orElse(null);
@@ -85,41 +121,6 @@ public class SalaService implements ISalaService {
         return salaSalidaDto;
     }
 
-    @Override
-    public SalaSalidaDto buscarSalaPorId(Long id) {
-        Sala salaBuscada = null;
-        try{
-            salaBuscada = salaRepository.findById(id).orElse(null);
-        }catch(Exception e){
-            LOGGER.info("el Id de la sala no se encuentra");
-        }
-        SalaSalidaDto salaSalidaDto = null;
-        if (salaBuscada != null) {
-            salaSalidaDto = entidadADtoSalida(salaBuscada);
-            LOGGER.info("Sala por id: {}", salaSalidaDto);
-        } else LOGGER.info("Sala por id: {}", id);
-        return salaSalidaDto;
-    }
-
-    @Override
-    public List<SalaSalidaDto> listarSalas() {
-        List<SalaSalidaDto> salas = salaRepository.findAll().stream()
-                .map(sala -> entidadADtoSalida(sala)).toList();
-        LOGGER.info("Listadas de todas las salas: {}", salas);
-        return salas;
-    }
-
-    @Override
-    public void eliminarSala(Long id) throws ResourceNotFoundException {
-        if (buscarSalaPorId(id) != null) {
-            salaRepository.deleteById(id);
-            LOGGER.warn("Se ha eliminado la sala con id: {}", id);
-        } else {
-            LOGGER.error("No se ha encontrado la sala con id {}", id);
-            throw new ResourceNotFoundException("No se ha encontrado la sala con id " + id);
-        }
-    }
-
     private void configureMappings() {
        modelMapper.typeMap(SalaEntradaDto.class, Sala.class)
                 .addMappings(mapper -> mapper.map(SalaEntradaDto::getTipoSala, Sala::setTipoSala));
@@ -132,19 +133,17 @@ public class SalaService implements ISalaService {
 
     private TipoSala tipoSalaEntradaDtoAEntity(Long id) {
         TipoSalaSalidaDto tipoSala = tipoSalaService.buscarTipoSalaPorId(id);
-        System.out.println(tipoSala );
         TipoSala tipoSalaPrueba = modelMapper.map(tipoSala, TipoSala.class);
-        System.out.println(tipoSalaPrueba);
         return tipoSalaPrueba;
     }
-    private TipoSalaSalidaDto entityATipoSalaSalidaDto(TipoSala tipoSala) {
-        return modelMapper.map(tipoSala, TipoSalaSalidaDto.class);
-    }
-
     public Sala dtoEntradaAEntidad(SalaEntradaDto salaEntradaDto) {
         Sala sala = modelMapper.map(salaEntradaDto, Sala.class);
         sala.setTipoSala(tipoSalaEntradaDtoAEntity(salaEntradaDto.getTipoSala()));
         return sala;
+    }
+
+    private TipoSalaSalidaDto entityATipoSalaSalidaDto(TipoSala tipoSala) {
+        return modelMapper.map(tipoSala, TipoSalaSalidaDto.class);
     }
 
     public SalaSalidaDto entidadADtoSalida(Sala sala) {

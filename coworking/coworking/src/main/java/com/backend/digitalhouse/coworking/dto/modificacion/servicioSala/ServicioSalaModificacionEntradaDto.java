@@ -1,21 +1,21 @@
-package com.backend.digitalhouse.coworking.dto.modificacion.imagenSala;
+package com.backend.digitalhouse.coworking.dto.modificacion.servicioSala;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.validation.constraints.NotNull;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ImagenSalaModificacionEntradaDto {
-    @NotNull(message = "El campo no puede ser nulo")
+public class ServicioSalaModificacionEntradaDto {
+    @NotNull(message = "Este campo no puede ser nulo")
     private Long id;
-    private long idImagenes;
+    private long idServicio;
     private long idSala;
 
-    public ImagenSalaModificacionEntradaDto() {
+    public ServicioSalaModificacionEntradaDto() {
     }
 
-    public ImagenSalaModificacionEntradaDto(Long id, long idImagenes, long idSala) {
+    public ServicioSalaModificacionEntradaDto(Long id, long idServicio, long idSala) {
         this.id = id;
-        this.idImagenes = idImagenes;
+        this.idServicio = idServicio;
         this.idSala = idSala;
     }
 
@@ -27,12 +27,12 @@ public class ImagenSalaModificacionEntradaDto {
         this.id = id;
     }
 
-    public long getIdImagenes() {
-        return idImagenes;
+    public long getIdServicio() {
+        return idServicio;
     }
 
-    public void setIdImagenes(long idImagenes) {
-        this.idImagenes = idImagenes;
+    public void setIdServicio(long idServicio) {
+        this.idServicio = idServicio;
     }
 
     public long getIdSala() {
@@ -45,9 +45,9 @@ public class ImagenSalaModificacionEntradaDto {
 
     @Override
     public String toString() {
-        return "ImagenSalaModificacionEntradaDto{" +
+        return "ServicioSalaModificacionEntradaDto{" +
                 "id=" + id +
-                ", idImagenes=" + idImagenes +
+                ", idServicio=" + idServicio +
                 ", idSala=" + idSala +
                 '}';
     }

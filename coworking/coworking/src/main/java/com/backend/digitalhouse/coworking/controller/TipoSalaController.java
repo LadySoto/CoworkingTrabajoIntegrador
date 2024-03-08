@@ -29,7 +29,7 @@ public class TipoSalaController {
     }
 
     //POST
-    @Operation(summary = "Se registra un nuevo tipo de sala")
+    @Operation(summary = "Se registro un tipo de sala")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "El tipo de sala se ha registrada correctamente",
                     content = {@Content(mediaType = "application/json",
@@ -85,7 +85,7 @@ public class TipoSalaController {
 
     @Operation(summary = "Listar todos los tipos de sala")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Listado de los tipos de sala obtenido correspondiente",
+            @ApiResponse(responseCode = "200", description = "Listado de los tipos de sala obtenido correctamente",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = TipoSalaSalidaDto.class))}),
             @ApiResponse(responseCode = "400", description = "Bad request",
@@ -115,6 +115,6 @@ public class TipoSalaController {
     @DeleteMapping("eliminar/{id}")
     public ResponseEntity<?> eliminarTipoSala(@PathVariable Long id) throws ResourceNotFoundException {
         tipoSalaService.eliminarTipoSala(id);
-        return new ResponseEntity<>("El tipo sala se ha eliminado correctamente", HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>("El tipo de sala se ha eliminado correctamente", HttpStatus.NO_CONTENT);
     }
 }

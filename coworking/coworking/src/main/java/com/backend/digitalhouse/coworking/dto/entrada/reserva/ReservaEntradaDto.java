@@ -26,17 +26,33 @@ public class ReservaEntradaDto {
         this.cantidadHora = cantidadHora;
     }
 
-    public long getFechaHoraInicio() {return fechaHoraInicio;}
-    public void setFechaHoraInicio(long fechaHoraInicio) {this.fechaHoraInicio = fechaHoraInicio;}
+    public long getFechaHoraInicio() {
+        return fechaHoraInicio;
+    }
+    public void setFechaHoraInicio(long fechaHoraInicio) {
+        this.fechaHoraInicio = fechaHoraInicio;
+    }
 
-    public long getFechaHoraFin() {return fechaHoraFin;}
-    public void setFechaHoraFin(long fechaHoraFin) {this.fechaHoraFin = fechaHoraFin;}
+    public long getFechaHoraFin() {
+        return fechaHoraFin;
+    }
+    public void setFechaHoraFin(long fechaHoraFin) {
+        this.fechaHoraFin = fechaHoraFin;
+    }
 
-    public long getIdCalificacion() {return idCalificacion;}
-    public void setIdCalificacion(long idCalificacion) {this.idCalificacion = idCalificacion;}
+    public long getIdCalificacion() {
+        return idCalificacion;
+    }
+    public void setIdCalificacion(long idCalificacion) {
+        this.idCalificacion = idCalificacion;
+    }
 
-    public long getCantidadHora() {return cantidadHora;}
-    public void setCantidadHora(long cantidadHora) {this.cantidadHora = cantidadHora;}
+    public long getCantidadHora() {
+        return cantidadHora;
+    }
+    public void setCantidadHora(long cantidadHora) {
+        this.cantidadHora = cantidadHora;
+    }
 
     @Override
     public String toString() {

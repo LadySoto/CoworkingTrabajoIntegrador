@@ -46,4 +46,13 @@ public class TipoIdentificacion {
     public void setEstado(int estado) {
         this.estado = estado;
     }
+
+    @Override
+    public String toString() {
+        return "TipoIdentificacion{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", estado=" + estado +
+                '}';
+    }
 }

@@ -1,11 +1,8 @@
 package com.backend.digitalhouse.coworking.service.implement;
 
-import com.backend.digitalhouse.coworking.dto.entrada.sala.SalaEntradaDto;
 import com.backend.digitalhouse.coworking.dto.entrada.tipoSala.TipoSalaEntradaDto;
 import com.backend.digitalhouse.coworking.dto.modificacion.tipoSala.TipoSalaModificacionEntradaDto;
-import com.backend.digitalhouse.coworking.dto.salida.sala.SalaSalidaDto;
 import com.backend.digitalhouse.coworking.dto.salida.tipoSala.TipoSalaSalidaDto;
-import com.backend.digitalhouse.coworking.entity.Sala;
 import com.backend.digitalhouse.coworking.entity.TipoSala;
 import com.backend.digitalhouse.coworking.exceptions.BadRequestException;
 import com.backend.digitalhouse.coworking.exceptions.ResourceNotFoundException;
@@ -20,7 +17,7 @@ import java.util.List;
 
 @Service
 public class TipoSalaService implements ITipoSalaService {
-    private final Logger LOGGER = LoggerFactory.getLogger(TipoSala.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(TipoSalaService.class);
     private final TipoSalaRepository tipoSalaRepository;
     private final ModelMapper modelMapper;
 

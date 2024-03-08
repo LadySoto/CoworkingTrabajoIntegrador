@@ -23,7 +23,6 @@ public class Calificacion {
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -31,7 +30,6 @@ public class Calificacion {
     public int getPuntuacion() {
         return puntuacion;
     }
-
     public void setPuntuacion(int puntuacion) {
         this.puntuacion = puntuacion;
     }
