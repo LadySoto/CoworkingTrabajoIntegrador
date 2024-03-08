@@ -42,4 +42,9 @@ public class JwtService {
         LOGGER.info("mi clave es: {}", new String(secretAsBytes));
            return Keys.hmacShaKeyFor(secretAsBytes);
     }
+
+    public String extractNombre(String jwt) {
+        return Jwts.parserBuilder().setSigningKey(generateKey(generateKey().build()
+                .parseClaimsJws(jwt).getBody().getSubject();
+    }
 }
