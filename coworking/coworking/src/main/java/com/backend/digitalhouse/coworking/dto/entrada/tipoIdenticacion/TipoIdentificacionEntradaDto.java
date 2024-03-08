@@ -9,11 +9,8 @@ import javax.validation.constraints.Size;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TipoIdentificacionEntradaDto {
     @Size(max = 45, message = "El nombre debe tener hasta 45 caracteres")
-    @NotNull(message = "El nombre no puede ser nulo")
-    @NotBlank(message = "Debe especificarse el nombre del tipo de identificacion")
     private String nombre;
 
-    @NotNull(message = "El campo no puede ser nulo")
     @Digits(integer = 1, fraction = 0, message = "El numero debe tener como maximo 1 dígito")
     private int estado;
 

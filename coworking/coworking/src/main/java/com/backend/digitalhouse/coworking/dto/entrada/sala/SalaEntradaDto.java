@@ -18,11 +18,9 @@ public class SalaEntradaDto {
     @NotBlank(message = "Debe especificarse la descripición de la sala")
     private String descripcion;
 
-    @NotNull(message = "El campo no puede ser nulo")
     @Digits(integer = 2, fraction = 0, message = "El numero debe tener como maximo 2 dígitos")
     private int capacidad;
 
-    @NotNull(message = "El campono puede ser nulo")
     @Digits(integer = 1, fraction = 0, message = "El numero debe tener como maximo 1 dígito")
     private int disponible;
 
@@ -30,7 +28,6 @@ public class SalaEntradaDto {
     @Digits(integer = 1, fraction = 0, message = "El numero debe tener como maximo 1 dígito")
     private int estado;
 
-    @NotNull(message = "El campo no puede ser nulo")
     @Digits(integer = 3, fraction = 2, message = "El número debe tener como máximo 3 dígitos y 2 decimales")
     private double promedioCalificacion;
 

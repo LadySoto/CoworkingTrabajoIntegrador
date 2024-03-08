@@ -44,7 +44,7 @@ public class UsuarioController {
         return new ResponseEntity<>(usuarioService.registrarUsuario(usuario), HttpStatus.CREATED);
     }
 
-    //PUT
+    //PATCH
     @Operation(summary = "Modificacion de usuario")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Usuario modificado correctamente",
@@ -58,7 +58,7 @@ public class UsuarioController {
                     content = @Content)
     })
 
-    @PutMapping("/modificar")
+    @PatchMapping("/modificar")
     public ResponseEntity<UsuarioSalidaDto> modificarUsuario(@Valid @RequestBody UsuarioModificacionEntradaDto usuario) throws ResourceNotFoundException {
         return new ResponseEntity<>(usuarioService.modificarUsuario(usuario), HttpStatus.OK);
     }

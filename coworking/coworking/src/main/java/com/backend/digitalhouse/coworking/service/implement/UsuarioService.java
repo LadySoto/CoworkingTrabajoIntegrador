@@ -2,6 +2,7 @@ package com.backend.digitalhouse.coworking.service.implement;
 
 import com.backend.digitalhouse.coworking.dto.entrada.usuario.UsuarioEntradaDto;
 import com.backend.digitalhouse.coworking.dto.modificacion.usuario.UsuarioModificacionEntradaDto;
+import com.backend.digitalhouse.coworking.dto.salida.rol.RolSalidaDto;
 import com.backend.digitalhouse.coworking.dto.salida.tipoIdentificacion.TipoIdentificacionSalidaDto;
 import com.backend.digitalhouse.coworking.dto.salida.usuario.UsuarioSalidaDto;
 import com.backend.digitalhouse.coworking.entity.*;
@@ -18,7 +19,7 @@ import java.util.List;
 
 @Service
 public class UsuarioService implements IUsuarioService {
-    private final Logger LOGGER = LoggerFactory.getLogger(Usuario.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(UsuarioService.class);
     private final UsuarioRepository usuarioRepository;
     private final ModelMapper modelMapper;
     private final TipoIdentificacionService tipoIdentificacionService;
@@ -121,44 +122,63 @@ public class UsuarioService implements IUsuarioService {
     }
 
     private void configureMappings() {
-        modelMapper.typeMap(UsuarioEntradaDto.class, Usuario.class)
-                .addMappings(mapper -> mapper.map(UsuarioEntradaDto::getIdTipoIdentificacion, Usuario::setTipoIdentificacion));
-                //.addMappings(mapper -> mapper.map(UsuarioEntradaDto::getIdRol, Usuario::setRol));
+        modelMapper.emptyTypeMap(UsuarioEntradaDto.class, Usuario.class)
+                .addMappings(mapper -> mapper.map(UsuarioEntradaDto::getNombre, Usuario::setNombre))
+                .addMappings(mapper -> mapper.map(UsuarioEntradaDto::getCorreo, Usuario::setCorreo))
+                .addMappings(mapper -> mapper.map(UsuarioEntradaDto::getContrasena, Usuario::setContrasena))
+                .addMappings(mapper -> mapper.map(UsuarioEntradaDto::getIdTipoIdentificacion, Usuario::setTipoIdentificacion))
+                .addMappings(mapper -> mapper.map(UsuarioEntradaDto::getNumeroIdentificacion, Usuario::setNumeroIdentificacion))
+                .addMappings(mapper -> mapper.map(UsuarioEntradaDto::getEstado, Usuario::setEstado))
+                .addMappings(mapper -> mapper.map(UsuarioEntradaDto::getIdRol, Usuario::setRol));
         modelMapper.typeMap(Usuario.class, UsuarioSalidaDto.class);
-        //.addMappings(mapper -> mapper.map(Usuario::getTipoIdentificacion, UsuarioSalidaDto::setTipoIdentificacion));
         modelMapper.typeMap(UsuarioModificacionEntradaDto.class, Usuario.class);
         //.addMappings(mapper -> mapper.map(UsuarioModificacionEntradaDto::getIdIdentificacion, Usuario::setTipoIdentificacion));
         modelMapper.typeMap(TipoIdentificacionSalidaDto.class, TipoIdentificacion.class);
-        //modelMapper.typeMap(RolSalidaDto.class, Rol.class);
+        modelMapper.typeMap(RolSalidaDto.class, Rol.class);
     }
 
     private TipoIdentificacion tipoIdentificacionEntradaDtoAEntity(Long id) {
-        TipoIdentificacionSalidaDto tipoIdentificacion = tipoIdentificacionService.buscarTipoIdentificacionPorId(id);
-        TipoIdentificacion tipoIdentificacionPrueba = modelMapper.map(tipoIdentificacion, TipoIdentificacion.class);
-        return tipoIdentificacionPrueba;
+        TipoIdentificacion tipoIdentificacion = modelMapper.map(tipoIdentificacionService.buscarTipoIdentificacionPorId(id), TipoIdentificacion.class);
+        return tipoIdentificacion;
+    }
+    private Rol rolEntradaDtoAEntity(Long id) {
+        Rol rol = modelMapper.map(rolService.buscarRolPorId(id), Rol.class);
+        return rol;
     }
 
     public Usuario dtoEntradaAEntidad(UsuarioEntradaDto usuarioEntradaDto) {
         Usuario usuario = modelMapper.map(usuarioEntradaDto, Usuario.class);
         usuario.setTipoIdentificacion(tipoIdentificacionEntradaDtoAEntity(usuarioEntradaDto.getIdTipoIdentificacion()));
+        usuario.setRol(rolEntradaDtoAEntity(usuarioEntradaDto.getIdRol()));
         return usuario;
     }
+
     private TipoIdentificacionSalidaDto entityATipoIdentificacionSalidaDto(TipoIdentificacion tipoIdentificacion) {
         return modelMapper.map(tipoIdentificacion, TipoIdentificacionSalidaDto.class);
+    }
+    private RolSalidaDto entityARolSalidaDto(Rol rol) {
+        return modelMapper.map(rol, RolSalidaDto.class);
     }
 
     public UsuarioSalidaDto entidadADtoSalida(Usuario usuario) {
         UsuarioSalidaDto usuarioSalidaDto = modelMapper.map(usuario, UsuarioSalidaDto.class);
         usuarioSalidaDto.setIdTipoIdentificacion(entityATipoIdentificacionSalidaDto(usuario.getTipoIdentificacion()));
+        System.out.println(usuario.getRol());
+        usuarioSalidaDto.setIdRol(entityARolSalidaDto(usuario.getRol()));
         return usuarioSalidaDto;
     }
 
     private Usuario dtoModificadoAEntidad(UsuarioModificacionEntradaDto usuarioModificacionEntradaDto) {
         Usuario usuario = modelMapper.map(usuarioModificacionEntradaDto, Usuario.class);
+
         if (usuarioModificacionEntradaDto.getIdTipoIdentificacion() != 0){
             usuario.setTipoIdentificacion(tipoIdentificacionEntradaDtoAEntity(usuarioModificacionEntradaDto.getIdTipoIdentificacion()));
         }
-        return usuario;
-    }
 
+        if (usuarioModificacionEntradaDto.getIdRol() != 0){
+                usuario.setRol(rolEntradaDtoAEntity(usuarioModificacionEntradaDto.getIdRol()));
+
+        } return usuario;
+
+    }
 }

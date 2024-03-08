@@ -17,7 +17,7 @@ import java.util.List;
 
 @Service
 public class TipoSalaService implements ITipoSalaService {
-    private final Logger LOGGER = LoggerFactory.getLogger(TipoSala.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(TipoSalaService.class);
     private final TipoSalaRepository tipoSalaRepository;
     private final ModelMapper modelMapper;
 

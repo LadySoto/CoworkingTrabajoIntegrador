@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "SEVICIOS_SALAS")
-public class SercivioSala {
+public class ServicioSala {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,10 +19,10 @@ public class SercivioSala {
     @JoinColumn(name="salas_id_sala")
     private Sala sala;
 
-    public SercivioSala() {
+    public ServicioSala() {
     }
 
-    public SercivioSala(Servicio servicio, Sala sala) {
+    public ServicioSala(Servicio servicio, Sala sala) {
         this.servicio = servicio;
         this.sala = sala;
     }

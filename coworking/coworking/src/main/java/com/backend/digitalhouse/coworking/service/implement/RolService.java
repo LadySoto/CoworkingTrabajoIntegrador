@@ -3,6 +3,7 @@ package com.backend.digitalhouse.coworking.service.implement;
 import com.backend.digitalhouse.coworking.dto.entrada.rol.RolEntradaDto;
 import com.backend.digitalhouse.coworking.dto.modificacion.rol.RolModificacionEntradaDto;
 import com.backend.digitalhouse.coworking.dto.salida.rol.RolSalidaDto;
+import com.backend.digitalhouse.coworking.entity.Rol;
 import com.backend.digitalhouse.coworking.exceptions.BadRequestException;
 import com.backend.digitalhouse.coworking.exceptions.ResourceNotFoundException;
 import com.backend.digitalhouse.coworking.repository.RolRepository;
@@ -24,33 +25,99 @@ public class RolService implements IRolService {
     public RolService(RolRepository rolRepository, ModelMapper modelMapper) {
         this.rolRepository = rolRepository;
         this.modelMapper = modelMapper;
+        configureMappings();
     }
 
     private void configureMappings() {
-    }
-
-    @Override
-    public List<RolSalidaDto> listarRoles() {
-        return null;
+        modelMapper.typeMap(RolEntradaDto.class, Rol.class);
+        modelMapper.typeMap(Rol.class, RolSalidaDto.class);
     }
 
     @Override
     public RolSalidaDto registrarRol(RolEntradaDto rol) throws BadRequestException {
-        return null;
-    }
-
-    @Override
-    public RolSalidaDto buscarRolPorId(Long id) {
-        return null;
-    }
-
-    @Override
-    public void eliminarRol(Long id) throws ResourceNotFoundException {
-
+            if (rol != null) {
+                Rol rolGuardado = rolRepository.save(dtoEntradaAEntidad(rol));
+                RolSalidaDto rolSalidaDto = entidadADtoSalida(rolGuardado);
+                LOGGER.info("Rol guardado: {}", rolSalidaDto);
+                return rolSalidaDto;
+            } else {
+                LOGGER.error("No se puede registrar el rol");
+                throw new BadRequestException("No se puede registrar el rol");
+            }
     }
 
     @Override
     public RolSalidaDto modificarRol(RolModificacionEntradaDto rolModificado) throws ResourceNotFoundException {
-        return null;
+        Rol rolRecibido = dtoModificadoAEntidad(rolModificado);
+        Rol rolAModificar = rolRepository.findById(rolRecibido.getId()).orElse(null);
+        RolSalidaDto rolSalidaDto = null;
+
+        if (rolAModificar != null) {
+
+            rolAModificar = rolRecibido;
+            rolRepository.save(rolAModificar);
+            rolSalidaDto = entidadADtoSalida(rolAModificar);
+            LOGGER.info("El rol ha sido modificado: {}", rolAModificar);
+
+        } else {
+
+            LOGGER.error("No fue posible actualizar los datos, el rol no se encuentra registrado");
+            throw new ResourceNotFoundException("No fue posible actualizar los datos,  el rol no se encuentra registrado");
+        }
+        return rolSalidaDto;
     }
+
+    @Override
+    public RolSalidaDto buscarRolPorId(Long id) {
+        Rol rolBuscado = null;
+        try{
+            rolBuscado = rolRepository.findById(id).orElse(null);
+        }catch(Exception e){
+            LOGGER.info("Id de rol no se encuentra");
+        }
+        RolSalidaDto rolSalida = null;
+        if (rolBuscado != null) {
+            rolSalida = entidadADtoSalida(rolBuscado);
+            LOGGER.info("Rol por id: {}", rolSalida);
+        } else LOGGER.info("Rol por id: {}", id);
+        return rolSalida;
+    }
+
+    @Override
+    public List<RolSalidaDto> listarRoles() {
+        List<RolSalidaDto> roles = rolRepository.findAll().stream()
+                .map(this::entidadADtoSalida).toList();
+        LOGGER.info("Listado de todos los roles de sala: {}", roles);
+        return roles;
+    }
+
+    @Override
+    public void eliminarRol(Long id) throws ResourceNotFoundException {
+        if (buscarRolPorId(id) != null) {
+            rolRepository.deleteById(id);
+            LOGGER.warn("Se ha eliminado el rol con id: {}", id);
+        } else {
+            LOGGER.error("No se ha encontrado el rol con id {}", id);
+            throw new ResourceNotFoundException("No se ha encontrado el rol con id " + id);
+        }
+    }
+
+    private Rol dtoEntradaAEntidad(RolEntradaDto rolEntradaDto) {
+        return modelMapper.map(rolEntradaDto, Rol.class);
+    }
+
+    private RolSalidaDto entidadADtoSalida(Rol rol) {
+        return modelMapper.map(rol, RolSalidaDto.class);
+    }
+
+    private Rol dtoSalidaAEntidad(RolSalidaDto rolSalida) {
+        return modelMapper.map(rolSalida, Rol.class);
+    }
+
+    private Rol dtoModificadoAEntidad(RolModificacionEntradaDto rolModificacionEntradaDto) {
+        return modelMapper.map(rolModificacionEntradaDto, Rol.class);
+    }
+
+
+
 }

@@ -25,8 +25,6 @@ public class UsuarioEntradaDto {
     private long  idTipoIdentificacion;
 
     @Size(max = 50, message = "El numero de identificacion debe tener hasta 50 caracteres")
-    @NotNull(message = "Este campo no puede ser nulo")
-    @NotBlank(message = "Debe especificarse el numero de identificacion del usuario")
     @Pattern(regexp = "^[0-9]*", message = "El numero de identificacion debe tener solo numeros y sin caracteres especiales")
     private String numeroIdentificacion;
 
