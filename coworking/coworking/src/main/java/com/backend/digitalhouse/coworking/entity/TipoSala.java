@@ -10,14 +10,19 @@ public class TipoSala {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_TIPO_SALA")
     private Long id;
+
     @Column(name = "NOMBRE")
     private String nombre;
+
+    @Column(name = "DESCRIPCION")
+    private String descripcion;
 
     public TipoSala() {
     }
 
-    public TipoSala(String nombre) {
+    public TipoSala(String nombre, String descripcion) {
         this.nombre = nombre;
+        this.descripcion = descripcion;
     }
 
     public Long getId() {
@@ -36,11 +41,20 @@ public class TipoSala {
         this.nombre = nombre;
     }
 
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
     @Override
     public String toString() {
         return "TipoSala{" +
                 "id=" + id +
-                ", nombre='" + nombre + '\'' +
+                ", nombre= " + nombre + '\'' +
+                " , descripción= " + descripcion +
                 '}';
     }
 }

@@ -3,12 +3,12 @@ package com.backend.digitalhouse.coworking.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "IMAGENES_SALAS")
-public class ImagenSala {
+@Table(name = "IMAGENES_TIPO_SALAS")
+public class ImagenTipoSala {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_IMAGEN_SALA")
+    @Column(name = "ID_IMAGENES_TIPO_SALAS")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -16,15 +16,15 @@ public class ImagenSala {
     private Imagen imagen;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="salas_id_sala")
-    private Sala sala;
+    @JoinColumn(name="tipo_salas_id_tipo_sala")
+    private TipoSala tipoSala;
 
-    public ImagenSala() {
+    public ImagenTipoSala() {
     }
 
-    public ImagenSala(Imagen imagen, Sala sala) {
+    public ImagenTipoSala(Imagen imagen, TipoSala tipoSala) {
         this.imagen = imagen;
-        this.sala = sala;
+        this.tipoSala = tipoSala;
     }
 
     public Long getId() {
@@ -43,20 +43,20 @@ public class ImagenSala {
         this.imagen = imagen;
     }
 
-    public Sala getSala() {
-        return sala;
+    public TipoSala getTipoSala() {
+        return tipoSala;
     }
 
-    public void setSala(Sala sala) {
-        this.sala = sala;
+    public void setTipoSala(TipoSala tipoSala) {
+        this.tipoSala = tipoSala;
     }
 
     @Override
     public String toString() {
-        return "ImagenSala{" +
-                "id=" + id +
-                ", imagen=" + imagen +
-                ", sala=" + sala +
+        return "ImagenTipoSala{" +
+                "id= " + id +
+                ", imagen= " + imagen +
+                ", tipo sala= " + tipoSala +
                 '}';
     }
 }
