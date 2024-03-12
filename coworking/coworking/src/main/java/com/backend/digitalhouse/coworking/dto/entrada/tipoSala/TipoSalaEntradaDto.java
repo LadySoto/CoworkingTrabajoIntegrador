@@ -13,24 +13,40 @@ public class TipoSalaEntradaDto {
     @NotBlank(message = "Debe especificarse el nombre de la categoría de la sala")
     private String nombre;
 
+    @Size(max = 500, message = "La descripción debe tener hasta 500 caracteres")
+    @NotNull(message = "La descripción no puede ser nula")
+    @NotBlank(message = "Debe especificarse la descripción de la categoría de la sala")
+    private String descripcion;
+
     public TipoSalaEntradaDto() {
     }
 
-    public TipoSalaEntradaDto(String nombre) {
+    public TipoSalaEntradaDto(String nombre, String descripcion) {
         this.nombre = nombre;
+        this.descripcion = descripcion;
     }
 
     public String getNombre() {
         return nombre;
     }
+
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     @Override
     public String toString() {
         return "TipoSalaEntradaDto{" +
                 "nombre='" + nombre + '\'' +
+                ", descripción=" + descripcion +
                 '}';
     }
 }

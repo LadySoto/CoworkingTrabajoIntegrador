@@ -4,20 +4,20 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.validation.constraints.NotNull;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ImagenSalaEntradaDto {
+public class ImagenTipoSalaEntradaDto {
 
     @NotNull(message = "Este campo no puede ser nulo")
     private List<Long> idImagen;
 
     @NotNull(message = "Este campo no puede ser nulo")
-    private long idSala;
+    private long idTipoSala;
 
-    public ImagenSalaEntradaDto() {
+    public ImagenTipoSalaEntradaDto() {
     }
 
-    public ImagenSalaEntradaDto(List<Long> idImagen, long idSala) {
+    public ImagenTipoSalaEntradaDto(List<Long> idImagen, long idTipoSala) {
         this.idImagen = idImagen;
-        this.idSala = idSala;
+        this.idTipoSala = idTipoSala;
     }
 
     public List<Long> getIdImagen() {
@@ -28,19 +28,19 @@ public class ImagenSalaEntradaDto {
         this.idImagen = idImagen;
     }
 
-    public long getIdSala() {
-        return idSala;
+    public long getIdTipoSala() {
+        return idTipoSala;
     }
 
-    public void setIdSala(long idSala) {
-        this.idSala = idSala;
+    public void setIdTipoSala(long idTipoSala) {
+        this.idTipoSala = idTipoSala;
     }
 
     @Override
     public String toString() {
         return "ImagenSalaEntradaDto{" +
                 "idImagenes=" + idImagen +
-                ", idSala=" + idSala +
+                ", idTipoSala=" + idTipoSala +
                 '}';
     }
 }
