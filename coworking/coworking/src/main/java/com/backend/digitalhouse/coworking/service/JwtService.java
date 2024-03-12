@@ -2,6 +2,7 @@ package com.backend.digitalhouse.coworking.service;
 
 import com.backend.digitalhouse.coworking.CoworkingApplication;
 import com.backend.digitalhouse.coworking.entity.Usuario;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 @Service
@@ -44,7 +46,12 @@ public class JwtService {
     }
 
     public String extractNombre(String jwt) {
-        return Jwts.parserBuilder().setSigningKey(generateKey(generateKey().build()
-                .parseClaimsJws(jwt).getBody().getSubject();
+        return extractAllClaims(jwt).getSubject();
     }
+
+    private Claims extractAllClaims(String jwt) {
+        return Jwts.parser().setSigningKey(generateKey()).build()
+                .parseClaimsJws(jwt).getBody();
+    }
+
 }

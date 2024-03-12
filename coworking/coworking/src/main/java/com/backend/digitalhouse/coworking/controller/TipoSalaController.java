@@ -11,12 +11,21 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.apache.catalina.connector.Response;
+import org.hibernate.sql.results.graph.collection.internal.MapInitializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/tiposala")
@@ -39,11 +48,28 @@ public class TipoSalaController {
             @ApiResponse(responseCode = "500", description = "Server error",
                     content = @Content)
     })
+    @PreAuthorize("hasAuthority('SAVE_ONE_TIPOSALA')")
     @PostMapping("/registrar")
     @CrossOrigin(origins = "http://127.0.0.1:5500")
     public ResponseEntity<TipoSalaSalidaDto> registrarTipoSala(@Valid @RequestBody TipoSalaEntradaDto tipoSala) throws BadRequestException {
         return new ResponseEntity<>(tipoSalaService.registrarTipoSala(tipoSala), HttpStatus.CREATED);
     }
+
+    @ExceptionHandler(Exception.class)
+        public ResponseEntity<Map<String, String>> handleGenericException(Exception exception, HttpServletRequest request){
+        Map <String, String> apiError = new HashMap<>();
+        apiError.put("message", exception.getLocalizedMessage());
+        apiError.put("timestamp", new Date().toString());
+        apiError.put("url", request.getRequestURL().toString());
+        apiError.put("http-method", request.getMethod());
+
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+        if (exception instanceof AccessDeniedException){
+            status = HttpStatus.FORBIDDEN;
+        }
+
+        return ResponseEntity.status(status).body(apiError);
+        }
 
     //PUT
     @Operation(summary = "Modificacion de tipo sala")
@@ -94,6 +120,7 @@ public class TipoSalaController {
                     content = @Content)
     })
 
+    @PreAuthorize("hasAuthority('READ_ALL_TIPOSSALAS')")
     @GetMapping()
     public ResponseEntity<List<TipoSalaSalidaDto>> listarTipoSala() {
         return new ResponseEntity<>(tipoSalaService.listarTipoSala(), HttpStatus.OK);
