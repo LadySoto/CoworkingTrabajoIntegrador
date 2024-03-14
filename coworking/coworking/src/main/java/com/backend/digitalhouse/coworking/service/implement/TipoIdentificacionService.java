@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class TipoIdentificacionService implements ITipoIdentificacionService {
@@ -46,25 +47,6 @@ public class TipoIdentificacionService implements ITipoIdentificacionService {
         }
     }
 
-    @Override
-    public TipoIdentificacionSalidaDto modificarTipoIdentificacion(TipoIdentificacionModificacionEntradaDto tipoIdentificacionModificado) throws ResourceNotFoundException {
-        TipoIdentificacion tipoIdentificacionRecibido = dtoModificadoAEntidad(tipoIdentificacionModificado);
-        TipoIdentificacion tipoIdentificacionAModificar = tipoIdentificacionRepository.findById(tipoIdentificacionRecibido.getId()).orElse(null);
-        TipoIdentificacionSalidaDto tipoIdentificacionSalidaDto = null;
-
-        if (tipoIdentificacionAModificar != null) {
-
-            tipoIdentificacionAModificar = tipoIdentificacionRecibido;
-            tipoIdentificacionRepository.save(tipoIdentificacionAModificar);
-            tipoIdentificacionSalidaDto = entidadADtoSalida(tipoIdentificacionAModificar);
-            LOGGER.info("El tipo de identificacion ha sido modificado: {}", tipoIdentificacionAModificar);
-
-        } else {
-            LOGGER.error("No fue posible actualizar los datos, el tipo de identificacion  no se encuentra registrado");
-            throw new ResourceNotFoundException("No fue posible actualizar los datos,  el tipo de identificacion  no se encuentra registrado");
-        }
-        return tipoIdentificacionSalidaDto;
-    }
 
     @Override
     public TipoIdentificacionSalidaDto buscarTipoIdentificacionPorId(Long id) {
@@ -99,6 +81,11 @@ public class TipoIdentificacionService implements ITipoIdentificacionService {
             LOGGER.error("No se ha encontrado el tipo de identificacion con id {}", id);
             throw new ResourceNotFoundException("No se ha encontrado el tipo de identificacion con id " + id);
         }
+    }
+
+    @Override
+    public TipoIdentificacionSalidaDto modificarTipoIdentificacion(Long id, Map<String, Object> camposAModificar) throws ResourceNotFoundException {
+        return null;
     }
 
     private TipoIdentificacion dtoEntradaAEntidad(TipoIdentificacionEntradaDto tipoIdentificacionEntradaDto) {

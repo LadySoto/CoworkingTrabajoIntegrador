@@ -15,7 +15,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ReflectionUtils;
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class UsuarioService implements IUsuarioService {
@@ -82,43 +86,39 @@ public class UsuarioService implements IUsuarioService {
     }
 
     @Override
-    public UsuarioSalidaDto modificarUsuario(UsuarioModificacionEntradaDto usuarioModificado) throws ResourceNotFoundException {
-        Usuario usuarioConModificacion = dtoModificadoAEntidad(usuarioModificado);
-        Usuario usuarioGuardado = usuarioRepository.findById(usuarioConModificacion.getId()).orElse(null);
+    public UsuarioSalidaDto modificarUsuario(Long id, Map<String, Object> camposAModificar) throws ResourceNotFoundException {
+        Optional<Usuario> usuarioGuardado = usuarioRepository.findById(id);
         UsuarioSalidaDto usuarioSalidaDto = null;
 
-        if (usuarioGuardado != null) {
-            if (usuarioConModificacion.getNombre() != usuarioGuardado.getNombre()) {
-                usuarioGuardado.setNombre(usuarioConModificacion.getNombre());
-            }
-            if (usuarioConModificacion.getCorreo() != usuarioGuardado.getCorreo()) {
-                usuarioGuardado.setCorreo(usuarioConModificacion.getCorreo());
-            }
-            if (usuarioConModificacion.getContrasena() != usuarioGuardado.getContrasena()) {
-                usuarioGuardado.setContrasena(usuarioConModificacion.getContrasena());
-            }
-            if (usuarioConModificacion.getTipoIdentificacion() != usuarioGuardado.getTipoIdentificacion()) {
-                usuarioGuardado.setTipoIdentificacion(usuarioConModificacion.getTipoIdentificacion());
-            }
-            if (usuarioConModificacion.getNumeroIdentificacion() != usuarioGuardado.getNumeroIdentificacion()) { usuarioGuardado.setNumeroIdentificacion(usuarioConModificacion.getNumeroIdentificacion());
-            }
-            if (usuarioConModificacion.getEstado() != usuarioGuardado.getEstado()) {
-                    usuarioGuardado.setEstado(usuarioConModificacion.getEstado());
-            }
-            if (usuarioConModificacion.getRol() != usuarioGuardado.getRol()) {
-                    usuarioGuardado.setRol(usuarioConModificacion.getRol());
-            }
+        if (usuarioGuardado.isPresent()) {
+            camposAModificar.forEach((key, value) -> {
+                if (key.equals("rol")){
+                   RolSalidaDto cambioRol = rolService.buscarRolPorId(convertirALong(value));
+                   Rol rol = modelMapper.map(cambioRol, Rol.class);
+                    Field campoAModificar = ReflectionUtils.findField(Usuario.class, key);
+                    campoAModificar.setAccessible(true);
+                    ReflectionUtils.setField(campoAModificar, usuarioGuardado.get(), rol);
+                } else if (key.equals("tipoIdentificacion")) {
+                    TipoIdentificacionSalidaDto cambioTipoIdentificacion = tipoIdentificacionService.buscarTipoIdentificacionPorId(convertirALong(value));
+                    TipoIdentificacion tipoIdentificacion  = modelMapper.map(cambioTipoIdentificacion, TipoIdentificacion.class);
+                    Field campoAModificar = ReflectionUtils.findField(Usuario.class, key);
+                    campoAModificar.setAccessible(true);
+                    ReflectionUtils.setField(campoAModificar, usuarioGuardado.get(), tipoIdentificacion);
+                } else {
+                    Field campoAModificar = ReflectionUtils.findField(Usuario.class, key);
+                    campoAModificar.setAccessible(true);
+                    ReflectionUtils.setField(campoAModificar, usuarioGuardado.get(), value);
+                }
+            });
+            usuarioRepository.save(usuarioGuardado.get());
+            usuarioSalidaDto = entidadADtoSalida(usuarioGuardado.get());
+            LOGGER.info("El usuario ha sido actualizado: {}", usuarioGuardado.get());
 
-            usuarioRepository.save(usuarioGuardado);
-            usuarioSalidaDto = entidadADtoSalida(usuarioGuardado);
-            LOGGER.info("El usuario ha sido actualizado: {}", usuarioGuardado);
-
+            return usuarioSalidaDto;
         } else {
-
             LOGGER.error("No fue posible actualizar los datos, el usuario no se encuentra registrado");
             throw new ResourceNotFoundException("No fue posible actualizar los datos, el usuario no se encuentra registrado");
         }
-        return usuarioSalidaDto;
     }
 
     private void configureMappings() {
@@ -132,7 +132,6 @@ public class UsuarioService implements IUsuarioService {
                 .addMappings(mapper -> mapper.map(UsuarioEntradaDto::getIdRol, Usuario::setRol));
         modelMapper.typeMap(Usuario.class, UsuarioSalidaDto.class);
         modelMapper.typeMap(UsuarioModificacionEntradaDto.class, Usuario.class);
-        //.addMappings(mapper -> mapper.map(UsuarioModificacionEntradaDto::getIdIdentificacion, Usuario::setTipoIdentificacion));
         modelMapper.typeMap(TipoIdentificacionSalidaDto.class, TipoIdentificacion.class);
         modelMapper.typeMap(RolSalidaDto.class, Rol.class);
     }
@@ -163,22 +162,24 @@ public class UsuarioService implements IUsuarioService {
     public UsuarioSalidaDto entidadADtoSalida(Usuario usuario) {
         UsuarioSalidaDto usuarioSalidaDto = modelMapper.map(usuario, UsuarioSalidaDto.class);
         usuarioSalidaDto.setIdTipoIdentificacion(entityATipoIdentificacionSalidaDto(usuario.getTipoIdentificacion()));
-        System.out.println(usuario.getRol());
         usuarioSalidaDto.setIdRol(entityARolSalidaDto(usuario.getRol()));
         return usuarioSalidaDto;
     }
 
     private Usuario dtoModificadoAEntidad(UsuarioModificacionEntradaDto usuarioModificacionEntradaDto) {
         Usuario usuario = modelMapper.map(usuarioModificacionEntradaDto, Usuario.class);
-
         if (usuarioModificacionEntradaDto.getIdTipoIdentificacion() != 0){
             usuario.setTipoIdentificacion(tipoIdentificacionEntradaDtoAEntity(usuarioModificacionEntradaDto.getIdTipoIdentificacion()));
         }
-
         if (usuarioModificacionEntradaDto.getIdRol() != 0){
                 usuario.setRol(rolEntradaDtoAEntity(usuarioModificacionEntradaDto.getIdRol()));
-
         } return usuario;
 
+    }
+
+    public Long convertirALong(Object o){
+        String stringALong = String.valueOf(o);
+        Long convertirALong = Long.parseLong(stringALong);
+        return convertirALong;
     }
 }

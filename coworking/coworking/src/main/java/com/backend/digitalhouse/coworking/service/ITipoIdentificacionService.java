@@ -6,6 +6,7 @@ import com.backend.digitalhouse.coworking.dto.salida.tipoIdentificacion.TipoIden
 import com.backend.digitalhouse.coworking.exceptions.BadRequestException;
 import com.backend.digitalhouse.coworking.exceptions.ResourceNotFoundException;
 import java.util.List;
+import java.util.Map;
 
 public interface ITipoIdentificacionService {
     List<TipoIdentificacionSalidaDto> listarTiposIdentificacion();
@@ -16,5 +17,5 @@ public interface ITipoIdentificacionService {
 
     void eliminarTipoIdentificacion(Long id) throws ResourceNotFoundException;
 
-    TipoIdentificacionSalidaDto modificarTipoIdentificacion(TipoIdentificacionModificacionEntradaDto tipoIdentificacionModificado) throws ResourceNotFoundException;
+    TipoIdentificacionSalidaDto modificarTipoIdentificacion(Long id, Map<String, Object> camposAModificar) throws ResourceNotFoundException;
 }

@@ -4,8 +4,7 @@ import com.backend.digitalhouse.coworking.dto.entrada.sala.SalaEntradaDto;
 import com.backend.digitalhouse.coworking.dto.modificacion.sala.SalaModificacionEntradaDto;
 import com.backend.digitalhouse.coworking.dto.salida.sala.SalaSalidaDto;
 import com.backend.digitalhouse.coworking.dto.salida.tipoSala.TipoSalaSalidaDto;
-import com.backend.digitalhouse.coworking.entity.Sala;
-import com.backend.digitalhouse.coworking.entity.TipoSala;
+import com.backend.digitalhouse.coworking.entity.*;
 import com.backend.digitalhouse.coworking.exceptions.BadRequestException;
 import com.backend.digitalhouse.coworking.exceptions.ResourceNotFoundException;
 import com.backend.digitalhouse.coworking.repository.SalaRepository;
@@ -15,7 +14,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ReflectionUtils;
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class SalaService implements ISalaService {
@@ -79,62 +82,53 @@ public class SalaService implements ISalaService {
         }
     }
 
-
     @Override
-    public SalaSalidaDto modificarSala(SalaModificacionEntradaDto salaModificada) throws ResourceNotFoundException {
-        Sala salaConModificacion = dtoModificadoAEntidad(salaModificada);
-        Sala salaGuardada = salaRepository.findById(salaConModificacion.getId()).orElse(null);
+    public SalaSalidaDto modificarSala(Long id, Map<String, Object> camposAModificar) throws ResourceNotFoundException {
+        Optional<Sala> salaGuardada = salaRepository.findById(id);
         SalaSalidaDto salaSalidaDto = null;
 
-        if (salaGuardada != null) {
-            if (salaConModificacion.getNombre() != salaGuardada.getNombre()) {
-                salaGuardada.setNombre(salaConModificacion.getNombre());
-            }
-            if (salaConModificacion.getDescripcion() != salaGuardada.getDescripcion()) {
-                salaGuardada.setDescripcion(salaConModificacion.getDescripcion());
-            }
-            if (salaConModificacion.getCapacidad() != salaGuardada.getCapacidad()) {
-                salaGuardada.setCapacidad(salaConModificacion.getCapacidad());
-            }
-            if (salaConModificacion.getDisponible() != salaGuardada.getDisponible()) {
-                salaGuardada.setDisponible(salaConModificacion.getDisponible());
-            }
-            if (salaConModificacion.getEstado() != salaGuardada.getEstado()) {
-                salaGuardada.setEstado(salaConModificacion.getEstado());
-            }
-            if (salaConModificacion.getPromedioCalificacion() != salaGuardada.getPromedioCalificacion() ) {
-                salaGuardada.setPromedioCalificacion(salaConModificacion.getPromedioCalificacion());
-            }
-            if (salaConModificacion.getTipoSala() != null && salaConModificacion.getTipoSala().getId() != salaGuardada.getTipoSala().getId()) {
-                salaGuardada.setTipoSala(salaConModificacion.getTipoSala());
-            }
+        if (salaGuardada.isPresent()) {
+            camposAModificar.forEach((key, value) -> {
+                if (key.equals("tiposala")){
+                    TipoSalaSalidaDto cambioTipoSala = tipoSalaService.buscarTipoSalaPorId(convertirALong(value));
+                    TipoSala tipoSala = modelMapper.map(cambioTipoSala, TipoSala.class);
+                    Field campoAModificar = ReflectionUtils.findField(Sala.class, key);
+                    campoAModificar.setAccessible(true);
+                    ReflectionUtils.setField(campoAModificar, salaGuardada.get(), tipoSala);
+                } else {
+                    Field campoAModificar = ReflectionUtils.findField(Sala.class, key);
+                    campoAModificar.setAccessible(true);
+                    ReflectionUtils.setField(campoAModificar, salaGuardada.get(), value);
+                }
+            });
+            salaRepository.save(salaGuardada.get());
+            salaSalidaDto = entidadADtoSalida(salaGuardada.get());
+            LOGGER.info("La sala ha sido actualizada: {}", salaGuardada.get());
 
-            salaRepository.save(salaGuardada);
-            salaSalidaDto = entidadADtoSalida(salaGuardada);
-            LOGGER.info("La sala ha sido actualizada: {}", salaGuardada);
-
+            return salaSalidaDto;
         } else {
-
             LOGGER.error("No fue posible actualizar los datos, la sala no se encuentra registrada");
             throw new ResourceNotFoundException("No fue posible actualizar los datos, la sala no se encuentra registrada");
         }
-        return salaSalidaDto;
     }
 
     private void configureMappings() {
-       modelMapper.typeMap(SalaEntradaDto.class, Sala.class)
+        modelMapper.emptyTypeMap(SalaEntradaDto.class, Sala.class)
+                .addMappings(mapper -> mapper.map(SalaEntradaDto::getNombre, Sala::setNombre))
+                .addMappings(mapper -> mapper.map(SalaEntradaDto::getDescripcion, Sala::setDescripcion))
+                .addMappings(mapper -> mapper.map(SalaEntradaDto::getCapacidad, Sala::setCapacidad))
+                .addMappings(mapper -> mapper.map(SalaEntradaDto::getDisponible, Sala::setDisponible))
+                .addMappings(mapper -> mapper.map(SalaEntradaDto::getEstado, Sala::setEstado))
+                .addMappings(mapper -> mapper.map(SalaEntradaDto::getPromedioCalificacion, Sala::setPromedioCalificacion))
                 .addMappings(mapper -> mapper.map(SalaEntradaDto::getTipoSala, Sala::setTipoSala));
         modelMapper.typeMap(Sala.class, SalaSalidaDto.class);
-                //.addMappings(mapper -> mapper.map(Sala::getTipoSala, SalaSalidaDto::setTipoSala));
         modelMapper.typeMap(SalaModificacionEntradaDto.class, Sala.class);
-                //.addMappings(mapper -> mapper.map(SalaModificacionEntradaDto::getTipoSala, Sala::setTipoSala));
         modelMapper.typeMap(TipoSalaSalidaDto.class, TipoSala.class);
     }
 
     private TipoSala tipoSalaEntradaDtoAEntity(Long id) {
-        TipoSalaSalidaDto tipoSala = tipoSalaService.buscarTipoSalaPorId(id);
-        TipoSala tipoSalaPrueba = modelMapper.map(tipoSala, TipoSala.class);
-        return tipoSalaPrueba;
+        TipoSala tipoSala = modelMapper.map(tipoSalaService.buscarTipoSalaPorId(id), TipoSala.class);
+        return tipoSala;
     }
     public Sala dtoEntradaAEntidad(SalaEntradaDto salaEntradaDto) {
         Sala sala = modelMapper.map(salaEntradaDto, Sala.class);
@@ -158,6 +152,11 @@ public class SalaService implements ISalaService {
             sala.setTipoSala(tipoSalaEntradaDtoAEntity(salaModificacionEntradaDto.getTipoSala()));
         }
         return sala;
+    }
+    public Long convertirALong(Object o){
+        String stringALong = String.valueOf(o);
+        Long convertirALong = Long.parseLong(stringALong);
+        return convertirALong;
     }
 }
 

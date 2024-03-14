@@ -14,6 +14,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Map;
+
 
 @Service
 public class TipoSalaService implements ITipoSalaService {
@@ -46,27 +48,6 @@ public class TipoSalaService implements ITipoSalaService {
         }
     }
 
-    @Override
-        public TipoSalaSalidaDto modificarTipoSala (TipoSalaModificacionEntradaDto tipoSalaModificado) throws
-        ResourceNotFoundException {
-        TipoSala tipoSalaRecibido = dtoModificadoAEntidad(tipoSalaModificado);
-        TipoSala tipoSalaAModificar = tipoSalaRepository.findById(tipoSalaRecibido.getId()).orElse(null);
-        TipoSalaSalidaDto tipoSalaSalidaDto = null;
-
-        if (tipoSalaAModificar != null) {
-
-            tipoSalaAModificar = tipoSalaRecibido;
-            tipoSalaRepository.save(tipoSalaAModificar);
-            tipoSalaSalidaDto = entidadADtoSalida(tipoSalaAModificar);
-            LOGGER.info("La tipo Sala ha sido modificada: {}", tipoSalaAModificar);
-
-        } else {
-
-            LOGGER.error("No fue posible actualizar los datos, el tipo Sala no se encuentra registrado");
-            throw new ResourceNotFoundException("No fue posible actualizar los datos, el tipo Sala  no se encuentra registrado");
-        }
-        return tipoSalaSalidaDto;
-        }
 
     @Override
         public TipoSalaSalidaDto buscarTipoSalaPorId (Long id){
@@ -102,6 +83,11 @@ public class TipoSalaService implements ITipoSalaService {
                 throw new ResourceNotFoundException("No se ha encontrado el tipo de sala con id " + id);
             }
         }
+
+    @Override
+    public TipoSalaSalidaDto modificarTipoSala(Long id, Map<String, Object> camposAModificar) throws ResourceNotFoundException {
+        return null;
+    }
 
     private TipoSala dtoEntradaAEntidad(TipoSalaEntradaDto tipoSalaEntradaDto) {
         return modelMapper.map(tipoSalaEntradaDto, TipoSala.class);

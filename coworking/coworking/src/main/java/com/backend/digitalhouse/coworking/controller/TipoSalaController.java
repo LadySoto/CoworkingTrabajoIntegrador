@@ -1,7 +1,6 @@
 package com.backend.digitalhouse.coworking.controller;
 
 import com.backend.digitalhouse.coworking.dto.entrada.tipoSala.TipoSalaEntradaDto;
-import com.backend.digitalhouse.coworking.dto.modificacion.tipoSala.TipoSalaModificacionEntradaDto;
 import com.backend.digitalhouse.coworking.dto.salida.tipoSala.TipoSalaSalidaDto;
 import com.backend.digitalhouse.coworking.exceptions.BadRequestException;
 import com.backend.digitalhouse.coworking.exceptions.ResourceNotFoundException;
@@ -17,9 +16,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/tiposala")
+@CrossOrigin(origins = "http://localhost:3000")
 public class TipoSalaController {
     private final ITipoSalaService tipoSalaService;
 
@@ -40,12 +41,11 @@ public class TipoSalaController {
                     content = @Content)
     })
     @PostMapping("/registrar")
-    @CrossOrigin(origins = "http://127.0.0.1:5500")
     public ResponseEntity<TipoSalaSalidaDto> registrarTipoSala(@Valid @RequestBody TipoSalaEntradaDto tipoSala) throws BadRequestException {
         return new ResponseEntity<>(tipoSalaService.registrarTipoSala(tipoSala), HttpStatus.CREATED);
     }
 
-    //PUT
+    //PATCH
     @Operation(summary = "Modificacion de tipo sala")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Tipo sala modificado correctamente",
@@ -59,9 +59,9 @@ public class TipoSalaController {
                     content = @Content)
     })
 
-    @PutMapping("/modificar")
-    public ResponseEntity<TipoSalaSalidaDto> modificarTipoSala(@Valid @RequestBody TipoSalaModificacionEntradaDto tipoSala) throws ResourceNotFoundException {
-        return new ResponseEntity<>(tipoSalaService.modificarTipoSala(tipoSala), HttpStatus.OK);
+    @PatchMapping("/modificar/{id}")
+    public ResponseEntity<TipoSalaSalidaDto> modificarTipoSala(@PathVariable Long id, @Valid @RequestBody Map<String,Object> camposAModificar) throws ResourceNotFoundException {
+        return new ResponseEntity<>(tipoSalaService.modificarTipoSala(id, camposAModificar), HttpStatus.OK);
     }
 
     //GET

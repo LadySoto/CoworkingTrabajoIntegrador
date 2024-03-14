@@ -1,7 +1,6 @@
 package com.backend.digitalhouse.coworking.dto.modificacion.reservaEspacio;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import javax.validation.constraints.NotNull;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
