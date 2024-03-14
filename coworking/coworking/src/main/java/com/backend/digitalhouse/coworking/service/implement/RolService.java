@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class RolService implements IRolService {
@@ -28,43 +29,17 @@ public class RolService implements IRolService {
         configureMappings();
     }
 
-    private void configureMappings() {
-        modelMapper.typeMap(RolEntradaDto.class, Rol.class);
-        modelMapper.typeMap(Rol.class, RolSalidaDto.class);
-    }
-
     @Override
     public RolSalidaDto registrarRol(RolEntradaDto rol) throws BadRequestException {
             if (rol != null) {
                 Rol rolGuardado = rolRepository.save(dtoEntradaAEntidad(rol));
                 RolSalidaDto rolSalidaDto = entidadADtoSalida(rolGuardado);
-                LOGGER.info("Rol guardado: {}", rolSalidaDto);
+                LOGGER.info("Rol registrado: {}", rolSalidaDto);
                 return rolSalidaDto;
             } else {
                 LOGGER.error("No se puede registrar el rol");
                 throw new BadRequestException("No se puede registrar el rol");
             }
-    }
-
-    @Override
-    public RolSalidaDto modificarRol(RolModificacionEntradaDto rolModificado) throws ResourceNotFoundException {
-        Rol rolRecibido = dtoModificadoAEntidad(rolModificado);
-        Rol rolAModificar = rolRepository.findById(rolRecibido.getId()).orElse(null);
-        RolSalidaDto rolSalidaDto = null;
-
-        if (rolAModificar != null) {
-
-            rolAModificar = rolRecibido;
-            rolRepository.save(rolAModificar);
-            rolSalidaDto = entidadADtoSalida(rolAModificar);
-            LOGGER.info("El rol ha sido modificado: {}", rolAModificar);
-
-        } else {
-
-            LOGGER.error("No fue posible actualizar los datos, el rol no se encuentra registrado");
-            throw new ResourceNotFoundException("No fue posible actualizar los datos,  el rol no se encuentra registrado");
-        }
-        return rolSalidaDto;
     }
 
     @Override
@@ -87,7 +62,7 @@ public class RolService implements IRolService {
     public List<RolSalidaDto> listarRoles() {
         List<RolSalidaDto> roles = rolRepository.findAll().stream()
                 .map(this::entidadADtoSalida).toList();
-        LOGGER.info("Listado de todos los roles de sala: {}", roles);
+        LOGGER.info("Listado de todos los roles: {}", roles);
         return roles;
     }
 
@@ -100,6 +75,16 @@ public class RolService implements IRolService {
             LOGGER.error("No se ha encontrado el rol con id {}", id);
             throw new ResourceNotFoundException("No se ha encontrado el rol con id " + id);
         }
+    }
+
+    @Override
+    public RolSalidaDto modificarRol(Long id, Map<String, Object> camposAModificar) throws ResourceNotFoundException {
+        return null;
+    }
+
+    private void configureMappings() {
+        modelMapper.typeMap(RolEntradaDto.class, Rol.class);
+        modelMapper.typeMap(Rol.class, RolSalidaDto.class);
     }
 
     private Rol dtoEntradaAEntidad(RolEntradaDto rolEntradaDto) {
@@ -117,7 +102,5 @@ public class RolService implements IRolService {
     private Rol dtoModificadoAEntidad(RolModificacionEntradaDto rolModificacionEntradaDto) {
         return modelMapper.map(rolModificacionEntradaDto, Rol.class);
     }
-
-
 
 }

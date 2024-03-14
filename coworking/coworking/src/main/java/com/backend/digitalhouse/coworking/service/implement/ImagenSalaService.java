@@ -1,7 +1,6 @@
 package com.backend.digitalhouse.coworking.service.implement;
 
 import com.backend.digitalhouse.coworking.dto.entrada.imagenSala.ImagenSalaEntradaDto;
-import com.backend.digitalhouse.coworking.dto.modificacion.imagenSala.ImagenSalaModificacionEntradaDto;
 import com.backend.digitalhouse.coworking.dto.salida.imagenSala.ImagenSalaSalidaDto;
 import com.backend.digitalhouse.coworking.exceptions.BadRequestException;
 import com.backend.digitalhouse.coworking.exceptions.ResourceNotFoundException;
@@ -13,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ImagenSalaService implements IImagenSalaService {
@@ -51,7 +51,8 @@ public class ImagenSalaService implements IImagenSalaService {
     }
 
     @Override
-    public ImagenSalaSalidaDto modificarImagenSala(ImagenSalaModificacionEntradaDto imagenSalaModificada) throws ResourceNotFoundException {
+    public ImagenSalaSalidaDto modificarImagenSala(Long id, Map<String, Object> camposAModificar) throws ResourceNotFoundException {
         return null;
     }
+
 }

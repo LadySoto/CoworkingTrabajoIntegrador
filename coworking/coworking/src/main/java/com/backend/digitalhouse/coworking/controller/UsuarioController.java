@@ -1,7 +1,6 @@
 package com.backend.digitalhouse.coworking.controller;
 
 import com.backend.digitalhouse.coworking.dto.entrada.usuario.UsuarioEntradaDto;
-import com.backend.digitalhouse.coworking.dto.modificacion.usuario.UsuarioModificacionEntradaDto;
 import com.backend.digitalhouse.coworking.dto.salida.usuario.UsuarioSalidaDto;
 import com.backend.digitalhouse.coworking.exceptions.BadRequestException;
 import com.backend.digitalhouse.coworking.exceptions.ResourceNotFoundException;
@@ -17,9 +16,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/usuario")
+@CrossOrigin(origins = "http://localhost:3000")
 public class UsuarioController {
     private final IUsuarioService usuarioService;
     @Autowired
@@ -39,7 +40,6 @@ public class UsuarioController {
                     content = @Content)
     })
     @PostMapping("/registrar")
-    @CrossOrigin(origins = "http://127.0.0.1:5500")
     public ResponseEntity<UsuarioSalidaDto> registrarUsuario(@Valid @RequestBody UsuarioEntradaDto usuario) throws BadRequestException {
         return new ResponseEntity<>(usuarioService.registrarUsuario(usuario), HttpStatus.CREATED);
     }
@@ -58,20 +58,20 @@ public class UsuarioController {
                     content = @Content)
     })
 
-    @PatchMapping("/modificar")
-    public ResponseEntity<UsuarioSalidaDto> modificarUsuario(@Valid @RequestBody UsuarioModificacionEntradaDto usuario) throws ResourceNotFoundException {
-        return new ResponseEntity<>(usuarioService.modificarUsuario(usuario), HttpStatus.OK);
+    @PatchMapping("/modificar/{id}")
+    public ResponseEntity<UsuarioSalidaDto> modificarUsuario(@PathVariable Long id, @Valid @RequestBody Map<String,Object> camposAModificar) throws ResourceNotFoundException {
+        return new ResponseEntity<>(usuarioService.modificarUsuario(id, camposAModificar), HttpStatus.OK);
     }
 
     //GET
     @Operation(summary = "Búsqueda de usuario por Id")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "usuario encontrado correctamente",
+            @ApiResponse(responseCode = "200", description = "Usuario encontrado correctamente",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = UsuarioSalidaDto.class))}),
             @ApiResponse(responseCode = "400", description = "Id inválido",
                     content = @Content),
-            @ApiResponse(responseCode = "404", description = "usuario no encontrado",
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Server error",
                     content = @Content)
@@ -106,7 +106,7 @@ public class UsuarioController {
                             schema = @Schema(implementation = String.class))}),
             @ApiResponse(responseCode = "400", description = "Id inválido",
                     content = @Content),
-            @ApiResponse(responseCode = "404", description = "Usuario no encontrada",
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Server error",
                     content = @Content)
@@ -116,8 +116,4 @@ public class UsuarioController {
         usuarioService.eliminarUsuario(id);
         return new ResponseEntity<>("Usuario eliminado correctamente", HttpStatus.NO_CONTENT);
     }
-
-
-
-
 }

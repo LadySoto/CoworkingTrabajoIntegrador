@@ -6,6 +6,7 @@ import com.backend.digitalhouse.coworking.dto.salida.imagenSala.ImagenSalaSalida
 import com.backend.digitalhouse.coworking.exceptions.BadRequestException;
 import com.backend.digitalhouse.coworking.exceptions.ResourceNotFoundException;
 import java.util.List;
+import java.util.Map;
 
 public interface IImagenSalaService {
 
@@ -17,5 +18,5 @@ public interface IImagenSalaService {
 
     void eliminarImagenSala(Long id) throws ResourceNotFoundException;
 
-    ImagenSalaSalidaDto modificarImagenSala(ImagenSalaModificacionEntradaDto imagenSalaModificada) throws ResourceNotFoundException;
+    ImagenSalaSalidaDto modificarImagenSala(Long id, Map<String, Object> camposAModificar) throws ResourceNotFoundException;
 }

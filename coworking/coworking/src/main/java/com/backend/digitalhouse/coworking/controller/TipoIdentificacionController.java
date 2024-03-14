@@ -1,7 +1,6 @@
 package com.backend.digitalhouse.coworking.controller;
 
 import com.backend.digitalhouse.coworking.dto.entrada.tipoIdenticacion.TipoIdentificacionEntradaDto;
-import com.backend.digitalhouse.coworking.dto.modificacion.tipoIdentificacion.TipoIdentificacionModificacionEntradaDto;
 import com.backend.digitalhouse.coworking.dto.salida.tipoIdentificacion.TipoIdentificacionSalidaDto;
 import com.backend.digitalhouse.coworking.exceptions.BadRequestException;
 import com.backend.digitalhouse.coworking.exceptions.ResourceNotFoundException;
@@ -17,9 +16,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/tipoidentificacion")
+@CrossOrigin(origins = "http://localhost:3000")
 public class TipoIdentificacionController {
     private final ITipoIdentificacionService tipoIdentificacionService;
     @Autowired
@@ -39,12 +40,11 @@ public class TipoIdentificacionController {
                     content = @Content)
     })
     @PostMapping("/registrar")
-    @CrossOrigin(origins = "http://127.0.0.1:5500")
     public ResponseEntity<TipoIdentificacionSalidaDto> registrarTipoIdentificacion(@Valid @RequestBody TipoIdentificacionEntradaDto tipoIdentificacion) throws BadRequestException {
         return new ResponseEntity<>(tipoIdentificacionService.registrarTipoIdentificacion(tipoIdentificacion), HttpStatus.CREATED);
     }
 
-    //PUT
+    //PATCH
     @Operation(summary = "Modificacion de tipo de identificacion")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Tipo de identificacion modificado correctamente",
@@ -58,9 +58,9 @@ public class TipoIdentificacionController {
                     content = @Content)
     })
 
-    @PutMapping("/modificar")
-    public ResponseEntity<TipoIdentificacionSalidaDto> modificarTipoIdentificacion(@Valid @RequestBody TipoIdentificacionModificacionEntradaDto tipoIdentificacion) throws ResourceNotFoundException {
-        return new ResponseEntity<>(tipoIdentificacionService.modificarTipoIdentificacion(tipoIdentificacion), HttpStatus.OK);
+    @PatchMapping("/modificar/{id}")
+    public ResponseEntity<TipoIdentificacionSalidaDto> modificarTipoIdentificacion(@PathVariable Long id, @Valid @RequestBody Map<String,Object> camposAModificar) throws ResourceNotFoundException {
+        return new ResponseEntity<>(tipoIdentificacionService.modificarTipoIdentificacion(id, camposAModificar), HttpStatus.OK);
     }
 
     //GET

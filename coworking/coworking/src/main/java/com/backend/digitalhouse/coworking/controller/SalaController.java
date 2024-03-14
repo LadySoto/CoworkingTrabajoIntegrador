@@ -1,7 +1,6 @@
 package com.backend.digitalhouse.coworking.controller;
 
 import com.backend.digitalhouse.coworking.dto.entrada.sala.SalaEntradaDto;
-import com.backend.digitalhouse.coworking.dto.modificacion.sala.SalaModificacionEntradaDto;
 import com.backend.digitalhouse.coworking.dto.salida.sala.SalaSalidaDto;
 import com.backend.digitalhouse.coworking.exceptions.BadRequestException;
 import com.backend.digitalhouse.coworking.exceptions.ResourceNotFoundException;
@@ -17,9 +16,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/sala")
+@CrossOrigin(origins = "http://localhost:3000")
 public class SalaController {
     private final ISalaService salaService;
 
@@ -40,7 +41,6 @@ public class SalaController {
                     content = @Content)
     })
     @PostMapping("/registrar")
-    @CrossOrigin(origins = "http://127.0.0.1:5500")
     public ResponseEntity<SalaSalidaDto> registrarSala(@Valid @RequestBody SalaEntradaDto sala) throws BadRequestException {
         return new ResponseEntity<>(salaService.registrarSala(sala), HttpStatus.CREATED);
     }
@@ -59,9 +59,9 @@ public class SalaController {
                     content = @Content)
     })
 
-    @PatchMapping("/modificar")
-    public ResponseEntity<SalaSalidaDto> modificarSala(@Valid @RequestBody SalaModificacionEntradaDto sala) throws ResourceNotFoundException {
-        return new ResponseEntity<>(salaService.modificarSala(sala), HttpStatus.OK);
+    @PatchMapping("/modificar/{id}")
+    public ResponseEntity<SalaSalidaDto> modificarSala(@PathVariable Long id, @Valid @RequestBody Map<String,Object> camposAModificar) throws ResourceNotFoundException {
+        return new ResponseEntity<>(salaService.modificarSala(id, camposAModificar), HttpStatus.OK);
     }
 
     //GET

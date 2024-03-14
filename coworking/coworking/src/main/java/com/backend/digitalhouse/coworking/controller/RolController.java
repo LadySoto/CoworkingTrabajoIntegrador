@@ -1,7 +1,6 @@
 package com.backend.digitalhouse.coworking.controller;
 
 import com.backend.digitalhouse.coworking.dto.entrada.rol.RolEntradaDto;
-import com.backend.digitalhouse.coworking.dto.modificacion.rol.RolModificacionEntradaDto;
 import com.backend.digitalhouse.coworking.dto.salida.rol.RolSalidaDto;
 import com.backend.digitalhouse.coworking.exceptions.BadRequestException;
 import com.backend.digitalhouse.coworking.exceptions.ResourceNotFoundException;
@@ -17,9 +16,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/rol")
+@CrossOrigin(origins = "http://localhost:3000")
 public class RolController {
     private final IRolService rolService;
     @Autowired
@@ -39,12 +40,11 @@ public class RolController {
                     content = @Content)
     })
     @PostMapping("/registrar")
-    @CrossOrigin(origins = "http://127.0.0.1:5500")
     public ResponseEntity<RolSalidaDto> registrarRol(@Valid @RequestBody RolEntradaDto rol) throws BadRequestException {
         return new ResponseEntity<>(rolService.registrarRol(rol), HttpStatus.CREATED);
     }
 
-    //PUT
+    //PATCH
     @Operation(summary = "Modificacion de rol")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Rol modificado correctamente",
@@ -58,9 +58,9 @@ public class RolController {
                     content = @Content)
     })
 
-    @PutMapping("/modificar")
-    public ResponseEntity<RolSalidaDto> modificarRol(@Valid @RequestBody RolModificacionEntradaDto rol) throws ResourceNotFoundException {
-        return new ResponseEntity<>(rolService.modificarRol(rol), HttpStatus.OK);
+    @PatchMapping("/modificar/{id}")
+    public ResponseEntity<RolSalidaDto> modificarRol(@PathVariable Long id, @Valid @RequestBody Map<String,Object> camposAModificar) throws ResourceNotFoundException {
+        return new ResponseEntity<>(rolService.modificarRol(id, camposAModificar), HttpStatus.OK);
     }
 
     //GET

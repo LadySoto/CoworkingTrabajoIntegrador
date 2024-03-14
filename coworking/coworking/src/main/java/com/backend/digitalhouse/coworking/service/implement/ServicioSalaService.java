@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ServicioSalaService implements IServicioSalaService {
@@ -45,27 +46,6 @@ public class ServicioSalaService implements IServicioSalaService {
             LOGGER.error("No se puede registrar el servicio de la sala");
             throw new BadRequestException("No se puede registrar el servicio de la sala");
         }
-    }
-
-    @Override
-    public ServicioSalaSalidaDto modificarServicioSala(ServicioSalaModificacionEntradaDto servicioSalaModificado) throws ResourceNotFoundException {
-        ServicioSala servicioSalaRecibido = dtoModificadoAEntidad(servicioSalaModificado);
-        ServicioSala servicioSalaAModificar = servicioSalaRepository.findById(servicioSalaRecibido.getId()).orElse(null);
-        ServicioSalaSalidaDto servicioSalaSalidaDto = null;
-
-        if (servicioSalaAModificar != null) {
-
-            servicioSalaAModificar = servicioSalaRecibido;
-            servicioSalaRepository.save(servicioSalaAModificar);
-            servicioSalaSalidaDto = entidadADtoSalida(servicioSalaAModificar);
-            LOGGER.info("El servicio de la sala se ha sido modificado: {}", servicioSalaAModificar);
-
-        } else {
-
-            LOGGER.error("No fue posible actualizar los datos, el servicio de la sala no se encuentra registrado");
-            throw new ResourceNotFoundException("No fue posible actualizar los datos, el servicio de la sala  no se encuentra registrado");
-        }
-        return servicioSalaSalidaDto;
     }
 
     @Override
@@ -101,6 +81,11 @@ public class ServicioSalaService implements IServicioSalaService {
             LOGGER.error("No se ha encontrado el servicio de la sala con id {}", id);
             throw new ResourceNotFoundException("No se ha encontrado el servicio de la sala con id " + id);
         }
+    }
+
+    @Override
+    public ServicioSalaSalidaDto modificarServicioSala(Long id, Map<String, Object> camposAModificar) throws ResourceNotFoundException {
+        return null;
     }
 
     private ServicioSala dtoEntradaAEntidad(ServicioSalaEntradaDto servicioSalaEntradaDto) {
