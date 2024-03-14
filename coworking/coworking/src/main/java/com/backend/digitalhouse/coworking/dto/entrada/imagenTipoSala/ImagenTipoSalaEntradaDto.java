@@ -1,7 +1,8 @@
-package com.backend.digitalhouse.coworking.dto.entrada.imagenSala;
+package com.backend.digitalhouse.coworking.dto.entrada.imagenTipoSala;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ImagenTipoSalaEntradaDto {

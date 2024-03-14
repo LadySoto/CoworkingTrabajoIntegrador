@@ -28,8 +28,7 @@ public class RolDataLoder implements CommandLineRunner {
     private void cargaRolesIniciales() {
         List<Rol> serviciosIniciales = Arrays.asList(
                 new Rol("Administrador",1),
-                new Rol("Usuario Registrado",1),
-                new Rol("Usuario Anonimo",1)
+                new Rol("Usuario Registrado",1)
         );
         rolRepository.saveAll(serviciosIniciales);
     }

@@ -1,32 +1,33 @@
-package com.backend.digitalhouse.coworking.dto.entrada.imagenSala;
+package com.backend.digitalhouse.coworking.dto.entrada.servicioSala;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ImagenSalaEntradaDto {
+public class ServicioSalaEntradaDto {
 
     @NotNull(message = "Este campo no puede ser nulo")
-    private List<Long> idImagen;
+    private List<Long> idServicio;
 
     @NotNull(message = "Este campo no puede ser nulo")
     private long idSala;
 
-    public ImagenSalaEntradaDto() {
+    public ServicioSalaEntradaDto() {
     }
 
-    public ImagenSalaEntradaDto(List<Long> idImagen, long idSala) {
-        this.idImagen = idImagen;
+    public ServicioSalaEntradaDto(List<Long> idServicio, long idSala) {
+        this.idServicio = idServicio;
         this.idSala = idSala;
     }
 
-    public List<Long> getIdImagen() {
-        return idImagen;
+    public List<Long> getIdServicio() {
+        return idServicio;
     }
 
-    public void setIdImagen(List<Long> idImagen) {
-        this.idImagen = idImagen;
+    public void setIdServicio(List<Long> idServicio) {
+        this.idServicio = idServicio;
     }
 
     public long getIdSala() {
@@ -39,8 +40,8 @@ public class ImagenSalaEntradaDto {
 
     @Override
     public String toString() {
-        return "ImagenSalaEntradaDto{" +
-                "idImagenes=" + idImagen +
+        return "ServicioSalaEntradaDto{" +
+                "idServicio=" + idServicio +
                 ", idSala=" + idSala +
                 '}';
     }
