@@ -121,11 +121,5 @@ public class CalificacionService implements ICalificacionService {
     private Calificacion dtoModificadoAEntidad(CalificacionModificacionEntradaDto calificacionModificacionEntradaDto) {
         return modelMapper.map(calificacionModificacionEntradaDto, Calificacion.class);
     }
-
-    public Long convertirALong(Object o){
-        String stringALong = String.valueOf(o);
-        Long convertirALong = Long.parseLong(stringALong);
-        return convertirALong;
-    }
 }
 

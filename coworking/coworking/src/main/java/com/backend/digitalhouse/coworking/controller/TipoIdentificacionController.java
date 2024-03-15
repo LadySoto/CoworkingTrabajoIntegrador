@@ -114,6 +114,6 @@ public class TipoIdentificacionController {
     @DeleteMapping("eliminar/{id}")
     public ResponseEntity<?> eliminarTipoIdentificacion(@PathVariable Long id) throws ResourceNotFoundException {
         tipoIdentificacionService.eliminarTipoIdentificacion(id);
-        return new ResponseEntity<>("El tipo de identificacion se ha eliminado correctamente", HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>("El tipo de identificacion se ha eliminado correctamente", HttpStatus.OK);
     }
 }

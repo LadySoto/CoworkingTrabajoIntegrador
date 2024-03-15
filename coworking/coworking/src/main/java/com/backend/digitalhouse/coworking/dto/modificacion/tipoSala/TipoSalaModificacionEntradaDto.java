@@ -11,11 +11,15 @@ public class TipoSalaModificacionEntradaDto {
     @Size(max = 100, message = "El nombre debe tener hasta 100 caracteres")
     private String nombre;
 
+    private String imagen;
+
     public TipoSalaModificacionEntradaDto() {
     }
 
-    public TipoSalaModificacionEntradaDto(String nombre) {
+    public TipoSalaModificacionEntradaDto(Long id, String nombre, String imagen) {
+        this.id = id;
         this.nombre = nombre;
+        this.imagen = imagen;
     }
 
     public Long getId() {
@@ -29,8 +33,17 @@ public class TipoSalaModificacionEntradaDto {
     public String getNombre() {
         return nombre;
     }
+
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
     }
 
     @Override
@@ -38,6 +51,7 @@ public class TipoSalaModificacionEntradaDto {
         return "TipoSalaModificacionEntradaDto{" +
                 "id=" + id +
                 ", nombre='" + nombre + '\'' +
+                ", imagen='" + imagen + '\'' +
                 '}';
     }
 }

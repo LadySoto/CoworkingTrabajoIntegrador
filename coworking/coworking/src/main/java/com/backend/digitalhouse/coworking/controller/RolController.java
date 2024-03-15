@@ -114,6 +114,6 @@ public class RolController {
     @DeleteMapping("eliminar/{id}")
     public ResponseEntity<?> eliminarRol(@PathVariable Long id) throws ResourceNotFoundException {
         rolService.eliminarRol(id);
-        return new ResponseEntity<>("El rol se ha eliminado correctamente", HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>("El rol se ha eliminado correctamente", HttpStatus.OK);
     }
 }

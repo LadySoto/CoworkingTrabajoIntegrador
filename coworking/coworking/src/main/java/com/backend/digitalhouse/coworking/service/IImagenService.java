@@ -1,7 +1,6 @@
 package com.backend.digitalhouse.coworking.service;
 
 import com.backend.digitalhouse.coworking.dto.entrada.imagen.ImagenEntradaDto;
-import com.backend.digitalhouse.coworking.dto.modificacion.imagen.ImagenModificacionEntradaDto;
 import com.backend.digitalhouse.coworking.dto.salida.imagen.ImagenSalidaDto;
 import com.backend.digitalhouse.coworking.exceptions.BadRequestException;
 import com.backend.digitalhouse.coworking.exceptions.ResourceNotFoundException;

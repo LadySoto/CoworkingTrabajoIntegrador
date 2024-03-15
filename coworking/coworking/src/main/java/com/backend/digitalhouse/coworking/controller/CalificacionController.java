@@ -114,6 +114,6 @@ public class CalificacionController {
     @DeleteMapping("eliminar/{id}")
     public ResponseEntity<?> eliminarCalificacion(@PathVariable Long id) throws ResourceNotFoundException {
         calificacionService.eliminarCalificacion(id);
-        return new ResponseEntity<>("Calificacion eliminada correctamente", HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>("Calificacion eliminada correctamente", HttpStatus.OK);
     }
 }

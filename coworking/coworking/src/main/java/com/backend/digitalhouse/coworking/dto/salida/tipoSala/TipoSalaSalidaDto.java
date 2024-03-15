@@ -8,16 +8,16 @@ public class TipoSalaSalidaDto {
     private String nombre;
 
     private String descripcion;
-    private List<String> imagenes;
+    private String imagen;
 
     public TipoSalaSalidaDto() {
     }
 
-    public TipoSalaSalidaDto(Long id, String nombre, String descripcion, List<String> imagenes) {
+    public TipoSalaSalidaDto(Long id, String nombre, String descripcion, String imagen) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.imagenes = imagenes;
+        this.imagen = imagen;
     }
 
     public Long getId() {
@@ -44,12 +44,12 @@ public class TipoSalaSalidaDto {
         this.descripcion = descripcion;
     }
 
-    public List<String> getImagenes() {
-        return imagenes;
+    public String getImagen() {
+        return imagen;
     }
 
-    public void setImagenes(List<String> imagenes) {
-        this.imagenes = imagenes;
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
     }
 
     @Override
@@ -57,8 +57,8 @@ public class TipoSalaSalidaDto {
         return "TipoSalaSalidaDto{" +
                 "id=" + id +
                 ", nombre='" + nombre + '\'' +
-                ", descripcion= " + descripcion +
-                ", imagenes= " + imagenes +
+                ", descripcion='" + descripcion + '\'' +
+                ", imagen='" + imagen + '\'' +
                 '}';
     }
 }
