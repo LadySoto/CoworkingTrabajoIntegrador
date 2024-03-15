@@ -17,13 +17,15 @@ public class TipoSalaEntradaDto {
     @NotNull(message = "La descripción no puede ser nula")
     @NotBlank(message = "Debe especificarse la descripción de la categoría de la sala")
     private String descripcion;
+    private String imagen;
 
     public TipoSalaEntradaDto() {
     }
 
-    public TipoSalaEntradaDto(String nombre, String descripcion) {
+    public TipoSalaEntradaDto(String nombre, String descripcion, String imagen) {
         this.nombre = nombre;
         this.descripcion = descripcion;
+        this.imagen = imagen;
     }
 
     public String getNombre() {
@@ -42,11 +44,20 @@ public class TipoSalaEntradaDto {
         this.descripcion = descripcion;
     }
 
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
+    }
+
     @Override
     public String toString() {
         return "TipoSalaEntradaDto{" +
                 "nombre='" + nombre + '\'' +
-                ", descripción=" + descripcion +
+                ", descripcion='" + descripcion + '\'' +
+                ", imagen='" + imagen + '\'' +
                 '}';
     }
 }

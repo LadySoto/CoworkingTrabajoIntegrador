@@ -1,7 +1,6 @@
 package com.backend.digitalhouse.coworking.service;
 
 import com.backend.digitalhouse.coworking.dto.entrada.reserva.ReservaEntradaDto;
-import com.backend.digitalhouse.coworking.dto.modificacion.reserva.ReservaModificacionEntradaDto;
 import com.backend.digitalhouse.coworking.dto.salida.reserva.ReservaSalidaDto;
 import com.backend.digitalhouse.coworking.exceptions.BadRequestException;
 import com.backend.digitalhouse.coworking.exceptions.ResourceNotFoundException;

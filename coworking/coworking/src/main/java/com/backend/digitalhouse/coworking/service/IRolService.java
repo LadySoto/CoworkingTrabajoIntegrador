@@ -1,7 +1,6 @@
 package com.backend.digitalhouse.coworking.service;
 
 import com.backend.digitalhouse.coworking.dto.entrada.rol.RolEntradaDto;
-import com.backend.digitalhouse.coworking.dto.modificacion.rol.RolModificacionEntradaDto;
 import com.backend.digitalhouse.coworking.dto.salida.rol.RolSalidaDto;
 import com.backend.digitalhouse.coworking.exceptions.BadRequestException;
 import com.backend.digitalhouse.coworking.exceptions.ResourceNotFoundException;

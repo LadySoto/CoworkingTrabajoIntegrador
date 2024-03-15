@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ import java.util.Map;
 @CrossOrigin(origins = "http://localhost:3000")
 public class ReservaEspacioController {
     private final IReservaEspacioService reservaEspacioService;
-
+    @Autowired
     public ReservaEspacioController(IReservaEspacioService reservaEspacioService) {
         this.reservaEspacioService = reservaEspacioService;
     }
@@ -113,7 +114,7 @@ public class ReservaEspacioController {
     @DeleteMapping("eliminar/{id}")
     public ResponseEntity<?> eliminarReservaEspacio(@PathVariable Long id) throws ResourceNotFoundException {
         reservaEspacioService.eliminarReservaEspacio(id);
-        return new ResponseEntity<>("Reserva de espacio eliminada correctamente", HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>("Reserva de espacio eliminada correctamente", HttpStatus.OK);
     }
 
 

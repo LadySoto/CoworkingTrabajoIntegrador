@@ -1,8 +1,11 @@
 package com.backend.digitalhouse.coworking.service.implement;
 
 import com.backend.digitalhouse.coworking.dto.entrada.tipoSala.TipoSalaEntradaDto;
+import com.backend.digitalhouse.coworking.dto.modificacion.calificacion.CalificacionModificacionEntradaDto;
 import com.backend.digitalhouse.coworking.dto.modificacion.tipoSala.TipoSalaModificacionEntradaDto;
+import com.backend.digitalhouse.coworking.dto.salida.calificacion.CalificacionSalidaDto;
 import com.backend.digitalhouse.coworking.dto.salida.tipoSala.TipoSalaSalidaDto;
+import com.backend.digitalhouse.coworking.entity.Calificacion;
 import com.backend.digitalhouse.coworking.entity.TipoSala;
 import com.backend.digitalhouse.coworking.exceptions.BadRequestException;
 import com.backend.digitalhouse.coworking.exceptions.ResourceNotFoundException;
@@ -13,8 +16,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ReflectionUtils;
+
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 
 @Service
@@ -30,11 +37,6 @@ public class TipoSalaService implements ITipoSalaService {
         configureMappings();
     }
 
-    private void configureMappings() {
-        modelMapper.typeMap(TipoSalaEntradaDto.class, TipoSala.class);
-        modelMapper.typeMap(TipoSala.class, TipoSalaSalidaDto.class);
-    }
-
     @Override
     public TipoSalaSalidaDto registrarTipoSala(TipoSalaEntradaDto tipoSala) throws BadRequestException {
         if (tipoSala != null) {
@@ -47,7 +49,6 @@ public class TipoSalaService implements ITipoSalaService {
             throw new BadRequestException("No se puede registrar la sala");
         }
     }
-
 
     @Override
         public TipoSalaSalidaDto buscarTipoSalaPorId (Long id){
@@ -86,7 +87,30 @@ public class TipoSalaService implements ITipoSalaService {
 
     @Override
     public TipoSalaSalidaDto modificarTipoSala(Long id, Map<String, Object> camposAModificar) throws ResourceNotFoundException {
-        return null;
+        Optional<TipoSala> tipoSalaGuardada = tipoSalaRepository.findById(id);
+        TipoSalaSalidaDto tipoSalaSalidaDto = null;
+
+        if (tipoSalaGuardada.isPresent()) {
+            camposAModificar.forEach((key, value) -> {
+                Field campoAModificar = ReflectionUtils.findField(TipoSala.class, key);
+                campoAModificar.setAccessible(true);
+                ReflectionUtils.setField(campoAModificar, tipoSalaGuardada.get(), value);
+            });
+            tipoSalaRepository.save(tipoSalaGuardada.get());
+            tipoSalaSalidaDto = entidadADtoSalida(tipoSalaGuardada.get());
+            LOGGER.info("El tipo sala ha sido actualizado: {}", tipoSalaGuardada.get());
+
+            return tipoSalaSalidaDto;
+        } else {
+            LOGGER.error("No fue posible actualizar los datos, el tipo sala no se encuentra registrado");
+            throw new ResourceNotFoundException("No fue posible actualizar los datos, el tipo sala no se encuentra registrado");
+        }
+    }
+
+    private void configureMappings() {
+        modelMapper.typeMap(TipoSalaEntradaDto.class, TipoSala.class);
+        modelMapper.typeMap(TipoSala.class, TipoSalaSalidaDto.class);
+        modelMapper.typeMap(TipoSalaModificacionEntradaDto.class, TipoSala.class);
     }
 
     private TipoSala dtoEntradaAEntidad(TipoSalaEntradaDto tipoSalaEntradaDto) {

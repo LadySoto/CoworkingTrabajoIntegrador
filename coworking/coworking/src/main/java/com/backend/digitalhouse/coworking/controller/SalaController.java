@@ -116,6 +116,6 @@ public class SalaController {
     @DeleteMapping("eliminar/{id}")
     public ResponseEntity<?> eliminarSala(@PathVariable Long id) throws ResourceNotFoundException {
         salaService.eliminarSala(id);
-        return new ResponseEntity<>("Sala eliminada correctamente", HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>("Sala eliminada correctamente", HttpStatus.OK);
     }
 }

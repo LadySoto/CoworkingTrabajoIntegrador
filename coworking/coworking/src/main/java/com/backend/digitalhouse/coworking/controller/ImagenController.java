@@ -1,10 +1,10 @@
 package com.backend.digitalhouse.coworking.controller;
 
-import com.backend.digitalhouse.coworking.dto.entrada.reserva.ReservaEntradaDto;
-import com.backend.digitalhouse.coworking.dto.salida.reserva.ReservaSalidaDto;
+import com.backend.digitalhouse.coworking.dto.entrada.imagen.ImagenEntradaDto;
+import com.backend.digitalhouse.coworking.dto.salida.imagen.ImagenSalidaDto;
 import com.backend.digitalhouse.coworking.exceptions.BadRequestException;
 import com.backend.digitalhouse.coworking.exceptions.ResourceNotFoundException;
-import com.backend.digitalhouse.coworking.service.IReservaService;
+import com.backend.digitalhouse.coworking.service.IImagenService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -19,75 +19,75 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/reserva")
+@RequestMapping("/imagen")
 @CrossOrigin(origins = "http://localhost:3000")
-public class ReservaController {
-    private final IReservaService reservaService;
+public class ImagenController {
+    private final IImagenService imagenService;
 
     @Autowired
-    public ReservaController(IReservaService reservaService) {
-        this.reservaService = reservaService;
+    public ImagenController(IImagenService imagenService) {
+        this.imagenService = imagenService;
     }
 
     //POST
-    @Operation(summary = "Se registro una reserva")
+    @Operation(summary = "Se registro una imagen")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Reserva registrada correctamente",
+            @ApiResponse(responseCode = "201", description = "Imagen registrada correctamente",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ReservaSalidaDto.class))}),
+                            schema = @Schema(implementation = ImagenSalidaDto.class))}),
             @ApiResponse(responseCode = "400", description = "Bad Request",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Server error",
                     content = @Content)
     })
     @PostMapping("/registrar")
-    public ResponseEntity<ReservaSalidaDto> registrarReserva(@Valid @RequestBody ReservaEntradaDto reserva) throws BadRequestException {
-        return new ResponseEntity<>(reservaService.registrarReserva(reserva), HttpStatus.CREATED);
+    public ResponseEntity<ImagenSalidaDto> registrarImagen(@Valid @RequestBody ImagenEntradaDto imagen) throws BadRequestException {
+        return new ResponseEntity<>(imagenService.registrarImagen(imagen), HttpStatus.CREATED);
     }
 
     //PATCH
-    @Operation(summary = "Modificacion de una reserva")
+    @Operation(summary = "Modificacion de una imagen")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Reserva modificada correctamente",
+            @ApiResponse(responseCode = "200", description = "Imagen modificada correctamente",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ReservaSalidaDto.class))}),
+                            schema = @Schema(implementation = ImagenSalidaDto.class))}),
             @ApiResponse(responseCode = "400", description = "Bad Request",
                     content = @Content),
-            @ApiResponse(responseCode = "404", description = "Reserva no encontrada",
+            @ApiResponse(responseCode = "404", description = "Imagen no encontrada",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Server error",
                     content = @Content)
     })
 
     @PatchMapping("/modificar/{id}")
-    public ResponseEntity<ReservaSalidaDto> modificarReserva(@PathVariable Long id, @Valid @RequestBody Map<String,Object> camposAModificar) throws ResourceNotFoundException {
-        return new ResponseEntity<>(reservaService.modificarReserva(id, camposAModificar), HttpStatus.OK);
+    public ResponseEntity<ImagenSalidaDto> modificarImagen(@PathVariable Long id, @Valid @RequestBody Map<String,Object> camposAModificar) throws ResourceNotFoundException {
+        return new ResponseEntity<>(imagenService.modificarImagen(id, camposAModificar), HttpStatus.OK);
     }
 
     //GET
-    @Operation(summary = "Búsqueda de una reserva por Id")
+    @Operation(summary = "Búsqueda de una imagen por Id")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Reserva encontrada correctamente",
+            @ApiResponse(responseCode = "200", description = "Imagen encontrada correctamente",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ReservaSalidaDto.class))}),
+                            schema = @Schema(implementation = ImagenSalidaDto.class))}),
             @ApiResponse(responseCode = "400", description = "Id inválido",
                     content = @Content),
-            @ApiResponse(responseCode = "404", description = "Reserva no encontrada",
+            @ApiResponse(responseCode = "404", description = "Imagen no encontrada",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Server error",
                     content = @Content)
     })
 
     @GetMapping("busqueda/{id}")
-    public ResponseEntity<ReservaSalidaDto> obtenerReservaPorId(@PathVariable Long id) {
-        return new ResponseEntity<>(reservaService.buscarReservaPorId(id), HttpStatus.OK);
+    public ResponseEntity<ImagenSalidaDto> obtenerImagenPorId(@PathVariable Long id) {
+        return new ResponseEntity<>(imagenService.buscarImagenPorId(id), HttpStatus.OK);
     }
 
-    @Operation(summary = "Listar todas las reservas")
+    @Operation(summary = "Listar todas las imagenes")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Listado de reservas obtenido correctamente",
+            @ApiResponse(responseCode = "200", description = "Listado de imagenes obtenido correctamente",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ReservaSalidaDto.class))}),
+                            schema = @Schema(implementation = ImagenSalidaDto.class))}),
             @ApiResponse(responseCode = "400", description = "Bad request",
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Book not found",
@@ -95,27 +95,29 @@ public class ReservaController {
     })
 
     @GetMapping("listar")
-    public ResponseEntity<List<ReservaSalidaDto>> listarReservas() {
-        return new ResponseEntity<>(reservaService.listarReservas(), HttpStatus.OK);
+    public ResponseEntity<List<ImagenSalidaDto>> listarImagenes() {
+        return new ResponseEntity<>(imagenService.listarImagenes(), HttpStatus.OK);
     }
 
     //DELETE
-    @Operation(summary = "Eliminación de una reserva por Id")
+    @Operation(summary = "Eliminación de una imagen por Id")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Reserva eliminada correctamente",
+            @ApiResponse(responseCode = "204", description = "Imagen eliminada correctamente",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = String.class))}),
             @ApiResponse(responseCode = "400", description = "Id inválido",
                     content = @Content),
-            @ApiResponse(responseCode = "404", description = "Reserva no encontrada",
+            @ApiResponse(responseCode = "404", description = "Imagen no encontrada",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Server error",
                     content = @Content)
     })
 
     @DeleteMapping("eliminar/{id}")
-    public ResponseEntity<?> eliminarReserva(@PathVariable Long id) throws ResourceNotFoundException {
-        reservaService.eliminarReserva(id);
-        return new ResponseEntity<>("Reserva eliminada correctamente", HttpStatus.OK);
+    public ResponseEntity<?> eliminarImagen(@PathVariable Long id) throws ResourceNotFoundException {
+        imagenService.eliminarImagen(id);
+        return new ResponseEntity<>("Imagen eliminada correctamente", HttpStatus.OK);
     }
+
+
 }

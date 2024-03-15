@@ -10,10 +10,8 @@ public class ReservaModificacionEntradaDto {
     private Long id;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private long fechaHoraInicio;
-
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private long fechaHoraFin;
-
     private long idCalificacion;
     private long cantidadHora;
 

@@ -65,11 +65,11 @@ public class ServicioSalaService implements IServicioSalaService {
     }
 
     @Override
-    public List<ServicioSalaSalidaDto> listarServiciosSalas() {
-        List<ServicioSalaSalidaDto> servicioSalas = servicioSalaRepository.findAll().stream()
+    public List<ServicioSalaSalidaDto> listarServiciosSala() {
+        List<ServicioSalaSalidaDto> serviciosSala = servicioSalaRepository.findAll().stream()
                 .map(this::entidadADtoSalida).toList();
-        LOGGER.info("Listado de todos los servicios de la sala: {}", servicioSalas);
-        return servicioSalas;
+        LOGGER.info("Listado de todos los servicios de la sala: {}", serviciosSala);
+        return serviciosSala;
     }
 
     @Override

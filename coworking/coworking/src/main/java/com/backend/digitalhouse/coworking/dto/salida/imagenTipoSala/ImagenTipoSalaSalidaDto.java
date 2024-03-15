@@ -1,7 +1,6 @@
 package com.backend.digitalhouse.coworking.dto.salida.imagenTipoSala;
 
 import com.backend.digitalhouse.coworking.dto.salida.imagen.ImagenSalidaDto;
-import com.backend.digitalhouse.coworking.dto.salida.sala.SalaSalidaDto;
 import com.backend.digitalhouse.coworking.dto.salida.tipoSala.TipoSalaSalidaDto;
 
 public class ImagenTipoSalaSalidaDto {
