@@ -138,6 +138,7 @@ public class TipoSalaController {
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Server error",
                     content = @Content)
+
     })
     @DeleteMapping("eliminar/{id}")
     public ResponseEntity<?> eliminarTipoSala(@PathVariable Long id) throws ResourceNotFoundException {
