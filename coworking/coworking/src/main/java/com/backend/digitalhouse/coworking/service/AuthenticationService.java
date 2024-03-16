@@ -30,15 +30,15 @@ public class AuthenticationService {
     public AuthenticationResponse login(AuthenticationRequest authRequest) {
 
 
-        LOGGER.info("Nombre: {}", authRequest.getNombre());
+        LOGGER.info("Correo: {}", authRequest.getCorreo());
         LOGGER.info("Contraseña: {}", authRequest.getContraseña());
 
-        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(authRequest.getNombre(), authRequest.getContraseña());
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(authRequest.getCorreo(), authRequest.getContraseña());
 
 
         authenticationManager.authenticate(authToken);
 
-        Usuario usuario = usuarioRepository.findByNombre(authRequest.getNombre()).get();
+        Usuario usuario = usuarioRepository.findByCorreo(authRequest.getCorreo()).get();
 
         String jwt = jwtService.generateToken(usuario, generateExtraClaims(usuario));
         
@@ -48,7 +48,7 @@ public class AuthenticationService {
 
     private Map<String, Object> generateExtraClaims(Usuario usuario) {
         Map<String, Object> extraClaims = new HashMap<>();
-        extraClaims.put("nombre", usuario.getNombre());
+        extraClaims.put("correo", usuario.getCorreo());
         extraClaims.put("rol", usuario.getRol().getNombre());
         extraClaims.put("permissions", usuario.getAuthorities());
 

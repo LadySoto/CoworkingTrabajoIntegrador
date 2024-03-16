@@ -3,16 +3,16 @@ package com.backend.digitalhouse.coworking.dto;
 public class AuthenticationRequest {
 
 
-  private String nombre;
+  private String correo;
 
   private String contraseña;
 
-  public String getNombre() {
-    return nombre;
+  public String getCorreo() {
+    return correo;
   }
 
-  public void setNombre(String nombre) {
-    this.nombre = nombre;
+  public void setCorreo(String correo) {
+    this.correo = correo;
   }
 
   public String getContraseña() {

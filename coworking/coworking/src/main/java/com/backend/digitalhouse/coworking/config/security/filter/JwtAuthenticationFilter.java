@@ -34,11 +34,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         //2. Obtener jwt desde header.
         String jwt = authHeader.split(" ")[1];
         //3. Obtener subject/username desde el jwt
-        String nombre = jwtService.extractNombre(jwt);
+        String correo = jwtService.extractCorreo(jwt);
         //4. Setear un objeto Authentication dentro del SecurityContext
-        Usuario usuario = usuarioRepository.findByNombre(nombre).get();
+        Usuario usuario = usuarioRepository.findByCorreo(correo).get();
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                nombre, null, usuario.getAuthorities()
+                correo, null, usuario.getAuthorities()
         );
         SecurityContextHolder.getContext().setAuthentication(authToken);
         //5. Ejecutar el resto de filtros

@@ -7,6 +7,10 @@ public enum Permission {
 
     READ_ALL_TIPOSSALAS,
 
-    SAVE_ONE_TIPOSALA;
+    SAVE_ONE_TIPOSALA,
+
+    SAVE_ONE_SALA,
+
+    READ_ALL_SALAS;
 
 }

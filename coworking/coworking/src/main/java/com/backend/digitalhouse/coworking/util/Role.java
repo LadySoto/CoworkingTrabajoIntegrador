@@ -5,9 +5,9 @@ package com.backend.digitalhouse.coworking.util;
 
 public enum Role {
 
-    CUSTOMER(Arrays.asList(Permission.READ_ALL_TIPOSSALAS)),
+    CUSTOMER(Arrays.asList(Permission.READ_ALL_TIPOSSALAS, Permission.READ_ALL_SALAS)),
 
-    ADMINISTRATOR(Arrays.asList(Permission.SAVE_ONE_TIPOSALA, Permission.READ_ALL_TIPOSSALAS));
+    ADMINISTRATOR(Arrays.asList(Permission.SAVE_ONE_TIPOSALA, Permission.READ_ALL_TIPOSSALAS, Permission.SAVE_ONE_SALA, Permission.READ_ALL_SALAS));
 
     private List<Permission> permissions;
 

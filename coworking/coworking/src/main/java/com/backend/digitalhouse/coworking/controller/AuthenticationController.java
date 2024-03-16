@@ -26,7 +26,7 @@ public class AuthenticationController {
   public ResponseEntity<AuthenticationResponse> login(
       @RequestBody @Valid AuthenticationRequest authRequest) {
 
-    LOGGER.info("Nombre: {}", authRequest.getNombre());
+    LOGGER.info("Correo: {}", authRequest.getCorreo());
     LOGGER.info("Contraseña: {}", authRequest.getContraseña());
 
     AuthenticationResponse jwtDto = authenticationService.login(authRequest);

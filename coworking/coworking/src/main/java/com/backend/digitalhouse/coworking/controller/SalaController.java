@@ -15,6 +15,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -39,6 +40,7 @@ public class SalaController {
             @ApiResponse(responseCode = "500", description = "Server error",
                     content = @Content)
     })
+    @PreAuthorize("hasAuthority('SAVE_ONE_SALA')")
     @PostMapping("/registrar")
     @CrossOrigin(origins = "http://127.0.0.1:5500")
     public ResponseEntity<SalaSalidaDto> registrarSala(@Valid @RequestBody SalaEntradaDto sala) throws BadRequestException {
@@ -93,7 +95,7 @@ public class SalaController {
             @ApiResponse(responseCode = "404", description = "Book not found",
                     content = @Content)
     })
-
+    @PreAuthorize("hasAuthority('READ_ALL_SALAS')")
     @GetMapping()
     public ResponseEntity<List<SalaSalidaDto>> listarSalas() {
         return new ResponseEntity<>(salaService.listarSalas(), HttpStatus.OK);

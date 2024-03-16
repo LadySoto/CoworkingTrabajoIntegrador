@@ -48,7 +48,8 @@ public class HttpSecurityConfig {
 
             authConfig.requestMatchers(HttpMethod.GET, "/tiposala").hasAuthority(Permission.READ_ALL_TIPOSSALAS.name());
             authConfig.requestMatchers(HttpMethod.POST, "/tiposala").hasAuthority(Permission.SAVE_ONE_TIPOSALA.name());
-
+            authConfig.requestMatchers(HttpMethod.POST, "/registrar").hasAuthority(Permission.SAVE_ONE_SALA.name());
+            authConfig.requestMatchers(HttpMethod.GET, "/sala").hasAuthority(Permission.READ_ALL_SALAS.name());
             authConfig.anyRequest().denyAll();
 
         };

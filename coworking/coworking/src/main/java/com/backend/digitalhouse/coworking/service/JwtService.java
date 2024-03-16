@@ -45,7 +45,7 @@ public class JwtService {
            return Keys.hmacShaKeyFor(secretAsBytes);
     }
 
-    public String extractNombre(String jwt) {
+    public String extractCorreo(String jwt) {
         return extractAllClaims(jwt).getSubject();
     }
 
