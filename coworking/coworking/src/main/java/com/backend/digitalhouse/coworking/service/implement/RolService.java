@@ -13,8 +13,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ReflectionUtils;
+
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class RolService implements IRolService {
@@ -79,12 +83,30 @@ public class RolService implements IRolService {
 
     @Override
     public RolSalidaDto modificarRol(Long id, Map<String, Object> camposAModificar) throws ResourceNotFoundException {
-        return null;
+        Optional<Rol> rolGuardado = rolRepository.findById(id);
+        RolSalidaDto rolSalidaDto = null;
+
+        if (rolGuardado.isPresent()) {
+            camposAModificar.forEach((key, value) -> {
+                Field campoAModificar = ReflectionUtils.findField(Rol.class, key);
+                campoAModificar.setAccessible(true);
+                ReflectionUtils.setField(campoAModificar, rolGuardado.get(), value);
+            });
+            rolRepository.save(rolGuardado.get());
+            rolSalidaDto = entidadADtoSalida(rolGuardado.get());
+            LOGGER.info("El rol ha sido actualizado: {}", rolGuardado.get());
+
+            return rolSalidaDto;
+        } else {
+            LOGGER.error("No fue posible actualizar los datos, el rol  no se encuentra registrado");
+            throw new ResourceNotFoundException("No fue posible actualizar los datos, el rol  no se encuentra registrado");
+        }
     }
 
     private void configureMappings() {
         modelMapper.typeMap(RolEntradaDto.class, Rol.class);
         modelMapper.typeMap(Rol.class, RolSalidaDto.class);
+        modelMapper.typeMap(RolModificacionEntradaDto.class, Rol.class);
     }
 
     private Rol dtoEntradaAEntidad(RolEntradaDto rolEntradaDto) {
@@ -102,5 +124,4 @@ public class RolService implements IRolService {
     private Rol dtoModificadoAEntidad(RolModificacionEntradaDto rolModificacionEntradaDto) {
         return modelMapper.map(rolModificacionEntradaDto, Rol.class);
     }
-
 }

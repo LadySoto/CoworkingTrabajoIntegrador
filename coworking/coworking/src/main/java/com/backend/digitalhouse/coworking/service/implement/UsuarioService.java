@@ -152,10 +152,10 @@ public class UsuarioService implements IUsuarioService {
         return usuario;
     }
 
-    private TipoIdentificacionSalidaDto entityATipoIdentificacionSalidaDto(TipoIdentificacion tipoIdentificacion) {
+    protected TipoIdentificacionSalidaDto entityATipoIdentificacionSalidaDto(TipoIdentificacion tipoIdentificacion) {
         return modelMapper.map(tipoIdentificacion, TipoIdentificacionSalidaDto.class);
     }
-    private RolSalidaDto entityARolSalidaDto(Rol rol) {
+    protected RolSalidaDto entityARolSalidaDto(Rol rol) {
         return modelMapper.map(rol, RolSalidaDto.class);
     }
 

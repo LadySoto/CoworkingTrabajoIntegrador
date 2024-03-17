@@ -18,6 +18,8 @@ public class ImagenModificacionEntradaDto {
     @Digits(integer = 1, fraction = 0, message = "El numero debe tener como maximo 1 dígito")
     private int estado;
 
+    private long idSala;
+
     public ImagenModificacionEntradaDto() {
     }
 

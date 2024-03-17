@@ -1,26 +1,37 @@
 package com.backend.digitalhouse.coworking.dto.modificacion.reservaEspacio;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ReservaEspacioModificacionEntradaDto {
     @NotNull(message = "El campo no puede ser nulo")
     private Long id;
     private long idUsuario;
-    private long idReserva;
     private long idSala;
-    private long idServicio;
+    @FutureOrPresent(message = "La fecha no puede ser anterior al dia de hoy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+    private long fechaHoraInicio;
+    @FutureOrPresent(message = "La fecha no puede ser anterior al dia de hoy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+    private long fechaHoraFin;
+    @Digits(integer = 1, fraction = 0, message = "El numero debe tener como maximo 1 dígito de 1 a 5")
+    @Min(1)
+    @Max(5)
+    private int calificacion;
+
 
     public ReservaEspacioModificacionEntradaDto() {
     }
 
-    public ReservaEspacioModificacionEntradaDto(Long id, long idUsuario, long idReserva, long idSala, long idServicio) {
+    public ReservaEspacioModificacionEntradaDto(Long id, long idUsuario, long idSala, long fechaHoraInicio, long fechaHoraFin, int calificacion) {
         this.id = id;
         this.idUsuario = idUsuario;
-        this.idReserva = idReserva;
         this.idSala = idSala;
-        this.idServicio = idServicio;
+        this.fechaHoraInicio = fechaHoraInicio;
+        this.fechaHoraFin = fechaHoraFin;
+        this.calificacion = calificacion;
     }
 
     public Long getId() {
@@ -39,14 +50,6 @@ public class ReservaEspacioModificacionEntradaDto {
         this.idUsuario = idUsuario;
     }
 
-    public long getIdReserva() {
-        return idReserva;
-    }
-
-    public void setIdReserva(long idReserva) {
-        this.idReserva = idReserva;
-    }
-
     public long getIdSala() {
         return idSala;
     }
@@ -55,21 +58,39 @@ public class ReservaEspacioModificacionEntradaDto {
         this.idSala = idSala;
     }
 
-    public long getIdServicio() {
-        return idServicio;
+    public long getFechaHoraInicio() {
+        return fechaHoraInicio;
     }
 
-    public void setIdServicio(long idServicio) {
-        this.idServicio = idServicio;
+    public void setFechaHoraInicio(long fechaHoraInicio) {
+        this.fechaHoraInicio = fechaHoraInicio;
+    }
+
+    public long getFechaHoraFin() {
+        return fechaHoraFin;
+    }
+
+    public void setFechaHoraFin(long fechaHoraFin) {
+        this.fechaHoraFin = fechaHoraFin;
+    }
+
+    public int getCalificacion() {
+        return calificacion;
+    }
+
+    public void setCalificacion(int calificacion) {
+        this.calificacion = calificacion;
     }
 
     @Override
     public String toString() {
         return "ReservaEspacioModificacionEntradaDto{" +
-                "idUsuario=" + idUsuario +
-                ", idReserva=" + idReserva +
+                "id=" + id +
+                ", idUsuario=" + idUsuario +
                 ", idSala=" + idSala +
-                ", idServicio=" + idServicio +
+                ", fechaHoraInicio=" + fechaHoraInicio +
+                ", fechaHoraFin=" + fechaHoraFin +
+                ", calificacion=" + calificacion +
                 '}';
     }
 }

@@ -1,51 +1,87 @@
 package com.backend.digitalhouse.coworking.dto.salida.reservaEspacio;
 
-import com.backend.digitalhouse.coworking.dto.salida.reserva.ReservaSalidaDto;
 import com.backend.digitalhouse.coworking.dto.salida.sala.SalaSalidaDto;
-import com.backend.digitalhouse.coworking.dto.salida.servicio.ServicioSalidaDto;
 import com.backend.digitalhouse.coworking.dto.salida.usuario.UsuarioSalidaDto;
+
+import java.time.LocalDateTime;
 
 public class ReservaEspacioSalidaDto {
     private Long id;
     private UsuarioSalidaDto usuario;
-    private ReservaSalidaDto reserva;
     private SalaSalidaDto sala;
-    private ServicioSalidaDto servicio;
+    private LocalDateTime fechaHoraInicio;
+    private LocalDateTime fechaHoraFin;
+    private int calificacion;
 
     public ReservaEspacioSalidaDto() {
     }
 
-    public ReservaEspacioSalidaDto(Long id, UsuarioSalidaDto usuario, ReservaSalidaDto reserva, SalaSalidaDto sala, ServicioSalidaDto servicio) {
+    public ReservaEspacioSalidaDto(Long id, UsuarioSalidaDto usuario, SalaSalidaDto sala, LocalDateTime fechaHoraInicio, LocalDateTime fechaHoraFin, int calificacion) {
         this.id = id;
         this.usuario = usuario;
-        this.reserva = reserva;
         this.sala = sala;
-        this.servicio = servicio;
+        this.fechaHoraInicio = fechaHoraInicio;
+        this.fechaHoraFin = fechaHoraFin;
+        this.calificacion = calificacion;
     }
 
-    public Long getId() {return id;}
-    public void setId(Long id) {this.id = id;}
+    public Long getId() {
+        return id;
+    }
 
-    public UsuarioSalidaDto getUsuario() {return usuario;}
-    public void setUsuario(UsuarioSalidaDto usuario) {this.usuario = usuario;}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public ReservaSalidaDto getReserva() {return reserva;}
-    public void setReserva(ReservaSalidaDto reserva) {this.reserva = reserva;}
+    public UsuarioSalidaDto getUsuario() {
+        return usuario;
+    }
 
-    public SalaSalidaDto getSala() {return sala;}
-    public void setSala(SalaSalidaDto sala) {this.sala = sala;}
+    public void setUsuario(UsuarioSalidaDto usuario) {
+        this.usuario = usuario;
+    }
 
-    public ServicioSalidaDto getServicio() {return servicio;}
-    public void setServicio(ServicioSalidaDto servicio) {this.servicio = servicio;}
+    public SalaSalidaDto getSala() {
+        return sala;
+    }
+
+    public void setSala(SalaSalidaDto sala) {
+        this.sala = sala;
+    }
+
+    public LocalDateTime getFechaHoraInicio() {
+        return fechaHoraInicio;
+    }
+
+    public void setFechaHoraInicio(LocalDateTime fechaHoraInicio) {
+        this.fechaHoraInicio = fechaHoraInicio;
+    }
+
+    public LocalDateTime getFechaHoraFin() {
+        return fechaHoraFin;
+    }
+
+    public void setFechaHoraFin(LocalDateTime fechaHoraFin) {
+        this.fechaHoraFin = fechaHoraFin;
+    }
+
+    public int getCalificacion() {
+        return calificacion;
+    }
+
+    public void setCalificacion(int calificacion) {
+        this.calificacion = calificacion;
+    }
 
     @Override
     public String toString() {
         return "ReservaEspacioSalidaDto{" +
                 "id=" + id +
                 ", usuario=" + usuario +
-                ", reserva=" + reserva +
                 ", sala=" + sala +
-                ", servicio=" + servicio +
+                ", fechaHoraInicio=" + fechaHoraInicio +
+                ", fechaHoraFin=" + fechaHoraFin +
+                ", calificacion=" + calificacion +
                 '}';
     }
 }
