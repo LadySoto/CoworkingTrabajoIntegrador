@@ -10,14 +10,23 @@ public class TipoSala {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_TIPO_SALA")
     private Long id;
+
     @Column(name = "NOMBRE")
     private String nombre;
+
+    @Column(name = "DESCRIPCION")
+    private String descripcion;
+
+    @Column(name = "IMAGEN")
+    private String imagen;
 
     public TipoSala() {
     }
 
-    public TipoSala(String nombre) {
+    public TipoSala(String nombre, String descripcion, String imagen) {
         this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.imagen = imagen;
     }
 
     public Long getId() {
@@ -36,11 +45,29 @@ public class TipoSala {
         this.nombre = nombre;
     }
 
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
+    }
+
     @Override
     public String toString() {
         return "TipoSala{" +
                 "id=" + id +
                 ", nombre='" + nombre + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                ", imagen='" + imagen + '\'' +
                 '}';
     }
 }

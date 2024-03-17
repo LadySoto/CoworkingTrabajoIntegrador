@@ -2,18 +2,13 @@ package com.backend.digitalhouse.coworking.dto.entrada.tipoIdenticacion;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TipoIdentificacionEntradaDto {
     @Size(max = 45, message = "El nombre debe tener hasta 45 caracteres")
-    @NotNull(message = "El nombre no puede ser nulo")
-    @NotBlank(message = "Debe especificarse el nombre del tipo de identificacion")
     private String nombre;
 
-    @NotNull(message = "El campo no puede ser nulo")
     @Digits(integer = 1, fraction = 0, message = "El numero debe tener como maximo 1 dígito")
     private int estado;
 
@@ -25,9 +20,25 @@ public class TipoIdentificacionEntradaDto {
         this.estado = estado;
     }
 
-    public String getNombre() {return nombre;}
-    public void setNombre(String nombre) {this.nombre = nombre;}
+    public String getNombre() {
+        return nombre;
+    }
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 
-    public int getEstado() {return estado;}
-    public void setEstado(int estado) {this.estado = estado;}
+    public int getEstado() {
+        return estado;
+    }
+    public void setEstado(int estado) {
+        this.estado = estado;
+    }
+
+    @Override
+    public String toString() {
+        return "TipoIdentificacionEntradaDto{" +
+                "nombre='" + nombre + '\'' +
+                ", estado=" + estado +
+                '}';
+    }
 }

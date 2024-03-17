@@ -1,7 +1,6 @@
 package com.backend.digitalhouse.coworking.controller;
 
 import com.backend.digitalhouse.coworking.dto.entrada.sala.SalaEntradaDto;
-import com.backend.digitalhouse.coworking.dto.modificacion.sala.SalaModificacionEntradaDto;
 import com.backend.digitalhouse.coworking.dto.salida.sala.SalaSalidaDto;
 import com.backend.digitalhouse.coworking.exceptions.BadRequestException;
 import com.backend.digitalhouse.coworking.exceptions.ResourceNotFoundException;
@@ -18,9 +17,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/sala")
+@CrossOrigin(origins = "http://localhost:3000")
 public class SalaController {
     private final ISalaService salaService;
 
@@ -30,7 +31,7 @@ public class SalaController {
     }
 
     //POST
-    @Operation(summary = "Registro de una sala")
+    @Operation(summary = "Se registró una sala")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Sala registrada correctamente",
                     content = {@Content(mediaType = "application/json",
@@ -42,12 +43,11 @@ public class SalaController {
     })
     @PreAuthorize("hasAuthority('SAVE_ONE_SALA')")
     @PostMapping("/registrar")
-    @CrossOrigin(origins = "http://127.0.0.1:5500")
     public ResponseEntity<SalaSalidaDto> registrarSala(@Valid @RequestBody SalaEntradaDto sala) throws BadRequestException {
         return new ResponseEntity<>(salaService.registrarSala(sala), HttpStatus.CREATED);
     }
 
-    //PUT
+    //PATCH
     @Operation(summary = "Modificacion de una sala")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Sala modificada correctamente",
@@ -61,9 +61,9 @@ public class SalaController {
                     content = @Content)
     })
 
-    @PutMapping("/modificar")
-    public ResponseEntity<SalaSalidaDto> modificarSala(@Valid @RequestBody SalaModificacionEntradaDto sala) throws ResourceNotFoundException {
-        return new ResponseEntity<>(salaService.modificarSala(sala), HttpStatus.OK);
+    @PatchMapping("/modificar/{id}")
+    public ResponseEntity<SalaSalidaDto> modificarSala(@PathVariable Long id, @Valid @RequestBody Map<String,Object> camposAModificar) throws ResourceNotFoundException {
+        return new ResponseEntity<>(salaService.modificarSala(id, camposAModificar), HttpStatus.OK);
     }
 
     //GET
@@ -87,7 +87,7 @@ public class SalaController {
 
     @Operation(summary = "Listar todas las salas")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Listado de salas obtenido correspondiente",
+            @ApiResponse(responseCode = "200", description = "Listado de salas obtenido correctamente",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = SalaSalidaDto.class))}),
             @ApiResponse(responseCode = "400", description = "Bad request",
@@ -95,8 +95,10 @@ public class SalaController {
             @ApiResponse(responseCode = "404", description = "Book not found",
                     content = @Content)
     })
+
     @PreAuthorize("hasAuthority('READ_ALL_SALAS')")
-    @GetMapping()
+    @GetMapping("listar")
+
     public ResponseEntity<List<SalaSalidaDto>> listarSalas() {
         return new ResponseEntity<>(salaService.listarSalas(), HttpStatus.OK);
     }
@@ -118,6 +120,6 @@ public class SalaController {
     @DeleteMapping("eliminar/{id}")
     public ResponseEntity<?> eliminarSala(@PathVariable Long id) throws ResourceNotFoundException {
         salaService.eliminarSala(id);
-        return new ResponseEntity<>("Sala eliminada correctamente", HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>("Sala eliminada correctamente", HttpStatus.OK);
     }
 }

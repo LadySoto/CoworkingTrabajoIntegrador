@@ -1,7 +1,6 @@
 package com.backend.digitalhouse.coworking.service.implement;
 
 import com.backend.digitalhouse.coworking.dto.entrada.servicio.ServicioEntradaDto;
-import com.backend.digitalhouse.coworking.dto.modificacion.servicio.ServicioModificacionEntradaDto;
 import com.backend.digitalhouse.coworking.dto.salida.servicio.ServicioSalidaDto;
 import com.backend.digitalhouse.coworking.exceptions.BadRequestException;
 import com.backend.digitalhouse.coworking.exceptions.ResourceNotFoundException;
@@ -13,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ServicioService implements IServicioService {
@@ -51,7 +51,8 @@ public class ServicioService implements IServicioService {
     }
 
     @Override
-    public ServicioSalidaDto modificarServicio(ServicioModificacionEntradaDto servicioModificado) throws ResourceNotFoundException {
+    public ServicioSalidaDto modificarServicio(Long id, Map<String, Object> camposAModificar) throws ResourceNotFoundException {
         return null;
     }
+
 }

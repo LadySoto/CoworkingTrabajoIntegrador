@@ -2,10 +2,13 @@ package com.backend.digitalhouse.coworking.dto.modificacion.servicio;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ServicioModificacionEntradaDto {
+    @NotNull(message = "El campo no puede ser nulo")
+    private Long id;
     @Size(max = 100, message = "El nombre debe tener hasta 100 caracteres")
     private String nombre;
 

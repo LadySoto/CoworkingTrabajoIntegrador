@@ -24,17 +24,33 @@ public class ReservaEspacioEntradaDto {
         this.idServicio = idServicio;
     }
 
-    public long getIdUsuario() {return idUsuario;}
-    public void setIdUsuario(long idUsuario) {this.idUsuario = idUsuario;}
+    public long getIdUsuario() {
+        return idUsuario;
+    }
+    public void setIdUsuario(long idUsuario) {
+        this.idUsuario = idUsuario;
+    }
 
-    public long getIdReserva() {return idReserva;}
-    public void setIdReserva(long idReserva) {this.idReserva = idReserva;}
+    public long getIdReserva() {
+        return idReserva;
+    }
+    public void setIdReserva(long idReserva) {
+        this.idReserva = idReserva;
+    }
 
-    public long getIdSala() {return idSala;}
-    public void setIdSala(long idSala) {this.idSala = idSala;}
+    public long getIdSala() {
+        return idSala;
+    }
+    public void setIdSala(long idSala) {
+        this.idSala = idSala;
+    }
 
-    public long getIdServicio() {return idServicio;}
-    public void setIdServicio(long idServicio) {this.idServicio = idServicio;}
+    public long getIdServicio() {
+        return idServicio;
+    }
+    public void setIdServicio(long idServicio) {
+        this.idServicio = idServicio;
+    }
 
     @Override
     public String toString() {

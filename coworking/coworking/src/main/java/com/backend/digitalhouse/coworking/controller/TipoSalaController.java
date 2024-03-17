@@ -1,7 +1,6 @@
 package com.backend.digitalhouse.coworking.controller;
 
 import com.backend.digitalhouse.coworking.dto.entrada.tipoSala.TipoSalaEntradaDto;
-import com.backend.digitalhouse.coworking.dto.modificacion.tipoSala.TipoSalaModificacionEntradaDto;
 import com.backend.digitalhouse.coworking.dto.salida.tipoSala.TipoSalaSalidaDto;
 import com.backend.digitalhouse.coworking.exceptions.BadRequestException;
 import com.backend.digitalhouse.coworking.exceptions.ResourceNotFoundException;
@@ -13,8 +12,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import org.apache.catalina.connector.Response;
-import org.hibernate.sql.results.graph.collection.internal.MapInitializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +26,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/tiposala")
+@CrossOrigin(origins = "http://localhost:3000")
 public class TipoSalaController {
     private final ITipoSalaService tipoSalaService;
 
@@ -38,7 +36,7 @@ public class TipoSalaController {
     }
 
     //POST
-    @Operation(summary = "Se registra un nuevo tipo de sala")
+    @Operation(summary = "Se registro un tipo de sala")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "El tipo de sala se ha registrada correctamente",
                     content = {@Content(mediaType = "application/json",
@@ -50,7 +48,6 @@ public class TipoSalaController {
     })
     @PreAuthorize("hasAuthority('SAVE_ONE_TIPOSALA')")
     @PostMapping("/registrar")
-    @CrossOrigin(origins = "http://127.0.0.1:5500")
     public ResponseEntity<TipoSalaSalidaDto> registrarTipoSala(@Valid @RequestBody TipoSalaEntradaDto tipoSala) throws BadRequestException {
         return new ResponseEntity<>(tipoSalaService.registrarTipoSala(tipoSala), HttpStatus.CREATED);
     }
@@ -71,7 +68,8 @@ public class TipoSalaController {
         return ResponseEntity.status(status).body(apiError);
         }
 
-    //PUT
+    //PATCH
+
     @Operation(summary = "Modificacion de tipo sala")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Tipo sala modificado correctamente",
@@ -85,9 +83,9 @@ public class TipoSalaController {
                     content = @Content)
     })
 
-    @PutMapping("/modificar")
-    public ResponseEntity<TipoSalaSalidaDto> modificarTipoSala(@Valid @RequestBody TipoSalaModificacionEntradaDto tipoSala) throws ResourceNotFoundException {
-        return new ResponseEntity<>(tipoSalaService.modificarTipoSala(tipoSala), HttpStatus.OK);
+    @PatchMapping("/modificar/{id}")
+    public ResponseEntity<TipoSalaSalidaDto> modificarTipoSala(@PathVariable Long id, @Valid @RequestBody Map<String,Object> camposAModificar) throws ResourceNotFoundException {
+        return new ResponseEntity<>(tipoSalaService.modificarTipoSala(id, camposAModificar), HttpStatus.OK);
     }
 
     //GET
@@ -111,7 +109,7 @@ public class TipoSalaController {
 
     @Operation(summary = "Listar todos los tipos de sala")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Listado de los tipos de sala obtenido correspondiente",
+            @ApiResponse(responseCode = "200", description = "Listado de los tipos de sala obtenido correctamente",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = TipoSalaSalidaDto.class))}),
             @ApiResponse(responseCode = "400", description = "Bad request",
@@ -120,8 +118,10 @@ public class TipoSalaController {
                     content = @Content)
     })
 
+
     @PreAuthorize("hasAuthority('READ_ALL_TIPOSSALAS')")
-    @GetMapping()
+    @GetMapping("listar")
+
     public ResponseEntity<List<TipoSalaSalidaDto>> listarTipoSala() {
         return new ResponseEntity<>(tipoSalaService.listarTipoSala(), HttpStatus.OK);
     }
@@ -143,6 +143,6 @@ public class TipoSalaController {
     @DeleteMapping("eliminar/{id}")
     public ResponseEntity<?> eliminarTipoSala(@PathVariable Long id) throws ResourceNotFoundException {
         tipoSalaService.eliminarTipoSala(id);
-        return new ResponseEntity<>("El tipo sala se ha eliminado correctamente", HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>("El tipo de sala se ha eliminado correctamente", HttpStatus.OK);
     }
 }

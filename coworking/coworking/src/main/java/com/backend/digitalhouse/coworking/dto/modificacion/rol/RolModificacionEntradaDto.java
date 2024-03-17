@@ -2,10 +2,13 @@ package com.backend.digitalhouse.coworking.dto.modificacion.rol;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RolModificacionEntradaDto {
+    @NotNull(message = "El campo no puede ser nulo")
+    private Long id;
     @Size(max = 50, message = "El nombre debe tener hasta 50 caracteres")
     private String nombre;
 
@@ -15,7 +18,8 @@ public class RolModificacionEntradaDto {
     public RolModificacionEntradaDto() {
     }
 
-    public RolModificacionEntradaDto(String nombre, int estado) {
+    public RolModificacionEntradaDto(Long id, String nombre, int estado) {
+        this.id = id;
         this.nombre = nombre;
         this.estado = estado;
     }

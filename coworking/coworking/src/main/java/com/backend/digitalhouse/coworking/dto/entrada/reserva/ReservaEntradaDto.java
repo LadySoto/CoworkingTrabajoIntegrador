@@ -2,14 +2,18 @@ package com.backend.digitalhouse.coworking.dto.entrada.reserva;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
+
 
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ReservaEntradaDto {
+    @FutureOrPresent(message = "La fecha no puede ser anterior al dia de hoy")
     @NotNull(message = "Este campo no puede ser nulo, debe especificar fecha y hora de la reserva")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private long fechaHoraInicio;
+    @FutureOrPresent(message = "La fecha no puede ser anterior al dia de hoy")
     @NotNull(message = "Este campo no puede ser nulo, debe especificar fecha y hora de la reserva")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private long fechaHoraFin;
@@ -27,17 +31,33 @@ public class ReservaEntradaDto {
         this.cantidadHora = cantidadHora;
     }
 
-    public long getFechaHoraInicio() {return fechaHoraInicio;}
-    public void setFechaHoraInicio(long fechaHoraInicio) {this.fechaHoraInicio = fechaHoraInicio;}
+    public long getFechaHoraInicio() {
+        return fechaHoraInicio;
+    }
+    public void setFechaHoraInicio(long fechaHoraInicio) {
+        this.fechaHoraInicio = fechaHoraInicio;
+    }
 
-    public long getFechaHoraFin() {return fechaHoraFin;}
-    public void setFechaHoraFin(long fechaHoraFin) {this.fechaHoraFin = fechaHoraFin;}
+    public long getFechaHoraFin() {
+        return fechaHoraFin;
+    }
+    public void setFechaHoraFin(long fechaHoraFin) {
+        this.fechaHoraFin = fechaHoraFin;
+    }
 
-    public long getIdCalificacion() {return idCalificacion;}
-    public void setIdCalificacion(long idCalificacion) {this.idCalificacion = idCalificacion;}
+    public long getIdCalificacion() {
+        return idCalificacion;
+    }
+    public void setIdCalificacion(long idCalificacion) {
+        this.idCalificacion = idCalificacion;
+    }
 
-    public long getCantidadHora() {return cantidadHora;}
-    public void setCantidadHora(long cantidadHora) {this.cantidadHora = cantidadHora;}
+    public long getCantidadHora() {
+        return cantidadHora;
+    }
+    public void setCantidadHora(long cantidadHora) {
+        this.cantidadHora = cantidadHora;
+    }
 
     @Override
     public String toString() {

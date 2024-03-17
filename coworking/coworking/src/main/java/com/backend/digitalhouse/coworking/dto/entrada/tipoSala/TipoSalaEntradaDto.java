@@ -13,24 +13,51 @@ public class TipoSalaEntradaDto {
     @NotBlank(message = "Debe especificarse el nombre de la categoría de la sala")
     private String nombre;
 
+    @Size(max = 500, message = "La descripción debe tener hasta 500 caracteres")
+    @NotNull(message = "La descripción no puede ser nula")
+    @NotBlank(message = "Debe especificarse la descripción de la categoría de la sala")
+    private String descripcion;
+    private String imagen;
+
     public TipoSalaEntradaDto() {
     }
 
-    public TipoSalaEntradaDto(String nombre) {
+    public TipoSalaEntradaDto(String nombre, String descripcion, String imagen) {
         this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.imagen = imagen;
     }
 
     public String getNombre() {
         return nombre;
     }
+
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
     }
 
     @Override
     public String toString() {
         return "TipoSalaEntradaDto{" +
                 "nombre='" + nombre + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                ", imagen='" + imagen + '\'' +
                 '}';
     }
 }

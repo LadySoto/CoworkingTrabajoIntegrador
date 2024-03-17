@@ -1,13 +1,13 @@
 package com.backend.digitalhouse.coworking.service;
 
 import com.backend.digitalhouse.coworking.dto.entrada.rol.RolEntradaDto;
-import com.backend.digitalhouse.coworking.dto.modificacion.rol.RolModificacionEntradaDto;
 import com.backend.digitalhouse.coworking.dto.salida.rol.RolSalidaDto;
 import com.backend.digitalhouse.coworking.exceptions.BadRequestException;
 import com.backend.digitalhouse.coworking.exceptions.ResourceNotFoundException;
 import java.util.List;
+import java.util.Map;
 
-    public interface IRolService {
+public interface IRolService {
         List<RolSalidaDto> listarRoles();
 
         RolSalidaDto registrarRol(RolEntradaDto rol) throws BadRequestException;
@@ -16,5 +16,5 @@ import java.util.List;
 
         void eliminarRol(Long id) throws ResourceNotFoundException;
 
-        RolSalidaDto modificarRol(RolModificacionEntradaDto rolModificado) throws ResourceNotFoundException;
+        RolSalidaDto modificarRol(Long id, Map<String, Object> camposAModificar) throws ResourceNotFoundException;
     }

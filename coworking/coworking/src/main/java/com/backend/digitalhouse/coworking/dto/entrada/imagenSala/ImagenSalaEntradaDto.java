@@ -3,11 +3,13 @@ package com.backend.digitalhouse.coworking.dto.entrada.imagenSala;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.NotNull;
 
+import java.util.List;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ImagenSalaEntradaDto {
 
     @NotNull(message = "Este campo no puede ser nulo")
-    private long idImagenes;
+    private List<Long> idImagen;
 
     @NotNull(message = "Este campo no puede ser nulo")
     private long idSala;
@@ -15,21 +17,23 @@ public class ImagenSalaEntradaDto {
     public ImagenSalaEntradaDto() {
     }
 
-    public ImagenSalaEntradaDto(long idImagen, long idSala) {
-        this.idImagenes = idImagen;
+    public ImagenSalaEntradaDto(List<Long> idImagen, long idSala) {
+        this.idImagen = idImagen;
         this.idSala = idSala;
     }
 
-    public long getIdImagen() {
-        return idImagenes;
+    public List<Long> getIdImagen() {
+        return idImagen;
     }
-    public void setIdImagen(long idImagen) {
-        this.idImagenes = idImagen;
+
+    public void setIdImagen(List<Long> idImagen) {
+        this.idImagen = idImagen;
     }
 
     public long getIdSala() {
         return idSala;
     }
+
     public void setIdSala(long idSala) {
         this.idSala = idSala;
     }
@@ -37,7 +41,7 @@ public class ImagenSalaEntradaDto {
     @Override
     public String toString() {
         return "ImagenSalaEntradaDto{" +
-                "idImagenes=" + idImagenes +
+                "idImagenes=" + idImagen +
                 ", idSala=" + idSala +
                 '}';
     }

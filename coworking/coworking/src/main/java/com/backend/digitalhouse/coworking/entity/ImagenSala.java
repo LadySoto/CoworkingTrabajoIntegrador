@@ -3,7 +3,7 @@ package com.backend.digitalhouse.coworking.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "IMAGENES_SALA")
+@Table(name = "IMAGENES_SALAS")
 public class ImagenSala {
 
     @Id
