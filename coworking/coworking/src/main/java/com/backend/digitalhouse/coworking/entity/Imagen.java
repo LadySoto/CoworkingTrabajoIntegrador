@@ -14,16 +14,17 @@ public class Imagen {
     private String nombre;
     @Column(name = "IMAGEN")
     private String imagen;
-    @Column(name = "ESTADO")
-    private int estado;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="salas_id_sala")
+    private Sala sala;
 
     public Imagen() {
     }
 
-    public Imagen(String nombre, String imagen, int estado) {
+    public Imagen(String nombre, String imagen, Sala sala) {
         this.nombre = nombre;
         this.imagen = imagen;
-        this.estado = estado;
+        this.sala = sala;
     }
 
     public Long getId() {
@@ -50,12 +51,12 @@ public class Imagen {
         this.imagen = imagen;
     }
 
-    public int getEstado() {
-        return estado;
+    public Sala getSala() {
+        return sala;
     }
 
-    public void setEstado(int estado) {
-        this.estado = estado;
+    public void setSala(Sala sala) {
+        this.sala = sala;
     }
 
     @Override
@@ -64,7 +65,7 @@ public class Imagen {
                 "id=" + id +
                 ", nombre='" + nombre + '\'' +
                 ", imagen='" + imagen + '\'' +
-                ", estado=" + estado +
+                ", sala='" + sala +
                 '}';
     }
 }

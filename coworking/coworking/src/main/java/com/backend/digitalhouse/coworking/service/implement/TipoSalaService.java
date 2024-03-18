@@ -1,11 +1,8 @@
 package com.backend.digitalhouse.coworking.service.implement;
 
 import com.backend.digitalhouse.coworking.dto.entrada.tipoSala.TipoSalaEntradaDto;
-import com.backend.digitalhouse.coworking.dto.modificacion.calificacion.CalificacionModificacionEntradaDto;
 import com.backend.digitalhouse.coworking.dto.modificacion.tipoSala.TipoSalaModificacionEntradaDto;
-import com.backend.digitalhouse.coworking.dto.salida.calificacion.CalificacionSalidaDto;
 import com.backend.digitalhouse.coworking.dto.salida.tipoSala.TipoSalaSalidaDto;
-import com.backend.digitalhouse.coworking.entity.Calificacion;
 import com.backend.digitalhouse.coworking.entity.TipoSala;
 import com.backend.digitalhouse.coworking.exceptions.BadRequestException;
 import com.backend.digitalhouse.coworking.exceptions.ResourceNotFoundException;

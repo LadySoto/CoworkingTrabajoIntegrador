@@ -1,64 +1,105 @@
 package com.backend.digitalhouse.coworking.dto.entrada.reservaEspacio;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.Column;
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
+
+import java.time.LocalDateTime;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ReservaEspacioEntradaDto {
     @NotNull(message = "Este campo no puede ser nulo")
-    private long idUsuario;
+    private Long idUsuario;
+
     @NotNull(message = "Este campo no puede ser nulo")
-    private long idReserva;
+    private Long idSala;
+
+    @FutureOrPresent(message = "La fecha no puede ser anterior al dia de hoy")
+    @NotNull(message = "Este campo no puede ser nulo, debe especificar fecha y hora de la reserva")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime fechaHoraInicio;
+
+    @FutureOrPresent(message = "La fecha no puede ser anterior al dia de hoy")
+    @NotNull(message = "Este campo no puede ser nulo, debe especificar fecha y hora de la reserva")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime fechaHoraFin;
+
     @NotNull(message = "Este campo no puede ser nulo")
-    private long idSala;
-    @NotNull(message = "Este campo no puede ser nulo")
-    private long idServicio;
+    private int cantidadHora;
+
+    private int calificacion;
 
     public ReservaEspacioEntradaDto() {
     }
 
-    public ReservaEspacioEntradaDto(long idUsuario, long idReserva, long idSala, long idServicio) {
+    public ReservaEspacioEntradaDto(Long idUsuario, Long idSala, LocalDateTime fechaHoraInicio, LocalDateTime fechaHoraFin, int cantidadHora, int calificacion) {
         this.idUsuario = idUsuario;
-        this.idReserva = idReserva;
         this.idSala = idSala;
-        this.idServicio = idServicio;
+        this.fechaHoraInicio = fechaHoraInicio;
+        this.fechaHoraFin = fechaHoraFin;
+        this.cantidadHora = cantidadHora;
+        this.calificacion = calificacion;
     }
 
-    public long getIdUsuario() {
+    public Long getIdUsuario() {
         return idUsuario;
     }
-    public void setIdUsuario(long idUsuario) {
+
+    public void setIdUsuario(Long idUsuario) {
         this.idUsuario = idUsuario;
     }
 
-    public long getIdReserva() {
-        return idReserva;
-    }
-    public void setIdReserva(long idReserva) {
-        this.idReserva = idReserva;
-    }
-
-    public long getIdSala() {
+    public Long getIdSala() {
         return idSala;
     }
-    public void setIdSala(long idSala) {
+
+    public void setIdSala(Long idSala) {
         this.idSala = idSala;
     }
 
-    public long getIdServicio() {
-        return idServicio;
+    public LocalDateTime getFechaHoraInicio() {
+        return fechaHoraInicio;
     }
-    public void setIdServicio(long idServicio) {
-        this.idServicio = idServicio;
+
+    public void setFechaHoraInicio(LocalDateTime fechaHoraInicio) {
+        this.fechaHoraInicio = fechaHoraInicio;
+    }
+
+    public LocalDateTime getFechaHoraFin() {
+        return fechaHoraFin;
+    }
+
+    public void setFechaHoraFin(LocalDateTime fechaHoraFin) {
+        this.fechaHoraFin = fechaHoraFin;
+    }
+
+    public int getCantidadHora() {
+        return cantidadHora;
+    }
+
+    public void setCantidadHora(int cantidadHora) {
+        this.cantidadHora = cantidadHora;
+    }
+
+    public int getCalificacion() {
+        return calificacion;
+    }
+
+    public void setCalificacion(int calificacion) {
+        this.calificacion = calificacion;
     }
 
     @Override
     public String toString() {
         return "ReservaEspacioEntradaDto{" +
-                "idUsuario=" + idUsuario +
-                ", idReserva=" + idReserva +
+                ", idUsuario=" + idUsuario +
                 ", idSala=" + idSala +
-                ", idServicio=" + idServicio +
+                ", fecha y hora inicial=" + fechaHoraInicio +
+                ", fecha y hora final=" + fechaHoraFin +
+                ", cantidad de horas=" + cantidadHora +
+                ", calificación=" + calificacion +
                 '}';
     }
 }
