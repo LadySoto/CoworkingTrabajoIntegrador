@@ -2,7 +2,7 @@ package com.backend.digitalhouse.coworking.controller;
 
 import com.backend.digitalhouse.coworking.dto.AuthenticationRequest;
 import com.backend.digitalhouse.coworking.dto.AuthenticationResponse;
-import com.backend.digitalhouse.coworking.service.AuthenticationService;
+import com.backend.digitalhouse.coworking.service.implement.AuthenticationService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +21,6 @@ public class AuthenticationController {
   private AuthenticationService authenticationService;
 
   @PreAuthorize("permitAll")
-
   @PostMapping("/authenticate")
   public ResponseEntity<AuthenticationResponse> login(
       @RequestBody @Valid AuthenticationRequest authRequest) {

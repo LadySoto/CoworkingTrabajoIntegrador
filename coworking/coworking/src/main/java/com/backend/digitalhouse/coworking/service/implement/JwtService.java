@@ -1,6 +1,5 @@
-package com.backend.digitalhouse.coworking.service;
+package com.backend.digitalhouse.coworking.service.implement;
 
-import com.backend.digitalhouse.coworking.CoworkingApplication;
 import com.backend.digitalhouse.coworking.entity.Usuario;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 @Service
