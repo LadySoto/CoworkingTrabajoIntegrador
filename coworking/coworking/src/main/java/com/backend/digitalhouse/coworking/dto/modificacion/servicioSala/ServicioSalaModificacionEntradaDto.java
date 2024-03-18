@@ -1,7 +1,7 @@
 package com.backend.digitalhouse.coworking.dto.modificacion.servicioSala;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ServicioSalaModificacionEntradaDto {

@@ -2,7 +2,7 @@ package com.backend.digitalhouse.coworking.dto.modificacion.reservaEspacio;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import javax.validation.constraints.*;
+import jakarta.validation.constraints.*;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ReservaEspacioModificacionEntradaDto {

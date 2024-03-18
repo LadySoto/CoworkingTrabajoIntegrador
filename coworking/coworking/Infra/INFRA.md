@@ -8,7 +8,6 @@ Reemplazar las X por el container id (docker ps)
 docker exec -it XXXXX mysql -uroot -p 
 ```
 
-
 ```sql
 CREATE DATABASE coworking;
 ```

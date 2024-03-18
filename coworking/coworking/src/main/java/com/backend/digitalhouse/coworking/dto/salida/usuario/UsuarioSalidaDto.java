@@ -3,10 +3,6 @@ package com.backend.digitalhouse.coworking.dto.salida.usuario;
 import com.backend.digitalhouse.coworking.dto.salida.rol.RolSalidaDto;
 import com.backend.digitalhouse.coworking.dto.salida.tipoIdentificacion.TipoIdentificacionSalidaDto;
 
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-
 public class UsuarioSalidaDto {
 
     private Long id;

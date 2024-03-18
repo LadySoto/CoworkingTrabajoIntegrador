@@ -10,11 +10,12 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +31,7 @@ public class SalaController {
     }
 
     //POST
-    @Operation(summary = "Se registro una sala")
+    @Operation(summary = "Se registró una sala")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Sala registrada correctamente",
                     content = {@Content(mediaType = "application/json",
@@ -40,6 +41,7 @@ public class SalaController {
             @ApiResponse(responseCode = "500", description = "Server error",
                     content = @Content)
     })
+    @PreAuthorize("hasAuthority('SAVE_ONE_SALA')")
     @PostMapping("/registrar")
     public ResponseEntity<SalaSalidaDto> registrarSala(@Valid @RequestBody SalaEntradaDto sala) throws BadRequestException {
         return new ResponseEntity<>(salaService.registrarSala(sala), HttpStatus.CREATED);
@@ -94,7 +96,9 @@ public class SalaController {
                     content = @Content)
     })
 
+    @PreAuthorize("hasAuthority('READ_ALL_SALAS')")
     @GetMapping("listar")
+
     public ResponseEntity<List<SalaSalidaDto>> listarSalas() {
         return new ResponseEntity<>(salaService.listarSalas(), HttpStatus.OK);
     }

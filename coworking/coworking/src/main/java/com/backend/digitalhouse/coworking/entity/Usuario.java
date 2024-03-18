@@ -1,10 +1,18 @@
 package com.backend.digitalhouse.coworking.entity;
 
-import javax.persistence.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import com.backend.digitalhouse.coworking.util.Role;
+import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table(name = "USUARIOS")
-public class Usuario {
+public class Usuario implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,6 +47,9 @@ public class Usuario {
         this.estado = estado;
         this.rol = rol;
     }
+
+    @Enumerated (EnumType.STRING)
+    private Role role;
 
     public Long getId() {
         return id;
@@ -116,5 +127,47 @@ public class Usuario {
                 ", estado=" + estado +
                 ", rol=" + rol +
                 '}';
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+
+        List<SimpleGrantedAuthority> authorities = role.getPermissions().stream()
+                .map(permissionEnum -> new SimpleGrantedAuthority(permissionEnum.name()))
+                .collect(Collectors.toList());
+
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + role.name()));
+
+    return authorities;
+    }
+
+    @Override
+    public String getPassword() {
+        return this.contrasena ;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.nombre;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
