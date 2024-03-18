@@ -1,4 +1,4 @@
-package com.backend.digitalhouse.coworking.service;
+package com.backend.digitalhouse.coworking.service.implement;
 
 import com.backend.digitalhouse.coworking.dto.AuthenticationRequest;
 import com.backend.digitalhouse.coworking.dto.AuthenticationResponse;
@@ -34,11 +34,12 @@ public class AuthenticationService {
         LOGGER.info("Contraseña: {}", authRequest.getContraseña());
 
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(authRequest.getCorreo(), authRequest.getContraseña());
-
+        LOGGER.info("authToken: {}", authToken);
 
         authenticationManager.authenticate(authToken);
 
         Usuario usuario = usuarioRepository.findByCorreo(authRequest.getCorreo()).get();
+        LOGGER.info("usuario: {}", usuario);
 
         String jwt = jwtService.generateToken(usuario, generateExtraClaims(usuario));
         
