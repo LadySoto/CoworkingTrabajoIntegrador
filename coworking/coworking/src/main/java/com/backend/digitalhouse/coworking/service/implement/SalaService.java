@@ -89,7 +89,7 @@ public class SalaService implements ISalaService {
 
         if (salaGuardada.isPresent()) {
             camposAModificar.forEach((key, value) -> {
-                if (key.equals("tiposala")){
+                if (key.equals("tipoSala")){
                     TipoSalaSalidaDto cambioTipoSala = tipoSalaService.buscarTipoSalaPorId(convertirALong(value));
                     TipoSala tipoSala = modelMapper.map(cambioTipoSala, TipoSala.class);
                     Field campoAModificar = ReflectionUtils.findField(Sala.class, key);

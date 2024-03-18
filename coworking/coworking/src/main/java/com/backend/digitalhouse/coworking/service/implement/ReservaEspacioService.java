@@ -2,7 +2,6 @@ package com.backend.digitalhouse.coworking.service.implement;
 
 import com.backend.digitalhouse.coworking.dto.entrada.reservaEspacio.ReservaEspacioEntradaDto;
 import com.backend.digitalhouse.coworking.dto.modificacion.reservaEspacio.ReservaEspacioModificacionEntradaDto;
-import com.backend.digitalhouse.coworking.dto.salida.reserva.ReservaSalidaDto;
 import com.backend.digitalhouse.coworking.dto.salida.reservaEspacio.ReservaEspacioSalidaDto;
 import com.backend.digitalhouse.coworking.dto.salida.sala.SalaSalidaDto;
 import com.backend.digitalhouse.coworking.dto.salida.usuario.UsuarioSalidaDto;
@@ -14,6 +13,7 @@ import com.backend.digitalhouse.coworking.service.IReservaEspacioService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 import java.lang.reflect.Field;
@@ -27,23 +27,21 @@ public class ReservaEspacioService implements IReservaEspacioService {
     private final ReservaEspacioRepository reservaEspacioRepository;
     private final ModelMapper modelMapper;
     private final UsuarioService usuarioService;
-    private final ReservaService reservaService;
     private final SalaService salaService;
 
-    public ReservaEspacioService(ReservaEspacioRepository reservaEspacioRepository, ModelMapper modelMapper, UsuarioService usuarioService, ReservaService reservaService, SalaService salaService) {
+    @Autowired
+    public ReservaEspacioService(ReservaEspacioRepository reservaEspacioRepository, ModelMapper modelMapper, UsuarioService usuarioService, SalaService salaService) {
         this.reservaEspacioRepository = reservaEspacioRepository;
         this.modelMapper = modelMapper;
         this.usuarioService = usuarioService;
-        this.reservaService = reservaService;
         this.salaService = salaService;
-        configureMappings();
     }
 
     @Override
     public ReservaEspacioSalidaDto registrarReservaEspacio(ReservaEspacioEntradaDto reservaEspacio) throws BadRequestException {
         if (reservaEspacio!= null) {
             ReservaEspacioSalidaDto reservaEspacioSalidaDto = entidadADtoSalida(reservaEspacioRepository.save(dtoEntradaAEntidad(reservaEspacio)));
-            LOGGER.info("Nuevo reserva de espacio registrada con exito: {}", reservaEspacioSalidaDto);
+            LOGGER.info("Nueva reserva de espacio registrada con exito: {}", reservaEspacioSalidaDto);
             return reservaEspacioSalidaDto;
         } else {
             LOGGER.error("No se pudo registrar la reserva de espacio");
@@ -99,12 +97,6 @@ public class ReservaEspacioService implements IReservaEspacioService {
                     Field campoAModificar = ReflectionUtils.findField(ReservaEspacio.class, key);
                     campoAModificar.setAccessible(true);
                     ReflectionUtils.setField(campoAModificar, reservaEspacioGuardada.get(), usuario);
-                } else if (key.equals("reserva")) {
-                    ReservaSalidaDto cambioReserva = reservaService.buscarReservaPorId(convertirALong(value));
-                    Reserva reserva = modelMapper.map(cambioReserva, Reserva.class);
-                    Field campoAModificar = ReflectionUtils.findField(ReservaEspacio.class, key);
-                    campoAModificar.setAccessible(true);
-                    ReflectionUtils.setField(campoAModificar, reservaEspacioGuardada.get(), reserva);
                 } else if (key.equals("sala")) {
                     SalaSalidaDto cambioSala = salaService.buscarSalaPorId(convertirALong(value));
                     Sala sala = modelMapper.map(cambioSala, Sala.class);
@@ -131,22 +123,16 @@ public class ReservaEspacioService implements IReservaEspacioService {
     private void configureMappings() {
         modelMapper.emptyTypeMap(ReservaEspacioEntradaDto.class, ReservaEspacio.class)
                 .addMappings(mapper -> mapper.map(ReservaEspacioEntradaDto::getIdUsuario, ReservaEspacio::setUsuario))
-                .addMappings(mapper -> mapper.map(ReservaEspacioEntradaDto::getIdReserva, ReservaEspacio::setReserva))
                 .addMappings(mapper -> mapper.map(ReservaEspacioEntradaDto::getIdSala, ReservaEspacio::setSala));
         modelMapper.typeMap(ReservaEspacio.class, ReservaEspacioSalidaDto.class);
         modelMapper.typeMap(ReservaEspacioModificacionEntradaDto.class, ReservaEspacio.class);
         modelMapper.typeMap(UsuarioSalidaDto.class, Usuario.class);
-        modelMapper.typeMap(ReservaSalidaDto.class, Reserva.class);
         modelMapper.typeMap(SalaSalidaDto.class, Sala.class);
     }
 
     private Usuario usuarioEntradaDtoAEntity(Long id) {
         Usuario usuario = modelMapper.map(usuarioService.buscarUsuarioPorId(id), Usuario.class);
         return usuario;
-    }
-    private Reserva reservaEntradaDtoAEntity(Long id) {
-        Reserva reserva = modelMapper.map(reservaService.buscarReservaPorId(id), Reserva.class);
-        return reserva;
     }
 
     private Sala salaEntradaDtoAEntity(Long id) {
@@ -157,16 +143,15 @@ public class ReservaEspacioService implements IReservaEspacioService {
     public ReservaEspacio dtoEntradaAEntidad(ReservaEspacioEntradaDto reservaEspacioEntradaDto) {
         ReservaEspacio reservaEspacio = modelMapper.map(reservaEspacioEntradaDto, ReservaEspacio.class);
         reservaEspacio.setUsuario(usuarioEntradaDtoAEntity(reservaEspacioEntradaDto.getIdUsuario()));
-        reservaEspacio.setReserva(reservaEntradaDtoAEntity(reservaEspacioEntradaDto.getIdReserva()));
         reservaEspacio.setSala(salaEntradaDtoAEntity(reservaEspacioEntradaDto.getIdSala()));
         return reservaEspacio;
     }
 
     private UsuarioSalidaDto entityAUsuarioSalidaDto(Usuario usuario) {
-        return modelMapper.map(usuario, UsuarioSalidaDto.class);
-    }
-    private ReservaSalidaDto entityAReservaSalidaDto(Reserva reserva) {
-        return modelMapper.map(reserva, ReservaSalidaDto.class);
+        UsuarioSalidaDto usuarioSalidaDto = modelMapper.map(usuario, UsuarioSalidaDto.class);
+        usuarioSalidaDto.setIdTipoIdentificacion(usuarioService.entityATipoIdentificacionSalidaDto(usuario.getTipoIdentificacion()));
+        usuarioSalidaDto.setIdRol(usuarioService.entityARolSalidaDto(usuario.getRol()));
+        return usuarioSalidaDto;
     }
     private SalaSalidaDto entityASalaSalidaDto(Sala sala) {
         return modelMapper.map(sala, SalaSalidaDto.class);
@@ -175,7 +160,6 @@ public class ReservaEspacioService implements IReservaEspacioService {
     public ReservaEspacioSalidaDto entidadADtoSalida(ReservaEspacio reservaEspacio) {
         ReservaEspacioSalidaDto reservaEspacioSalidaDto = modelMapper.map(reservaEspacio, ReservaEspacioSalidaDto.class);
         reservaEspacioSalidaDto.setUsuario(entityAUsuarioSalidaDto(reservaEspacio.getUsuario()));
-        reservaEspacioSalidaDto.setReserva(entityAReservaSalidaDto(reservaEspacio.getReserva()));
         reservaEspacioSalidaDto.setSala(entityASalaSalidaDto(reservaEspacio.getSala()));
         return reservaEspacioSalidaDto;
     }
@@ -184,9 +168,6 @@ public class ReservaEspacioService implements IReservaEspacioService {
         ReservaEspacio reservaEspacio = modelMapper.map(reservaEspacioModificacionEntradaDto, ReservaEspacio.class);
         if (reservaEspacioModificacionEntradaDto.getIdUsuario() != 0){
             reservaEspacio.setUsuario(usuarioEntradaDtoAEntity(reservaEspacioModificacionEntradaDto.getIdUsuario()));
-        }
-        if (reservaEspacioModificacionEntradaDto.getIdReserva() != 0){
-            reservaEspacio.setReserva(reservaEntradaDtoAEntity(reservaEspacioModificacionEntradaDto.getIdReserva()));
         }
         if (reservaEspacioModificacionEntradaDto.getIdSala() != 0){
             reservaEspacio.setSala(salaEntradaDtoAEntity(reservaEspacioModificacionEntradaDto.getIdSala()));

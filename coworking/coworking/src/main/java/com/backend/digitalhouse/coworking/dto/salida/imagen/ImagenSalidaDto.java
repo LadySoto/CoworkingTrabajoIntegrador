@@ -1,10 +1,13 @@
 package com.backend.digitalhouse.coworking.dto.salida.imagen;
 
+import com.backend.digitalhouse.coworking.dto.salida.sala.SalaSalidaDto;
+
 public class ImagenSalidaDto {
     private Long id;
     private String nombre;
     private String imagen;
     private int estado;
+    private SalaSalidaDto sala;
 
     public ImagenSalidaDto() {
     }

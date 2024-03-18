@@ -13,8 +13,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ReflectionUtils;
+
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class TipoIdentificacionService implements ITipoIdentificacionService {
@@ -27,11 +31,6 @@ public class TipoIdentificacionService implements ITipoIdentificacionService {
         this.tipoIdentificacionRepository = tipoIdentificacionRepository;
         this.modelMapper = modelMapper;
         configureMappings();
-    }
-
-    private void configureMappings() {
-        modelMapper.typeMap(TipoIdentificacionEntradaDto.class, TipoIdentificacion.class);
-        modelMapper.typeMap(TipoIdentificacion.class, TipoIdentificacionSalidaDto.class);
     }
 
     @Override
@@ -85,9 +84,31 @@ public class TipoIdentificacionService implements ITipoIdentificacionService {
 
     @Override
     public TipoIdentificacionSalidaDto modificarTipoIdentificacion(Long id, Map<String, Object> camposAModificar) throws ResourceNotFoundException {
-        return null;
+        Optional<TipoIdentificacion> tipoIdentificacionGuardada = tipoIdentificacionRepository.findById(id);
+        TipoIdentificacionSalidaDto tipoIdentificacionSalidaDto = null;
+
+        if (tipoIdentificacionGuardada.isPresent()) {
+            camposAModificar.forEach((key, value) -> {
+                Field campoAModificar = ReflectionUtils.findField(TipoIdentificacion.class, key);
+                campoAModificar.setAccessible(true);
+                ReflectionUtils.setField(campoAModificar, tipoIdentificacionGuardada.get(), value);
+            });
+            tipoIdentificacionRepository.save(tipoIdentificacionGuardada.get());
+            tipoIdentificacionSalidaDto = entidadADtoSalida(tipoIdentificacionGuardada.get());
+            LOGGER.info("El tipo de identificacion ha sido actualizada: {}", tipoIdentificacionGuardada.get());
+
+            return tipoIdentificacionSalidaDto;
+        } else {
+            LOGGER.error("No fue posible actualizar los datos, el tipo de identificacion no se encuentra registrado");
+            throw new ResourceNotFoundException("No fue posible actualizar los datos, el tipo de identificacion no se encuentra registrado");
+        }
     }
 
+    private void configureMappings() {
+        modelMapper.typeMap(TipoIdentificacionEntradaDto.class, TipoIdentificacion.class);
+        modelMapper.typeMap(TipoIdentificacion.class, TipoIdentificacionSalidaDto.class);
+        modelMapper.typeMap(TipoIdentificacionModificacionEntradaDto.class, TipoIdentificacion.class);
+    }
     private TipoIdentificacion dtoEntradaAEntidad(TipoIdentificacionEntradaDto tipoIdentificacionEntradaDto) {
         return modelMapper.map(tipoIdentificacionEntradaDto, TipoIdentificacion.class);
     }

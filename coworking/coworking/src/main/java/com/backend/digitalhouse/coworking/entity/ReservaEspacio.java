@@ -2,13 +2,15 @@ package com.backend.digitalhouse.coworking.entity;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "RESERVAS_ESPACIOS")
 public class ReservaEspacio {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_REVERVA_ESPACIO")
+    @Column(name = "ID_RESERVA_ESPACIO")
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
@@ -16,20 +18,32 @@ public class ReservaEspacio {
     private Usuario usuario;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="reservas_id_reserva")
-    private Reserva reserva;
-
-    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="salas_id_sala")
     private Sala sala;
+
+    @Column(name = "FECHA_HORA_INICIO")
+    private LocalDateTime fechaHoraInicio;
+
+    @Column(name = "FECHA_HORA_FIN")
+    private LocalDateTime fechaHoraFin;
+
+    @Column(name="CANTIDAD_HORA")
+    private int cantidadHora;
+
+    @Column(name = "CALIFICACION")
+    private int calificacion;
 
     public ReservaEspacio() {
     }
 
-    public ReservaEspacio(Usuario usuario, Reserva reserva, Sala sala) {
+    public ReservaEspacio(Long id, Usuario usuario, Sala sala, LocalDateTime fechaHoraInicio, LocalDateTime fechaHoraFin, int cantidadHora, int calificacion) {
+        this.id = id;
         this.usuario = usuario;
-        this.reserva = reserva;
         this.sala = sala;
+        this.fechaHoraInicio = fechaHoraInicio;
+        this.fechaHoraFin = fechaHoraFin;
+        this.cantidadHora = cantidadHora;
+        this.calificacion = calificacion;
     }
 
     public Long getId() {
@@ -48,14 +62,6 @@ public class ReservaEspacio {
         this.usuario = usuario;
     }
 
-    public Reserva getReserva() {
-        return reserva;
-    }
-
-    public void setReserva(Reserva reserva) {
-        this.reserva = reserva;
-    }
-
     public Sala getSala() {
         return sala;
     }
@@ -64,13 +70,48 @@ public class ReservaEspacio {
         this.sala = sala;
     }
 
+    public LocalDateTime getFechaHoraInicio() {
+        return fechaHoraInicio;
+    }
+
+    public void setFechaHoraInicio(LocalDateTime fechaHoraInicio) {
+        this.fechaHoraInicio = fechaHoraInicio;
+    }
+
+    public LocalDateTime getFechaHoraFin() {
+        return fechaHoraFin;
+    }
+
+    public void setFechaHoraFin(LocalDateTime fechaHoraFin) {
+        this.fechaHoraFin = fechaHoraFin;
+    }
+
+    public int getCantidadHora() {
+        return cantidadHora;
+    }
+
+    public void setCantidadHora(int cantidadHora) {
+        this.cantidadHora = cantidadHora;
+    }
+
+    public int getCalificacion() {
+        return calificacion;
+    }
+
+    public void setCalificacion(int calificacion) {
+        this.calificacion = calificacion;
+    }
+
     @Override
     public String toString() {
         return "ReservaEspacio{" +
                 "id=" + id +
                 ", usuario=" + usuario +
-                ", reserva=" + reserva +
                 ", sala=" + sala +
+                ", fechaHoraInicio=" + fechaHoraInicio +
+                ", fechaHoraFin=" + fechaHoraFin +
+                ", cantidadHora=" + cantidadHora +
+                ", calificacion=" + calificacion +
                 '}';
     }
 }

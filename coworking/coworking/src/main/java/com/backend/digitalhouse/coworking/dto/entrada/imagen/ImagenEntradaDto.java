@@ -23,6 +23,9 @@ public class ImagenEntradaDto {
     @Digits(integer = 1, fraction = 0, message = "El numero debe tener como maximo 1 dígito")
     private int estado;
 
+    @NotNull(message = "Este campo no puede ser nulo")
+    private long idSala;
+
     public ImagenEntradaDto() {
     }
 

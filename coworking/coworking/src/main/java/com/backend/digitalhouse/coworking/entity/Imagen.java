@@ -17,6 +17,11 @@ public class Imagen {
     @Column(name = "ESTADO")
     private int estado;
 
+    /*@OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="salas_id_sala")
+    private Long idSala;*/
+
+
     public Imagen() {
     }
 
