@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface IRolService {
-        List<RolSalidaDto> listarRoles();
-
         RolSalidaDto registrarRol(RolEntradaDto rol) throws BadRequestException;
+
+        List<RolSalidaDto> listarRoles();
 
         RolSalidaDto buscarRolPorId(Long id);
 

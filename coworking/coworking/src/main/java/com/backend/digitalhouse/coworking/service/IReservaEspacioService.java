@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface IReservaEspacioService {
-    List<ReservaEspacioSalidaDto> listarReservaEspacios();
-
     ReservaEspacioSalidaDto registrarReservaEspacio(ReservaEspacioEntradaDto reservaEspacio) throws BadRequestException;
+
+    List<ReservaEspacioSalidaDto> listarReservaEspacios();
 
     ReservaEspacioSalidaDto buscarReservaEspacioPorId(Long id);
 

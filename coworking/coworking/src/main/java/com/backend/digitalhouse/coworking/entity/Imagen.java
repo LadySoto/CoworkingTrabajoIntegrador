@@ -21,7 +21,6 @@ public class Imagen {
     @JoinColumn(name="salas_id_sala")
     private Long idSala;*/
 
-
     public Imagen() {
     }
 

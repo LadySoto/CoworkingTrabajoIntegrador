@@ -4,7 +4,6 @@ import com.backend.digitalhouse.coworking.entity.TipoIdentificacion;
 import com.backend.digitalhouse.coworking.repository.TipoIdentificacionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-
 import java.util.Arrays;
 import java.util.List;
 

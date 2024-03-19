@@ -1,8 +1,8 @@
-package com.backend.digitalhouse.coworking.controller;
+package com.backend.digitalhouse.coworking.controller.security;
 
-import com.backend.digitalhouse.coworking.dto.AuthenticationRequest;
-import com.backend.digitalhouse.coworking.dto.AuthenticationResponse;
-import com.backend.digitalhouse.coworking.service.implement.AuthenticationService;
+import com.backend.digitalhouse.coworking.dto.security.AuthenticationRequest;
+import com.backend.digitalhouse.coworking.dto.security.AuthenticationResponse;
+import com.backend.digitalhouse.coworking.service.implement.security.AuthenticationService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

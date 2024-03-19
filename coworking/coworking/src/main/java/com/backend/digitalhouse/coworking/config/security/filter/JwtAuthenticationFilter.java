@@ -2,7 +2,7 @@ package com.backend.digitalhouse.coworking.config.security.filter;
 
 import com.backend.digitalhouse.coworking.entity.Usuario;
 import com.backend.digitalhouse.coworking.repository.UsuarioRepository;
-import com.backend.digitalhouse.coworking.service.implement.JwtService;
+import com.backend.digitalhouse.coworking.service.implement.security.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

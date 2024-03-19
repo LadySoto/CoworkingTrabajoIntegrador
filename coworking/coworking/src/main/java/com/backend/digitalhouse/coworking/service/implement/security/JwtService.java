@@ -1,4 +1,4 @@
-package com.backend.digitalhouse.coworking.service.implement;
+package com.backend.digitalhouse.coworking.service.implement.security;
 
 import com.backend.digitalhouse.coworking.entity.Usuario;
 import io.jsonwebtoken.Claims;

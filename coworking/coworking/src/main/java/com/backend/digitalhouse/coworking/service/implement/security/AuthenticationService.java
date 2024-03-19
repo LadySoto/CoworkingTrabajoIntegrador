@@ -1,7 +1,7 @@
-package com.backend.digitalhouse.coworking.service.implement;
+package com.backend.digitalhouse.coworking.service.implement.security;
 
-import com.backend.digitalhouse.coworking.dto.AuthenticationRequest;
-import com.backend.digitalhouse.coworking.dto.AuthenticationResponse;
+import com.backend.digitalhouse.coworking.dto.security.AuthenticationRequest;
+import com.backend.digitalhouse.coworking.dto.security.AuthenticationResponse;
 import com.backend.digitalhouse.coworking.entity.Usuario;
 import com.backend.digitalhouse.coworking.repository.UsuarioRepository;
 import org.slf4j.Logger;

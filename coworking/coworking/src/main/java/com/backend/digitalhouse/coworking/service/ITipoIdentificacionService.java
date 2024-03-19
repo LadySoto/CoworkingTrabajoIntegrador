@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface ITipoIdentificacionService {
-    List<TipoIdentificacionSalidaDto> listarTiposIdentificacion();
-
     TipoIdentificacionSalidaDto registrarTipoIdentificacion(TipoIdentificacionEntradaDto tipoIdentificacion) throws BadRequestException;
+
+    List<TipoIdentificacionSalidaDto> listarTiposIdentificacion();
 
     TipoIdentificacionSalidaDto buscarTipoIdentificacionPorId(Long id);
 

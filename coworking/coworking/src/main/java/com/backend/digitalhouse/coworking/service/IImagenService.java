@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface IImagenService {
-    List<ImagenSalidaDto> listarImagenes();
-
     ImagenSalidaDto registrarImagen(ImagenEntradaDto imagen) throws BadRequestException;
+
+    List<ImagenSalidaDto> listarImagenes();
 
     ImagenSalidaDto buscarImagenPorId(Long id);
 

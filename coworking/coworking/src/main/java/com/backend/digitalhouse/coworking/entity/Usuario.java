@@ -3,7 +3,6 @@ package com.backend.digitalhouse.coworking.entity;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import com.backend.digitalhouse.coworking.util.Role;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
