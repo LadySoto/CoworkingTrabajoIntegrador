@@ -19,25 +19,23 @@ public class ImagenEntradaDto {
     @NotBlank(message = "Debe especificarse la ruta de la imagen")
     private String imagen;
 
-    @NotNull(message = "El campo no puede ser nulo")
-    @Digits(integer = 1, fraction = 0, message = "El numero debe tener como maximo 1 dígito")
-    private int estado;
+    @NotNull(message = "Este campo no puede ser nulo")
+    private Long idSala;
 
     @NotNull(message = "Este campo no puede ser nulo")
-    private long idSala;
-
     public ImagenEntradaDto() {
     }
 
-    public ImagenEntradaDto(String nombre, String imagen, int estado) {
+    public ImagenEntradaDto(String nombre, String imagen, Long idSala) {
         this.nombre = nombre;
         this.imagen = imagen;
-        this.estado = estado;
+        this.idSala = idSala;
     }
 
     public String getNombre() {
         return nombre;
     }
+
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
@@ -45,15 +43,17 @@ public class ImagenEntradaDto {
     public String getImagen() {
         return imagen;
     }
+
     public void setImagen(String imagen) {
         this.imagen = imagen;
     }
 
-    public int getEstado() {
-        return estado;
+    public Long getIdSala() {
+        return idSala;
     }
-    public void setEstado(int estado) {
-        this.estado = estado;
+
+    public void setIdSala(Long idSala) {
+        this.idSala = idSala;
     }
 
     @Override
@@ -61,7 +61,7 @@ public class ImagenEntradaDto {
         return "ImagenEntradaDto{" +
                 "nombre='" + nombre + '\'' +
                 ", imagen='" + imagen + '\'' +
-                ", estado=" + estado +
+                ", idSala=" + idSala +
                 '}';
     }
 }

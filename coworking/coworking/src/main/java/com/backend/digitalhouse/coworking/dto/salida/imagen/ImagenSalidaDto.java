@@ -6,22 +6,22 @@ public class ImagenSalidaDto {
     private Long id;
     private String nombre;
     private String imagen;
-    private int estado;
-    private SalaSalidaDto sala;
+    private SalaSalidaDto salaSalidaDto;
 
     public ImagenSalidaDto() {
     }
 
-    public ImagenSalidaDto(Long id, String nombre, String imagen, int estado) {
+    public ImagenSalidaDto(Long id, String nombre, String imagen, SalaSalidaDto salaSalidaDto) {
         this.id = id;
         this.nombre = nombre;
         this.imagen = imagen;
-        this.estado = estado;
+        this.salaSalidaDto = salaSalidaDto;
     }
 
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -29,6 +29,7 @@ public class ImagenSalidaDto {
     public String getNombre() {
         return nombre;
     }
+
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
@@ -36,15 +37,17 @@ public class ImagenSalidaDto {
     public String getImagen() {
         return imagen;
     }
+
     public void setImagen(String imagen) {
         this.imagen = imagen;
     }
 
-    public int getEstado() {
-        return estado;
+    public SalaSalidaDto getSalaSalidaDto() {
+        return salaSalidaDto;
     }
-    public void setEstado(int estado) {
-        this.estado = estado;
+
+    public void setSalaSalidaDto(SalaSalidaDto salaSalidaDto) {
+        this.salaSalidaDto = salaSalidaDto;
     }
 
     @Override
@@ -53,7 +56,7 @@ public class ImagenSalidaDto {
                 "id=" + id +
                 ", nombre='" + nombre + '\'' +
                 ", imagen='" + imagen + '\'' +
-                ", estado=" + estado +
+                ", sala=" + salaSalidaDto +
                 '}';
     }
 }

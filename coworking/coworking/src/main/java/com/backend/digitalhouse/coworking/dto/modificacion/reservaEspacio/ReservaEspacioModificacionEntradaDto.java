@@ -8,30 +8,33 @@ import jakarta.validation.constraints.*;
 public class ReservaEspacioModificacionEntradaDto {
     @NotNull(message = "El campo no puede ser nulo")
     private Long id;
-    private long idUsuario;
-    private long idSala;
-    @FutureOrPresent(message = "La fecha no puede ser anterior al dia de hoy")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
-    private long fechaHoraInicio;
-    @FutureOrPresent(message = "La fecha no puede ser anterior al dia de hoy")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
-    private long fechaHoraFin;
-    @Digits(integer = 1, fraction = 0, message = "El numero debe tener como maximo 1 dígito de 1 a 5")
-    @Min(1)
-    @Max(5)
-    private int calificacion;
 
+    @NotNull(message = "El campo no puede ser nulo")
+    private Long idUsuario;
+
+    @NotNull(message = "El campo no puede ser nulo")
+    private Long idSala;
+
+    @NotNull(message = "El campo no puede ser nulo")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+    private int fechaHoraInicio;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+    private int fechaHoraFin;
+
+    @NotNull(message = "El campo no puede ser nulo")
+    private int cantidadHora;
 
     public ReservaEspacioModificacionEntradaDto() {
     }
 
-    public ReservaEspacioModificacionEntradaDto(Long id, long idUsuario, long idSala, long fechaHoraInicio, long fechaHoraFin, int calificacion) {
+    public ReservaEspacioModificacionEntradaDto(Long id, Long idUsuario, Long idSala, int fechaHoraInicio, int fechaHoraFin, int cantidadHora) {
         this.id = id;
         this.idUsuario = idUsuario;
         this.idSala = idSala;
         this.fechaHoraInicio = fechaHoraInicio;
         this.fechaHoraFin = fechaHoraFin;
-        this.calificacion = calificacion;
+        this.cantidadHora = cantidadHora;
     }
 
     public Long getId() {
@@ -42,55 +45,55 @@ public class ReservaEspacioModificacionEntradaDto {
         this.id = id;
     }
 
-    public long getIdUsuario() {
+    public Long getIdUsuario() {
         return idUsuario;
     }
 
-    public void setIdUsuario(long idUsuario) {
+    public void setIdUsuario(Long idUsuario) {
         this.idUsuario = idUsuario;
     }
 
-    public long getIdSala() {
+    public Long getIdSala() {
         return idSala;
     }
 
-    public void setIdSala(long idSala) {
+    public void setIdSala(Long idSala) {
         this.idSala = idSala;
     }
 
-    public long getFechaHoraInicio() {
+    public int getFechaHoraInicio() {
         return fechaHoraInicio;
     }
 
-    public void setFechaHoraInicio(long fechaHoraInicio) {
+    public void setFechaHoraInicio(int fechaHoraInicio) {
         this.fechaHoraInicio = fechaHoraInicio;
     }
 
-    public long getFechaHoraFin() {
+    public int getFechaHoraFin() {
         return fechaHoraFin;
     }
 
-    public void setFechaHoraFin(long fechaHoraFin) {
+    public void setFechaHoraFin(int fechaHoraFin) {
         this.fechaHoraFin = fechaHoraFin;
     }
 
-    public int getCalificacion() {
-        return calificacion;
+    public int getCantidadHora() {
+        return cantidadHora;
     }
 
-    public void setCalificacion(int calificacion) {
-        this.calificacion = calificacion;
+    public void setCantidadHora(int cantidadHora) {
+        this.cantidadHora = cantidadHora;
     }
 
     @Override
     public String toString() {
-        return "ReservaEspacioModificacionEntradaDto{" +
+        return "ReservaEspacio{" +
                 "id=" + id +
                 ", idUsuario=" + idUsuario +
                 ", idSala=" + idSala +
-                ", fechaHoraInicio=" + fechaHoraInicio +
-                ", fechaHoraFin=" + fechaHoraFin +
-                ", calificacion=" + calificacion +
+                ", fecha y hora inicial=" + fechaHoraInicio +
+                ", fecha y hora final=" + fechaHoraFin +
+                ", cantidad de horas=" + cantidadHora +
                 '}';
     }
 }
