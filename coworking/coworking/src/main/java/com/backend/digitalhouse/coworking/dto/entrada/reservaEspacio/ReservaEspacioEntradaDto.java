@@ -2,16 +2,15 @@ package com.backend.digitalhouse.coworking.dto.entrada.reservaEspacio;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import jakarta.validation.constraints.*;
 import java.time.LocalDateTime;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ReservaEspacioEntradaDto {
     @NotNull(message = "Este campo no puede ser nulo")
-    private long idUsuario;
+    private Long idUsuario;
     @NotNull(message = "Este campo no puede ser nulo")
-    private long idSala;
+    private Long idSala;
     @FutureOrPresent(message = "La fecha no puede ser anterior al dia de hoy")
     @NotNull(message = "Este campo no puede ser nulo, debe especificar fecha y hora de la reserva")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")

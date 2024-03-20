@@ -16,19 +16,15 @@ public class ImagenModificacionEntradaDto {
     @Size(max = 100, message = "La ruta la imagen debe tener hasta 100 caracteres")
     private String imagen;
 
-    @Digits(integer = 1, fraction = 0, message = "El numero debe tener como maximo 1 dígito")
-    private int estado;
-
-    private long idSala;
+    private Long idSala;
 
     public ImagenModificacionEntradaDto() {
     }
 
-    public ImagenModificacionEntradaDto(Long id, String nombre, String imagen, int estado) {
+    public ImagenModificacionEntradaDto(Long id, String nombre, String imagen) {
         this.id = id;
         this.nombre = nombre;
         this.imagen = imagen;
-        this.estado = estado;
     }
 
     public Long getId() {
@@ -55,21 +51,12 @@ public class ImagenModificacionEntradaDto {
         this.imagen = imagen;
     }
 
-    public int getEstado() {
-        return estado;
-    }
-
-    public void setEstado(int estado) {
-        this.estado = estado;
-    }
-
     @Override
     public String toString() {
         return "ImagenModificacionEntradaDto{" +
                 "id=" + id +
                 ", nombre='" + nombre + '\'' +
                 ", imagen='" + imagen + '\'' +
-                ", estado=" + estado +
                 '}';
     }
 }
