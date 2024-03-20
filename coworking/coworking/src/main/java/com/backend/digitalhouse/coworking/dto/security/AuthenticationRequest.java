@@ -1,4 +1,4 @@
-package com.backend.digitalhouse.coworking.dto;
+package com.backend.digitalhouse.coworking.dto.security;
 
 public class AuthenticationRequest {
 

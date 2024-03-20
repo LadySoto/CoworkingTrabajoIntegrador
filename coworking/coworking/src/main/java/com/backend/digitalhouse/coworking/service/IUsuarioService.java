@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface IUsuarioService {
-    List<UsuarioSalidaDto> listarUsuarios();
-
     UsuarioSalidaDto registrarUsuario(UsuarioEntradaDto usuario) throws BadRequestException;
+
+    List<UsuarioSalidaDto> listarUsuarios();
 
     UsuarioSalidaDto buscarUsuarioPorId(Long id);
 

@@ -8,9 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 public interface ITipoSalaService {
-    List<TipoSalaSalidaDto> listarTipoSala();
-
     TipoSalaSalidaDto registrarTipoSala(TipoSalaEntradaDto tipoSala) throws BadRequestException;
+    List<TipoSalaSalidaDto> listarTipoSala();
 
     TipoSalaSalidaDto buscarTipoSalaPorId(Long id);
 

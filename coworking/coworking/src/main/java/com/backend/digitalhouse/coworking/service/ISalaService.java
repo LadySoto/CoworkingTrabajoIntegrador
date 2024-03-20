@@ -8,8 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface ISalaService {
-    List<SalaSalidaDto> listarSalas();
     SalaSalidaDto registrarSala(SalaEntradaDto sala) throws BadRequestException;
+
+    List<SalaSalidaDto> listarSalas();
 
     SalaSalidaDto buscarSalaPorId(Long id);
 
