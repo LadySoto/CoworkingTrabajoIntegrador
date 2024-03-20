@@ -8,33 +8,30 @@ import jakarta.validation.constraints.*;
 public class ReservaEspacioModificacionEntradaDto {
     @NotNull(message = "El campo no puede ser nulo")
     private Long id;
-
-    @NotNull(message = "El campo no puede ser nulo")
-    private Long idUsuario;
-
-    @NotNull(message = "El campo no puede ser nulo")
-    private Long idSala;
-
-    @NotNull(message = "El campo no puede ser nulo")
+    private long idUsuario;
+    private long idSala;
+    @FutureOrPresent(message = "La fecha no puede ser anterior al dia de hoy")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
-    private int fechaHoraInicio;
-
+    private long fechaHoraInicio;
+    @FutureOrPresent(message = "La fecha no puede ser anterior al dia de hoy")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
-    private int fechaHoraFin;
+    private long fechaHoraFin;
+    @Digits(integer = 1, fraction = 0, message = "El numero debe tener como maximo 1 dígito de 1 a 5")
+    @Min(1)
+    @Max(5)
+    private int calificacion;
 
-    @NotNull(message = "El campo no puede ser nulo")
-    private int cantidadHora;
 
     public ReservaEspacioModificacionEntradaDto() {
     }
 
-    public ReservaEspacioModificacionEntradaDto(Long id, Long idUsuario, Long idSala, int fechaHoraInicio, int fechaHoraFin, int cantidadHora) {
+    public ReservaEspacioModificacionEntradaDto(Long id, long idUsuario, long idSala, long fechaHoraInicio, long fechaHoraFin, int calificacion) {
         this.id = id;
         this.idUsuario = idUsuario;
         this.idSala = idSala;
         this.fechaHoraInicio = fechaHoraInicio;
         this.fechaHoraFin = fechaHoraFin;
-        this.cantidadHora = cantidadHora;
+        this.calificacion = calificacion;
     }
 
     public Long getId() {
@@ -45,55 +42,55 @@ public class ReservaEspacioModificacionEntradaDto {
         this.id = id;
     }
 
-    public Long getIdUsuario() {
+    public long getIdUsuario() {
         return idUsuario;
     }
 
-    public void setIdUsuario(Long idUsuario) {
+    public void setIdUsuario(long idUsuario) {
         this.idUsuario = idUsuario;
     }
 
-    public Long getIdSala() {
+    public long getIdSala() {
         return idSala;
     }
 
-    public void setIdSala(Long idSala) {
+    public void setIdSala(long idSala) {
         this.idSala = idSala;
     }
 
-    public int getFechaHoraInicio() {
+    public long getFechaHoraInicio() {
         return fechaHoraInicio;
     }
 
-    public void setFechaHoraInicio(int fechaHoraInicio) {
+    public void setFechaHoraInicio(long fechaHoraInicio) {
         this.fechaHoraInicio = fechaHoraInicio;
     }
 
-    public int getFechaHoraFin() {
+    public long getFechaHoraFin() {
         return fechaHoraFin;
     }
 
-    public void setFechaHoraFin(int fechaHoraFin) {
+    public void setFechaHoraFin(long fechaHoraFin) {
         this.fechaHoraFin = fechaHoraFin;
     }
 
-    public int getCantidadHora() {
-        return cantidadHora;
+    public int getCalificacion() {
+        return calificacion;
     }
 
-    public void setCantidadHora(int cantidadHora) {
-        this.cantidadHora = cantidadHora;
+    public void setCalificacion(int calificacion) {
+        this.calificacion = calificacion;
     }
 
     @Override
     public String toString() {
-        return "ReservaEspacio{" +
+        return "ReservaEspacioModificacionEntradaDto{" +
                 "id=" + id +
                 ", idUsuario=" + idUsuario +
                 ", idSala=" + idSala +
-                ", fecha y hora inicial=" + fechaHoraInicio +
-                ", fecha y hora final=" + fechaHoraFin +
-                ", cantidad de horas=" + cantidadHora +
+                ", fechaHoraInicio=" + fechaHoraInicio +
+                ", fechaHoraFin=" + fechaHoraFin +
+                ", calificacion=" + calificacion +
                 '}';
     }
 }

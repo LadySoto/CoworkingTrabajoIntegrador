@@ -16,19 +16,19 @@ public class ImagenModificacionEntradaDto {
     @Size(max = 100, message = "La ruta la imagen debe tener hasta 100 caracteres")
     private String imagen;
 
-    @NotNull(message = "Este campo no puede ser nulo")
-    private Long idSala;
+    @Digits(integer = 1, fraction = 0, message = "El numero debe tener como maximo 1 dígito")
+    private int estado;
 
     private long idSala;
 
     public ImagenModificacionEntradaDto() {
     }
 
-    public ImagenModificacionEntradaDto(Long id, String nombre, String imagen, Long idSala) {
+    public ImagenModificacionEntradaDto(Long id, String nombre, String imagen, int estado) {
         this.id = id;
         this.nombre = nombre;
         this.imagen = imagen;
-        this.idSala = idSala;
+        this.estado = estado;
     }
 
     public Long getId() {
@@ -55,12 +55,12 @@ public class ImagenModificacionEntradaDto {
         this.imagen = imagen;
     }
 
-    public Long getIdSala() {
-        return idSala;
+    public int getEstado() {
+        return estado;
     }
 
-    public void setIdSala(Long idSala) {
-        this.idSala = idSala;
+    public void setEstado(int estado) {
+        this.estado = estado;
     }
 
     @Override
@@ -69,7 +69,7 @@ public class ImagenModificacionEntradaDto {
                 "id=" + id +
                 ", nombre='" + nombre + '\'' +
                 ", imagen='" + imagen + '\'' +
-                ", idSala=" + idSala +
+                ", estado=" + estado +
                 '}';
     }
 }
