@@ -8,11 +8,17 @@ import jakarta.validation.constraints.*;
 public class ReservaEspacioModificacionEntradaDto {
     @NotNull(message = "El campo no puede ser nulo")
     private Long id;
-    private long idUsuario;
-    private long idSala;
+
+    @NotNull(message = "El campo no puede ser nulo")
+    private Long idUsuario;
+
+    @NotNull(message = "El campo no puede ser nulo")
+    private Long idSala;
+    @NotNull(message = "El campo no puede ser nulo")
     @FutureOrPresent(message = "La fecha no puede ser anterior al dia de hoy")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private long fechaHoraInicio;
+    @NotNull(message = "El campo no puede ser nulo")
     @FutureOrPresent(message = "La fecha no puede ser anterior al dia de hoy")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private long fechaHoraFin;

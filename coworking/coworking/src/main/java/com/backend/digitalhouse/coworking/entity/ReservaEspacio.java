@@ -35,8 +35,7 @@ public class ReservaEspacio {
     public ReservaEspacio() {
     }
 
-    public ReservaEspacio(Long id, Usuario usuario, Sala sala, LocalDateTime fechaHoraInicio, LocalDateTime fechaHoraFin, int cantidadHora, int calificacion) {
-        this.id = id;
+    public ReservaEspacio(Usuario usuario, Sala sala, LocalDateTime fechaHoraInicio, LocalDateTime fechaHoraFin, int cantidadHora, int calificacion) {
         this.usuario = usuario;
         this.sala = sala;
         this.fechaHoraInicio = fechaHoraInicio;
@@ -107,10 +106,10 @@ public class ReservaEspacio {
                 "id=" + id +
                 ", usuario=" + usuario +
                 ", sala=" + sala +
-                ", fechaHoraInicio=" + fechaHoraInicio +
-                ", fechaHoraFin=" + fechaHoraFin +
-                ", cantidadHora=" + cantidadHora +
-                ", calificacion=" + calificacion +
+                ", fecha y hora inicial=" + fechaHoraInicio +
+                ", fecha y hora final=" + fechaHoraFin +
+                ", cantidad de horas=" + cantidadHora +
+                ", calificación=" + calificacion +
                 '}';
     }
 }
