@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
-
+@CrossOrigin(origins = "http://localhost:3000")
 public class AuthenticationController {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationController.class);
