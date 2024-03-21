@@ -3,6 +3,7 @@ package com.backend.digitalhouse.coworking.controller.security;
 import com.backend.digitalhouse.coworking.dto.security.AuthenticationRequest;
 import com.backend.digitalhouse.coworking.dto.security.AuthenticationResponse;
 import com.backend.digitalhouse.coworking.service.implement.security.AuthenticationService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,4 +38,11 @@ public class AuthenticationController {
   public String publicAccesEndpoint(){
     return "Este es un endpoint público";
   }
+
+  @PostMapping("/logout")
+  public ResponseEntity<?> logout(HttpServletRequest request) {
+    request.getSession().invalidate();
+    return ResponseEntity.ok().build();
+  }
 }
+
