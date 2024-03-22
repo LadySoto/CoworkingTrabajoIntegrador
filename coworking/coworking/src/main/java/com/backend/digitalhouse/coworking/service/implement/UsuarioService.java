@@ -14,6 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 import java.lang.reflect.Field;
@@ -28,20 +29,24 @@ public class UsuarioService implements IUsuarioService {
     private final ModelMapper modelMapper;
     private final TipoIdentificacionService tipoIdentificacionService;
     private final RolService rolService;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UsuarioService(UsuarioRepository usuarioRepository, ModelMapper modelMapper, TipoIdentificacionService tipoIdentificacionService, RolService rolService) {
+    public UsuarioService(UsuarioRepository usuarioRepository, ModelMapper modelMapper, TipoIdentificacionService tipoIdentificacionService, RolService rolService, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
         this.modelMapper = modelMapper;
         this.tipoIdentificacionService = tipoIdentificacionService;
         this.rolService = rolService;
-        configureMappings();
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public UsuarioSalidaDto registrarUsuario(UsuarioEntradaDto usuario) throws BadRequestException {
         if (usuario != null) {
-            UsuarioSalidaDto usuarioSalidaDto = entidadADtoSalida(usuarioRepository.save(dtoEntradaAEntidad(usuario)));
+            Usuario usuarioEntity = dtoEntradaAEntidad(usuario);
+            String contrasenaEncriptada = passwordEncoder.encode(usuarioEntity.getContrasena());
+            usuarioEntity.setContrasena(contrasenaEncriptada);
+            UsuarioSalidaDto usuarioSalidaDto = entidadADtoSalida(usuarioRepository.save(usuarioEntity));
             LOGGER.info("Nuevo usuario registrado con exito: {}", usuarioSalidaDto);
             return usuarioSalidaDto;
         } else {

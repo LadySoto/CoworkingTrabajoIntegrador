@@ -22,7 +22,6 @@ public class Sala {
     private int estado;
     @Column(name="PROMEDIO_CALIFICACION")
     private double promedioCalificacion;
-
     @ManyToOne(cascade=CascadeType.DETACH, fetch = FetchType.LAZY)
     @JoinColumn(name="tipo_salas_id_tipo_sala", referencedColumnName = "id_tipo_sala")
     private TipoSala tipoSala;
