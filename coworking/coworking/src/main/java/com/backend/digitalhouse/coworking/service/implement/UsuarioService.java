@@ -38,6 +38,7 @@ public class UsuarioService implements IUsuarioService {
         this.tipoIdentificacionService = tipoIdentificacionService;
         this.rolService = rolService;
         this.passwordEncoder = passwordEncoder;
+        configureMappings();
     }
 
     @Override
