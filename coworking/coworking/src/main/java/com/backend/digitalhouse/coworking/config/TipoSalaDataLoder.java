@@ -4,9 +4,12 @@ import com.backend.digitalhouse.coworking.entity.TipoSala;
 import com.backend.digitalhouse.coworking.repository.TipoSalaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
 import java.util.Arrays;
 import java.util.List;
 
+@Component
 public class TipoSalaDataLoder implements CommandLineRunner {
 
     private final TipoSalaRepository tipoSalaRepository;

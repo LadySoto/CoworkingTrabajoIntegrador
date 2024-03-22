@@ -106,10 +106,10 @@ public class ReservaEspacio {
                 "id=" + id +
                 ", usuario=" + usuario +
                 ", sala=" + sala +
-                ", fecha y hora inicial=" + fechaHoraInicio +
-                ", fecha y hora final=" + fechaHoraFin +
-                ", cantidad de horas=" + cantidadHora +
-                ", calificación=" + calificacion +
+                ", fechaHoraInicio=" + fechaHoraInicio +
+                ", fechaHoraFin=" + fechaHoraFin +
+                ", cantidadHora=" + cantidadHora +
+                ", calificacion=" + calificacion +
                 '}';
     }
 }

@@ -22,17 +22,16 @@ public class ServicioSalaService implements IServicioSalaService {
     private final Logger LOGGER = LoggerFactory.getLogger(ServicioSalaService.class);
     private final ServicioSalaRepository servicioSalaRepository;
     private final ModelMapper modelMapper;
+    private final SalaService salaService;
+    private final ServicioService servicioService;
 
     @Autowired
-    public ServicioSalaService(ServicioSalaRepository servicioSalaRepository, ModelMapper modelMapper) {
+    public ServicioSalaService(ServicioSalaRepository servicioSalaRepository, ModelMapper modelMapper, SalaService salaService, ServicioService servicioService) {
         this.servicioSalaRepository = servicioSalaRepository;
         this.modelMapper = modelMapper;
-        //configureMappings();
-    }
-
-    private void configureMappings() {
-        modelMapper.typeMap(ServicioSalaEntradaDto.class, ServicioSala.class);
-        modelMapper.typeMap(ServicioSala.class, ServicioSalaSalidaDto.class);
+        this.salaService = salaService;
+        this.servicioService = servicioService;
+        configureMappings();
     }
 
     @Override
@@ -83,6 +82,13 @@ public class ServicioSalaService implements IServicioSalaService {
         }
     }
 
+
+
+
+    private void configureMappings() {
+        modelMapper.typeMap(ServicioSalaEntradaDto.class, ServicioSala.class);
+        modelMapper.typeMap(ServicioSala.class, ServicioSalaSalidaDto.class);
+    }
     @Override
     public ServicioSalaSalidaDto modificarServicioSala(Long id, Map<String, Object> camposAModificar) throws ResourceNotFoundException {
         return null;
