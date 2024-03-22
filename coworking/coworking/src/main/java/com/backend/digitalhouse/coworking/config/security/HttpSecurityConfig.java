@@ -35,7 +35,8 @@ public class HttpSecurityConfig {
                 .sessionManagement(sessionMangConfig ->sessionMangConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-                //.authorizeHttpRequests(buildRequestMatchers());
+              //.authorizeHttpRequests(buildRequestMatchers());
+
         return http.build();
 
     }
