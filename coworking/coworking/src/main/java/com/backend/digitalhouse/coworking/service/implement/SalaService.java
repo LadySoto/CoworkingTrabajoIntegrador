@@ -45,6 +45,8 @@ public class SalaService implements ISalaService {
     public SalaSalidaDto registrarSala(SalaEntradaDto sala) throws BadRequestException {
         if (sala != null) {
             SalaSalidaDto salaSalidaDto = entidadADtoSalida(salaRepository.save(dtoEntradaAEntidad(sala)));
+            //Asigna las imagenes
+            salaSalidaDto.setImagenes(imagenesPorSalaId(modelMapper.map(salaSalidaDto, Sala.class)));
             LOGGER.info("Sala guardada: {}", salaSalidaDto);
             return salaSalidaDto;
         } else {
@@ -57,10 +59,12 @@ public class SalaService implements ISalaService {
     public List<SalaSalidaDto> listarSalas() {
         List<SalaSalidaDto> salas = salaRepository.findAll().stream()
                 .map(sala -> entidadADtoSalida(sala)).toList();
-        LOGGER.info("Listado de las salas: {}", salas);
+
+        //Asigna las imagenes
         for (SalaSalidaDto salaImagenes: salas) {
             salaImagenes.setImagenes(imagenesPorSalaId(modelMapper.map(salaImagenes, Sala.class)));
         }
+        LOGGER.info("Listado de las salas: {}", salas);
         return salas;
     }
 
@@ -75,6 +79,8 @@ public class SalaService implements ISalaService {
         SalaSalidaDto salaSalidaDto = null;
         if (salaBuscada != null) {
             salaSalidaDto = entidadADtoSalida(salaBuscada);
+            //Asigna las imagenes
+            salaSalidaDto.setImagenes(imagenesPorSalaId(modelMapper.map(salaSalidaDto, Sala.class)));
             LOGGER.info("Sala por id: {}", salaSalidaDto);
         } else LOGGER.info("Sala por id: {}", id);
         return salaSalidaDto;
@@ -112,6 +118,8 @@ public class SalaService implements ISalaService {
             });
             salaRepository.save(salaGuardada.get());
             salaSalidaDto = entidadADtoSalida(salaGuardada.get());
+            //Asigna las imagenes
+            salaSalidaDto.setImagenes(imagenesPorSalaId(modelMapper.map(salaSalidaDto, Sala.class)));
             LOGGER.info("La sala ha sido actualizada: {}", salaGuardada.get());
 
             return salaSalidaDto;
