@@ -32,7 +32,8 @@ public class SalaModificacionEntradaDto {
     public SalaModificacionEntradaDto() {
     }
 
-    public SalaModificacionEntradaDto(String nombre, String descripcion, int capacidad, int disponible, int estado, double promedioCalificacion, long tipoSala) {
+    public SalaModificacionEntradaDto(Long id, String nombre, String descripcion, int capacidad, int disponible, int estado, double promedioCalificacion, long tipoSala) {
+        this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.capacidad = capacidad;

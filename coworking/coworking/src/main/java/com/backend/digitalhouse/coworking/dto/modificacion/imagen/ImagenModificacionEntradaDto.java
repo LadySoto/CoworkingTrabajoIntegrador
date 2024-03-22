@@ -1,7 +1,6 @@
 package com.backend.digitalhouse.coworking.dto.modificacion.imagen;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -16,15 +15,16 @@ public class ImagenModificacionEntradaDto {
     @Size(max = 100, message = "La ruta la imagen debe tener hasta 100 caracteres")
     private String imagen;
 
-    private Long idSala;
+    private long idSala;
 
     public ImagenModificacionEntradaDto() {
     }
 
-    public ImagenModificacionEntradaDto(Long id, String nombre, String imagen) {
+    public ImagenModificacionEntradaDto(Long id, String nombre, String imagen, long idSala) {
         this.id = id;
         this.nombre = nombre;
         this.imagen = imagen;
+        this.idSala = idSala;
     }
 
     public Long getId() {
@@ -51,12 +51,21 @@ public class ImagenModificacionEntradaDto {
         this.imagen = imagen;
     }
 
+    public long getIdSala() {
+        return idSala;
+    }
+
+    public void setIdSala(long idSala) {
+        this.idSala = idSala;
+    }
+
     @Override
     public String toString() {
         return "ImagenModificacionEntradaDto{" +
                 "id=" + id +
                 ", nombre='" + nombre + '\'' +
                 ", imagen='" + imagen + '\'' +
+                ", idSala=" + idSala +
                 '}';
     }
 }

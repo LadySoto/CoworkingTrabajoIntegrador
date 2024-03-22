@@ -14,17 +14,17 @@ public class Imagen {
     private String nombre;
     @Column(name = "IMAGEN")
     private String imagen;
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="salas_id_sala")
     private Sala sala;
 
     public Imagen() {
     }
 
-
-    public Imagen(String nombre, String imagen) {
+    public Imagen(String nombre, String imagen, Sala sala) {
         this.nombre = nombre;
         this.imagen = imagen;
+        this.sala = sala;
     }
 
     public Long getId() {
@@ -51,12 +51,21 @@ public class Imagen {
         this.imagen = imagen;
     }
 
+    public Sala getSala() {
+        return sala;
+    }
+
+    public void setSala(Sala sala) {
+        this.sala = sala;
+    }
+
     @Override
     public String toString() {
         return "Imagen{" +
                 "id=" + id +
                 ", nombre='" + nombre + '\'' +
                 ", imagen='" + imagen + '\'' +
+                ", sala=" + sala +
                 '}';
     }
 }
