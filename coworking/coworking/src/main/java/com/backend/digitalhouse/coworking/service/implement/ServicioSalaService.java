@@ -3,6 +3,8 @@ package com.backend.digitalhouse.coworking.service.implement;
 import com.backend.digitalhouse.coworking.dto.entrada.servicioSala.ServicioSalaEntradaDto;
 import com.backend.digitalhouse.coworking.dto.modificacion.servicioSala.ServicioSalaModificacionEntradaDto;
 import com.backend.digitalhouse.coworking.dto.salida.servicioSala.ServicioSalaSalidaDto;
+import com.backend.digitalhouse.coworking.entity.Sala;
+import com.backend.digitalhouse.coworking.entity.Servicio;
 import com.backend.digitalhouse.coworking.entity.ServicioSala;
 import com.backend.digitalhouse.coworking.exceptions.BadRequestException;
 import com.backend.digitalhouse.coworking.exceptions.ResourceNotFoundException;
@@ -69,6 +71,16 @@ public class ServicioSalaService implements IServicioSalaService {
                 .map(this::entidadADtoSalida).toList();
         LOGGER.info("Listado de todos los servicios de la sala: {}", serviciosSala);
         return serviciosSala;
+    }
+
+    @Override
+    public List<ServicioSalaSalidaDto> listarServicioSalaPorSalaId(Sala sala) {
+        return null;
+    }
+
+    @Override
+    public List<ServicioSalaSalidaDto> listarServicioSalaPorServicioId(Servicio servicio) {
+        return null;
     }
 
     @Override

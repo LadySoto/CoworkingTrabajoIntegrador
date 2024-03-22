@@ -23,15 +23,15 @@ public class Usuario implements UserDetails {
     private String correo;
     @Column(name = "CONTRASENA")
     private String contrasena;
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tipo_identificaciones_id_identificacion")
+    @ManyToOne(cascade=CascadeType.DETACH, fetch = FetchType.LAZY)
+    @JoinColumn(name = "tipo_identificaciones_id_identificacion", referencedColumnName = "id_tipo_identificacion")
     private TipoIdentificacion tipoIdentificacion;
     @Column(name = "NUMERO_IDENTIFICACION")
     private String numeroIdentificacion;
     @Column(name = "ESTADO")
     private int estado;
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "roles_id_rol")
+    @ManyToOne(cascade=CascadeType.DETACH, fetch = FetchType.LAZY)
+    @JoinColumn(name="roles_id_rol", referencedColumnName = "id_rol")
     private Rol rol;
 
     public Usuario() {
