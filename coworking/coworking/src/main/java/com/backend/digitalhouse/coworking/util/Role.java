@@ -7,7 +7,7 @@ package com.backend.digitalhouse.coworking.util;
 
 public enum Role {
 
-    CUSTOMER(Arrays.asList(Permission.READ_ALL_TIPOSSALAS, Permission.READ_ALL_SALAS, Permission.READ_ALL_SERVICIOS, Permission.SEARCH_ONE_TIPOSALA, Permission.SEARCH_ONE_SALA, Permission.SAVE_ONE_RESERVA, Permission.UPDATE_ONE_RESERVA, Permission.DELETE_ONE_RESERVA, Permission.SEARCH_ONE_RESERVA)),
+    CUSTOMER(Arrays.asList(Permission.READ_ALL_TIPOSSALAS, Permission.READ_ALL_SALAS, Permission.READ_ALL_SERVICIOS, Permission.SAVE_ONE_RESERVA, Permission.UPDATE_ONE_RESERVA, Permission.DELETE_ONE_RESERVA, Permission.SEARCH_ONE_RESERVA)),
 
     ADMINISTRATOR(EnumSet.allOf(Permission.class).stream().collect(Collectors.toList()));
 
