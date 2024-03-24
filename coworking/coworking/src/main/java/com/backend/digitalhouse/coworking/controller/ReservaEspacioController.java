@@ -14,6 +14,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +40,8 @@ public class ReservaEspacioController {
             @ApiResponse(responseCode = "500", description = "Server error",
                     content = @Content)
     })
+
+    @PreAuthorize("hasAuthority('SAVE_ONE_RESERVA')")
     @PostMapping("/registrar")
     public ResponseEntity<ReservaEspacioSalidaDto> registrarReservaEspacio(@Valid @RequestBody ReservaEspacioEntradaDto reservaEspacio) throws BadRequestException {
         return new ResponseEntity<>(reservaEspacioService.registrarReservaEspacio(reservaEspacio), HttpStatus.CREATED);
@@ -58,6 +61,7 @@ public class ReservaEspacioController {
                     content = @Content)
     })
 
+    @PreAuthorize("hasAuthority('UPDATE_ONE_RESERVA')")
     @PatchMapping("/modificar/{id}")
     public ResponseEntity<ReservaEspacioSalidaDto> modificarReservaEspacio(@PathVariable Long id, @Valid @RequestBody Map<String,Object> camposAModificar) throws ResourceNotFoundException {
         return new ResponseEntity<>(reservaEspacioService.modificarReservaEspacio(id, camposAModificar), HttpStatus.OK);
@@ -77,6 +81,7 @@ public class ReservaEspacioController {
                     content = @Content)
     })
 
+    @PreAuthorize("hasAuthority('SEARCH_ONE_RESERVA')")
     @GetMapping("busqueda/{id}")
     public ResponseEntity<ReservaEspacioSalidaDto> obtenerReservaEspacioPorId(@PathVariable Long id) {
         return new ResponseEntity<>(reservaEspacioService.buscarReservaEspacioPorId(id), HttpStatus.OK);
@@ -93,6 +98,7 @@ public class ReservaEspacioController {
                     content = @Content)
     })
 
+    @PreAuthorize("hasAuthority('READ_ALL_RESERVAS')")
     @GetMapping("listar")
     public ResponseEntity<List<ReservaEspacioSalidaDto>> listarReservaEspacios() {
         return new ResponseEntity<>(reservaEspacioService.listarReservaEspacios(), HttpStatus.OK);
@@ -111,6 +117,8 @@ public class ReservaEspacioController {
             @ApiResponse(responseCode = "500", description = "Server error",
                     content = @Content)
     })
+
+    @PreAuthorize("hasAuthority('DELETE_ONE_RESERVA')")
     @DeleteMapping("eliminar/{id}")
     public ResponseEntity<?> eliminarReservaEspacio(@PathVariable Long id) throws ResourceNotFoundException {
         reservaEspacioService.eliminarReservaEspacio(id);

@@ -82,7 +82,7 @@ public class TipoSalaController {
             @ApiResponse(responseCode = "500", description = "Server error",
                     content = @Content)
     })
-
+    @PreAuthorize("hasAuthority('UPDATE_ONE_TIPOSALA')")
     @PatchMapping("/modificar/{id}")
     public ResponseEntity<TipoSalaSalidaDto> modificarTipoSala(@PathVariable Long id, @Valid @RequestBody Map<String,Object> camposAModificar) throws ResourceNotFoundException {
         return new ResponseEntity<>(tipoSalaService.modificarTipoSala(id, camposAModificar), HttpStatus.OK);
@@ -102,6 +102,7 @@ public class TipoSalaController {
                     content = @Content)
     })
 
+    @PreAuthorize("hasAuthority('SEARCH_ONE_TIPOSALA')")
     @GetMapping("busqueda/{id}")
     public ResponseEntity<TipoSalaSalidaDto> obtenerTipoSalaPorId(@PathVariable Long id) {
         return new ResponseEntity<>(tipoSalaService.buscarTipoSalaPorId(id), HttpStatus.OK);
@@ -140,6 +141,8 @@ public class TipoSalaController {
                     content = @Content)
 
     })
+
+    @PreAuthorize("hasAuthority('DELETE_ONE_TIPOSALA')")
     @DeleteMapping("eliminar/{id}")
     public ResponseEntity<?> eliminarTipoSala(@PathVariable Long id) throws ResourceNotFoundException {
         tipoSalaService.eliminarTipoSala(id);

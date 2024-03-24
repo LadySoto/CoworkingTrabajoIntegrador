@@ -14,6 +14,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +41,8 @@ public class ServicioController {
             @ApiResponse(responseCode = "500", description = "Server error",
                     content = @Content)
     })
+
+    @PreAuthorize("hasAuthority('SAVE_ONE_SERVICIO')")
     @PostMapping("/registrar")
     public ResponseEntity<ServicioSalidaDto> registrarServicio(@Valid @RequestBody ServicioEntradaDto servicio) throws BadRequestException {
         return new ResponseEntity<>(servicioService.registrarServicio(servicio), HttpStatus.CREATED);
@@ -59,6 +62,7 @@ public class ServicioController {
                     content = @Content)
     })
 
+    @PreAuthorize("hasAuthority('UPDATE_ONE_SERVICIO')")
     @PatchMapping("/modificar/{id}")
     public ResponseEntity<ServicioSalidaDto> modificarServicio(@PathVariable Long id, @Valid @RequestBody Map<String,Object> camposAModificar) throws ResourceNotFoundException {
         return new ResponseEntity<>(servicioService.modificarServicio(id, camposAModificar), HttpStatus.OK);
@@ -78,6 +82,7 @@ public class ServicioController {
                     content = @Content)
     })
 
+    @PreAuthorize("hasAuthority('SEARCH_ONE_SERVICIO')")
     @GetMapping("busqueda/{id}")
     public ResponseEntity<ServicioSalidaDto> obtenerServicioPorId(@PathVariable Long id) {
         return new ResponseEntity<>(servicioService.buscarServicioPorId(id), HttpStatus.OK);
@@ -94,6 +99,7 @@ public class ServicioController {
                     content = @Content)
     })
 
+    @PreAuthorize("hasAuthority('READ_ALL_SERVICIOS')")
     @GetMapping("listar")
     public ResponseEntity<List<ServicioSalidaDto>> listarServicios() {
         return new ResponseEntity<>(servicioService.listarServicios(), HttpStatus.OK);
@@ -113,6 +119,7 @@ public class ServicioController {
                     content = @Content)
     })
 
+    @PreAuthorize("hasAuthority('DELETE_ONE_SERVICIO')")
     @DeleteMapping("eliminar/{id}")
     public ResponseEntity<?> eliminarServicio(@PathVariable Long id) throws ResourceNotFoundException {
         servicioService.eliminarServicio(id);

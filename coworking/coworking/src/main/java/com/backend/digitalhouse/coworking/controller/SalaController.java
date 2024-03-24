@@ -61,6 +61,7 @@ public class SalaController {
                     content = @Content)
     })
 
+    @PreAuthorize("hasAuthority('UPDATE_ONE_SALA')")
     @PatchMapping("/modificar/{id}")
     public ResponseEntity<SalaSalidaDto> modificarSala(@PathVariable Long id, @Valid @RequestBody Map<String,Object> camposAModificar) throws ResourceNotFoundException {
         return new ResponseEntity<>(salaService.modificarSala(id, camposAModificar), HttpStatus.OK);
@@ -80,6 +81,7 @@ public class SalaController {
                     content = @Content)
     })
 
+    @PreAuthorize("hasAuthority('SEARCH_ONE_SALA')")
     @GetMapping("busqueda/{id}")
     public ResponseEntity<SalaSalidaDto> obtenerSalaPorId(@PathVariable Long id) {
         return new ResponseEntity<>(salaService.buscarSalaPorId(id), HttpStatus.OK);
@@ -117,6 +119,7 @@ public class SalaController {
                     content = @Content)
     })
 
+    @PreAuthorize("hasAuthority('DELETE_ONE_SALA')")
     @DeleteMapping("eliminar/{id}")
     public ResponseEntity<?> eliminarSala(@PathVariable Long id) throws ResourceNotFoundException {
         salaService.eliminarSala(id);
