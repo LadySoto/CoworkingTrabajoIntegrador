@@ -5,6 +5,7 @@ import com.backend.digitalhouse.coworking.dto.salida.imagen.ImagenSalidaDto;
 import com.backend.digitalhouse.coworking.exceptions.BadRequestException;
 import com.backend.digitalhouse.coworking.exceptions.ResourceNotFoundException;
 import com.backend.digitalhouse.coworking.service.IImagenService;
+import com.backend.digitalhouse.coworking.util.Permission;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -12,8 +13,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +43,8 @@ public class ImagenController {
             @ApiResponse(responseCode = "500", description = "Server error",
                     content = @Content)
     })
+
+    @PreAuthorize("hasAuthority('SAVE_ONE_IMAGEN')")
     @PostMapping("/registrar")
     public ResponseEntity<ImagenSalidaDto> registrarImagen(@Valid @RequestBody ImagenEntradaDto imagen) throws BadRequestException {
         return new ResponseEntity<>(imagenService.registrarImagen(imagen), HttpStatus.CREATED);
@@ -59,6 +64,7 @@ public class ImagenController {
                     content = @Content)
     })
 
+    @PreAuthorize("hasAuthority('UPDATE_ONE_IMAGEN')")
     @PatchMapping("/modificar/{id}")
     public ResponseEntity<ImagenSalidaDto> modificarImagen(@PathVariable Long id, @Valid @RequestBody Map<String,Object> camposAModificar) throws ResourceNotFoundException {
         return new ResponseEntity<>(imagenService.modificarImagen(id, camposAModificar), HttpStatus.OK);
@@ -78,6 +84,7 @@ public class ImagenController {
                     content = @Content)
     })
 
+    @PreAuthorize("hasAuthority('SEARCH_ONE_IMAGEN')")
     @GetMapping("busqueda/{id}")
     public ResponseEntity<ImagenSalidaDto> obtenerImagenPorId(@PathVariable Long id) {
         return new ResponseEntity<>(imagenService.buscarImagenPorId(id), HttpStatus.OK);
@@ -94,6 +101,7 @@ public class ImagenController {
                     content = @Content)
     })
 
+    @PreAuthorize("hasAuthority('READ_ALL_IMAGENES')")
     @GetMapping("listar")
     public ResponseEntity<List<ImagenSalidaDto>> listarImagenes() {
         return new ResponseEntity<>(imagenService.listarImagenes(), HttpStatus.OK);
@@ -113,6 +121,7 @@ public class ImagenController {
                     content = @Content)
     })
 
+    @PreAuthorize("hasAuthority('DELETE_ONE_IMAGEN')")
     @DeleteMapping("eliminar/{id}")
     public ResponseEntity<?> eliminarImagen(@PathVariable Long id) throws ResourceNotFoundException {
         imagenService.eliminarImagen(id);

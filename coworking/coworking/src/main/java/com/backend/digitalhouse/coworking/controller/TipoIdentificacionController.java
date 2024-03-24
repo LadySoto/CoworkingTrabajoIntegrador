@@ -1,5 +1,6 @@
 package com.backend.digitalhouse.coworking.controller;
 
+
 import com.backend.digitalhouse.coworking.dto.entrada.tipoIdenticacion.TipoIdentificacionEntradaDto;
 import com.backend.digitalhouse.coworking.dto.salida.tipoIdentificacion.TipoIdentificacionSalidaDto;
 import com.backend.digitalhouse.coworking.exceptions.BadRequestException;
@@ -14,6 +15,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +41,8 @@ public class TipoIdentificacionController {
             @ApiResponse(responseCode = "500", description = "Server error",
                     content = @Content)
     })
+
+    @PreAuthorize("hasAuthority('SAVE_ONE_TIPOIDENTIFICACION')")
     @PostMapping("/registrar")
     public ResponseEntity<TipoIdentificacionSalidaDto> registrarTipoIdentificacion(@Valid @RequestBody TipoIdentificacionEntradaDto tipoIdentificacion) throws BadRequestException {
         return new ResponseEntity<>(tipoIdentificacionService.registrarTipoIdentificacion(tipoIdentificacion), HttpStatus.CREATED);
@@ -58,6 +62,7 @@ public class TipoIdentificacionController {
                     content = @Content)
     })
 
+    @PreAuthorize("hasAuthority('UPDATE_ONE_TIPOIDENTIFICACION')")
     @PatchMapping("/modificar/{id}")
     public ResponseEntity<TipoIdentificacionSalidaDto> modificarTipoIdentificacion(@PathVariable Long id, @Valid @RequestBody Map<String,Object> camposAModificar) throws ResourceNotFoundException {
         return new ResponseEntity<>(tipoIdentificacionService.modificarTipoIdentificacion(id, camposAModificar), HttpStatus.OK);
@@ -77,6 +82,7 @@ public class TipoIdentificacionController {
                     content = @Content)
     })
 
+    @PreAuthorize("hasAuthority('SEARCH_ONE_TIPOIDENTIFICACION')")
     @GetMapping("busqueda/{id}")
     public ResponseEntity<TipoIdentificacionSalidaDto> obtenerTipoIdentificacionPorId(@PathVariable Long id) {
         return new ResponseEntity<>(tipoIdentificacionService.buscarTipoIdentificacionPorId(id), HttpStatus.OK);
@@ -93,6 +99,7 @@ public class TipoIdentificacionController {
                     content = @Content)
     })
 
+    @PreAuthorize("hasAuthority('READ_ALL_TIPOSIDENTIFICACION')")
     @GetMapping("listar")
     public ResponseEntity<List<TipoIdentificacionSalidaDto>> listarTiposIdentificacion() {
         return new ResponseEntity<>(tipoIdentificacionService.listarTiposIdentificacion(), HttpStatus.OK);
@@ -111,6 +118,8 @@ public class TipoIdentificacionController {
             @ApiResponse(responseCode = "500", description = "Server error",
                     content = @Content)
     })
+
+    @PreAuthorize("hasAuthority('DELETE_ONE_TIPOIDENTIFICACION')")
     @DeleteMapping("eliminar/{id}")
     public ResponseEntity<?> eliminarTipoIdentificacion(@PathVariable Long id) throws ResourceNotFoundException {
         tipoIdentificacionService.eliminarTipoIdentificacion(id);

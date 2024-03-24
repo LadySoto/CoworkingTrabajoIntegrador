@@ -10,6 +10,7 @@ import com.backend.digitalhouse.coworking.exceptions.BadRequestException;
 import com.backend.digitalhouse.coworking.exceptions.ResourceNotFoundException;
 import com.backend.digitalhouse.coworking.repository.UsuarioRepository;
 import com.backend.digitalhouse.coworking.service.IUsuarioService;
+import com.backend.digitalhouse.coworking.util.Role;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +44,8 @@ public class UsuarioService implements IUsuarioService {
 
     @Override
     public UsuarioSalidaDto registrarUsuario(UsuarioEntradaDto usuario) throws BadRequestException {
-        if (usuario != null) {
+         if (usuario != null) {
+
             Usuario usuarioEntity = dtoEntradaAEntidad(usuario);
             String contrasenaEncriptada = passwordEncoder.encode(usuarioEntity.getContrasena());
             usuarioEntity.setContrasena(contrasenaEncriptada);
@@ -54,6 +56,7 @@ public class UsuarioService implements IUsuarioService {
             LOGGER.error("No se pudo registrar el usuario");
             throw new BadRequestException("No se pudo registrar el usuario");
         }
+
     }
 
     @Override
@@ -155,6 +158,12 @@ public class UsuarioService implements IUsuarioService {
         Usuario usuario = modelMapper.map(usuarioEntradaDto, Usuario.class);
         usuario.setTipoIdentificacion(tipoIdentificacionEntradaDtoAEntity(usuarioEntradaDto.getIdTipoIdentificacion()));
         usuario.setRol(rolEntradaDtoAEntity(usuarioEntradaDto.getIdRol()));
+        if (usuario.getRol().getId()==1){
+            usuario.setRole(Role.ADMINISTRATOR);
+        }
+        else {
+            usuario.setRole(Role.CUSTOMER);
+        }
         return usuario;
     }
 

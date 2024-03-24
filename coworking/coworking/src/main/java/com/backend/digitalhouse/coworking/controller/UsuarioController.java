@@ -14,6 +14,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +40,7 @@ public class UsuarioController {
             @ApiResponse(responseCode = "500", description = "Server error",
                     content = @Content)
     })
+
     @PostMapping("/registrar")
     public ResponseEntity<UsuarioSalidaDto> registrarUsuario(@Valid @RequestBody UsuarioEntradaDto usuario) throws BadRequestException {
         return new ResponseEntity<>(usuarioService.registrarUsuario(usuario), HttpStatus.CREATED);
@@ -77,6 +79,7 @@ public class UsuarioController {
                     content = @Content)
     })
 
+    @PreAuthorize("hasAuthority('SEARCH_ONE_USUARIO')")
     @GetMapping("busqueda/{id}")
     public ResponseEntity<UsuarioSalidaDto> obtenerUsuarioPorId(@PathVariable Long id) {
         return new ResponseEntity<>(usuarioService.buscarUsuarioPorId(id), HttpStatus.OK);
@@ -93,6 +96,7 @@ public class UsuarioController {
                     content = @Content)
     })
 
+    @PreAuthorize("hasAuthority('READ_ALL_USUARIOS')")
     @GetMapping("listar")
     public ResponseEntity<List<UsuarioSalidaDto>> listarUsuarios() {
         return new ResponseEntity<>(usuarioService.listarUsuarios(), HttpStatus.OK);
@@ -111,6 +115,8 @@ public class UsuarioController {
             @ApiResponse(responseCode = "500", description = "Server error",
                     content = @Content)
     })
+
+
     @DeleteMapping("eliminar/{id}")
     public ResponseEntity<?> eliminarUsuario(@PathVariable Long id) throws ResourceNotFoundException {
         usuarioService.eliminarUsuario(id);
