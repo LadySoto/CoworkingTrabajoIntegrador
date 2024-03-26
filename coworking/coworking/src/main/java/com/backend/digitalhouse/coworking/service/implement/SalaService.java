@@ -4,12 +4,15 @@ import com.backend.digitalhouse.coworking.dto.entrada.sala.SalaEntradaDto;
 import com.backend.digitalhouse.coworking.dto.modificacion.sala.SalaModificacionEntradaDto;
 import com.backend.digitalhouse.coworking.dto.salida.imagen.ImagenSalidaDto;
 import com.backend.digitalhouse.coworking.dto.salida.sala.SalaSalidaDto;
+import com.backend.digitalhouse.coworking.dto.salida.servicioSala.ServicioSalaSalidaDto;
 import com.backend.digitalhouse.coworking.dto.salida.tipoSala.TipoSalaSalidaDto;
 import com.backend.digitalhouse.coworking.entity.*;
 import com.backend.digitalhouse.coworking.exceptions.BadRequestException;
 import com.backend.digitalhouse.coworking.exceptions.ResourceNotFoundException;
 import com.backend.digitalhouse.coworking.repository.ImagenRepository;
 import com.backend.digitalhouse.coworking.repository.SalaRepository;
+import com.backend.digitalhouse.coworking.repository.ServicioRepository;
+import com.backend.digitalhouse.coworking.repository.ServicioSalaRepository;
 import com.backend.digitalhouse.coworking.service.ISalaService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -18,24 +21,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class SalaService implements ISalaService {
     private final Logger LOGGER = LoggerFactory.getLogger(SalaService.class);
     private final SalaRepository salaRepository;
     private final ImagenRepository imagenRepository;
+    private final ServicioSalaRepository servicioSalaRepository;
+
+    private final ServicioRepository servicioRepository;
     private final ModelMapper modelMapper;
     private final TipoSalaService tipoSalaService;
 
-
     @Autowired
-    public SalaService(SalaRepository salaRepository, ImagenRepository imagenRepository, ModelMapper modelMapper, TipoSalaService tipoSalaService) {
+    public SalaService(SalaRepository salaRepository, ImagenRepository imagenRepository, ServicioSalaRepository servicioSalaRepository, ServicioRepository servicioRepository, ModelMapper modelMapper, TipoSalaService tipoSalaService) {
         this.salaRepository = salaRepository;
         this.imagenRepository = imagenRepository;
+        this.servicioSalaRepository = servicioSalaRepository;
+        this.servicioRepository = servicioRepository;
         this.modelMapper = modelMapper;
         this.tipoSalaService = tipoSalaService;
         configureMappings();
@@ -47,6 +51,8 @@ public class SalaService implements ISalaService {
             SalaSalidaDto salaSalidaDto = entidadADtoSalida(salaRepository.save(dtoEntradaAEntidad(sala)));
             //Asigna las imagenes
             salaSalidaDto.setImagenes(imagenesPorSalaId(modelMapper.map(salaSalidaDto, Sala.class)));
+            //Asigna los servicios
+            salaSalidaDto.setServicios(serviciosSalaPorSalaId(modelMapper.map(salaSalidaDto, Sala.class)));
             LOGGER.info("Sala guardada: {}", salaSalidaDto);
             return salaSalidaDto;
         } else {
@@ -60,9 +66,10 @@ public class SalaService implements ISalaService {
         List<SalaSalidaDto> salas = salaRepository.findAll().stream()
                 .map(sala -> entidadADtoSalida(sala)).toList();
 
-        //Asigna las imagenes
-        for (SalaSalidaDto salaImagenes: salas) {
-            salaImagenes.setImagenes(imagenesPorSalaId(modelMapper.map(salaImagenes, Sala.class)));
+        //Asigna las imagenes y servicios
+        for (SalaSalidaDto sala: salas) {
+            sala.setImagenes(imagenesPorSalaId(modelMapper.map(sala, Sala.class)));
+            sala.setServicios(serviciosSalaPorSalaId(modelMapper.map(sala, Sala.class)));
         }
         LOGGER.info("Listado de las salas: {}", salas);
         return salas;
@@ -81,6 +88,8 @@ public class SalaService implements ISalaService {
             salaSalidaDto = entidadADtoSalida(salaBuscada);
             //Asigna las imagenes
             salaSalidaDto.setImagenes(imagenesPorSalaId(modelMapper.map(salaSalidaDto, Sala.class)));
+            //Asigna los servicios
+            salaSalidaDto.setServicios(serviciosSalaPorSalaId(modelMapper.map(salaSalidaDto, Sala.class)));
             LOGGER.info("Sala por id: {}", salaSalidaDto);
         } else LOGGER.info("Sala por id: {}", id);
         return salaSalidaDto;
@@ -120,6 +129,8 @@ public class SalaService implements ISalaService {
             salaSalidaDto = entidadADtoSalida(salaGuardada.get());
             //Asigna las imagenes
             salaSalidaDto.setImagenes(imagenesPorSalaId(modelMapper.map(salaSalidaDto, Sala.class)));
+            //Asigna los servicios
+            salaSalidaDto.setServicios(serviciosSalaPorSalaId(modelMapper.map(salaSalidaDto, Sala.class)));
             LOGGER.info("La sala ha sido actualizada: {}", salaGuardada.get());
 
             return salaSalidaDto;
@@ -142,6 +153,7 @@ public class SalaService implements ISalaService {
         modelMapper.typeMap(SalaModificacionEntradaDto.class, Sala.class);
         modelMapper.typeMap(TipoSalaSalidaDto.class, TipoSala.class);
         modelMapper.typeMap(Imagen.class, ImagenSalidaDto.class);
+        modelMapper.typeMap(ServicioSala.class, ServicioSalaSalidaDto.class);
 
     }
 
@@ -178,15 +190,17 @@ public class SalaService implements ISalaService {
         return convertirALong;
     }
 
-    public List<String> imagenesPorSalaId (Sala sala) {
-        List<String> imagenesListaSala = new ArrayList<>();
+    public List<Map<Long, String>> imagenesPorSalaId (Sala sala) {
+        List<Map<Long, String>> imagenesListaSala = new ArrayList<>();
 
         List<ImagenSalidaDto> imagenesPorSalaId = imagenRepository.findBySala(sala).stream()
                 .map(imagen -> entidadImagenADtoSalida(imagen)).toList();
         LOGGER.info("Listado de imagenes por id de sala: {}", imagenesPorSalaId);
 
         for (ImagenSalidaDto imagenSalidaDTO: imagenesPorSalaId) {
-            imagenesListaSala.add(imagenSalidaDTO.getImagen());
+            Map<Long, String> imagenSala = new HashMap<>();
+            imagenSala.put(imagenSalidaDTO.getId(), imagenSalidaDTO.getImagen());
+            imagenesListaSala.add(imagenSala);
         }
         return imagenesListaSala;
     }
@@ -195,6 +209,28 @@ public class SalaService implements ISalaService {
         ImagenSalidaDto imagenSalidaDto = modelMapper.map(imagen, ImagenSalidaDto.class);
         imagenSalidaDto.setIdSala(entidadADtoSalida(imagen.getSala()));
         return imagenSalidaDto;
+    }
+
+    public List<Map<Long, String>> serviciosSalaPorSalaId (Sala sala) {
+        List<Map<Long, String>> serviciosSalaListaSala = new ArrayList<>();
+
+        List<ServicioSalaSalidaDto> serviciosSalaPorSalaId = servicioSalaRepository.findBySala(sala).stream()
+                .map(servicioSala -> entidadServicioSalaADtoSalida(servicioSala)).toList();
+        LOGGER.info("Listado de servicio de sala por id de sala: {}", serviciosSalaPorSalaId);
+
+        for (ServicioSalaSalidaDto servicioSalaSalidaDTO: serviciosSalaPorSalaId) {
+            Servicio servicio = servicioRepository.findById(servicioSalaSalidaDTO.getIdServicio().getId()).orElse(null);
+            Map<Long, String> servicioMapa = new HashMap<>();
+            servicioMapa.put(servicioSalaSalidaDTO.getId(), servicio.getNombre());
+            serviciosSalaListaSala.add(servicioMapa);
+        }
+        return serviciosSalaListaSala;
+    }
+
+    public ServicioSalaSalidaDto entidadServicioSalaADtoSalida(ServicioSala serviciosSala) {
+        ServicioSalaSalidaDto serviciosSalaSalidaDto = modelMapper.map(serviciosSala, ServicioSalaSalidaDto.class);
+        serviciosSalaSalidaDto.setIdSala(entidadADtoSalida(serviciosSala.getSala()));
+        return serviciosSalaSalidaDto;
     }
 }
 

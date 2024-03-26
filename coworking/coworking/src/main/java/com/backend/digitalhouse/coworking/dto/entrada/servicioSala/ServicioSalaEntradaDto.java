@@ -9,7 +9,7 @@ import java.util.List;
 public class ServicioSalaEntradaDto {
 
     @NotNull(message = "Este campo no puede ser nulo")
-    private List<Long> idServicio;
+    private List<Long> idServicios;
 
     @NotNull(message = "Este campo no puede ser nulo")
     private long idSala;
@@ -17,17 +17,17 @@ public class ServicioSalaEntradaDto {
     public ServicioSalaEntradaDto() {
     }
 
-    public ServicioSalaEntradaDto(List<Long> idServicio, long idSala) {
-        this.idServicio = idServicio;
+    public ServicioSalaEntradaDto(List<Long> idServicios, long idSala) {
+        this.idServicios = idServicios;
         this.idSala = idSala;
     }
 
-    public List<Long> getIdServicio() {
-        return idServicio;
+    public List<Long> getIdServicios() {
+        return idServicios;
     }
 
-    public void setIdServicio(List<Long> idServicio) {
-        this.idServicio = idServicio;
+    public void setIdServicios(List<Long> idServicios) {
+        this.idServicios = idServicios;
     }
 
     public long getIdSala() {
@@ -41,7 +41,7 @@ public class ServicioSalaEntradaDto {
     @Override
     public String toString() {
         return "ServicioSalaEntradaDto{" +
-                "idServicio=" + idServicio +
+                "idServicio=" + idServicios +
                 ", idSala=" + idSala +
                 '}';
     }
