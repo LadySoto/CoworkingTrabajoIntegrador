@@ -14,6 +14,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +30,7 @@ public class RolController {
     }
 
     //POST
-    @Operation(summary = "Se registro un rol")
+    @Operation(summary = "Se registró un rol")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "El rol se ha registrada correctamente",
                     content = {@Content(mediaType = "application/json",
@@ -39,6 +40,8 @@ public class RolController {
             @ApiResponse(responseCode = "500", description = "Server error",
                     content = @Content)
     })
+
+    @PreAuthorize("hasAuthority('SAVE_ONE_ROL')")
     @PostMapping("/registrar")
     public ResponseEntity<RolSalidaDto> registrarRol(@Valid @RequestBody RolEntradaDto rol) throws BadRequestException {
         return new ResponseEntity<>(rolService.registrarRol(rol), HttpStatus.CREATED);
@@ -58,6 +61,7 @@ public class RolController {
                     content = @Content)
     })
 
+    @PreAuthorize("hasAuthority('UPDATE_ONE_ROL')")
     @PatchMapping("/modificar/{id}")
     public ResponseEntity<RolSalidaDto> modificarRol(@PathVariable Long id, @Valid @RequestBody Map<String,Object> camposAModificar) throws ResourceNotFoundException {
         return new ResponseEntity<>(rolService.modificarRol(id, camposAModificar), HttpStatus.OK);
@@ -77,6 +81,7 @@ public class RolController {
                     content = @Content)
     })
 
+    @PreAuthorize("hasAuthority('SEARCH_ONE_ROL')")
     @GetMapping("busqueda/{id}")
     public ResponseEntity<RolSalidaDto> obtenerRolPorId(@PathVariable Long id) {
         return new ResponseEntity<>(rolService.buscarRolPorId(id), HttpStatus.OK);
@@ -93,6 +98,7 @@ public class RolController {
                     content = @Content)
     })
 
+    @PreAuthorize("hasAuthority('READ_ALL_ROLES')")
     @GetMapping("listar")
     public ResponseEntity<List<RolSalidaDto>> listarRoles() {
         return new ResponseEntity<>(rolService.listarRoles(), HttpStatus.OK);
@@ -111,6 +117,8 @@ public class RolController {
             @ApiResponse(responseCode = "500", description = "Server error",
                     content = @Content)
     })
+
+    @PreAuthorize("hasAuthority('DELETE_ONE_ROL')")
     @DeleteMapping("eliminar/{id}")
     public ResponseEntity<?> eliminarRol(@PathVariable Long id) throws ResourceNotFoundException {
         rolService.eliminarRol(id);
