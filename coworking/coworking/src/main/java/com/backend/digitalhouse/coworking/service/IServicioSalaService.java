@@ -10,13 +10,13 @@ import java.util.List;
 import java.util.Map;
 
 public interface IServicioSalaService {
-    ServicioSalaSalidaDto registrarServicioSala(ServicioSalaEntradaDto servicioSala) throws BadRequestException;
+    List<ServicioSalaSalidaDto> registrarServicioSala(ServicioSalaEntradaDto servicioSala) throws BadRequestException;
 
     List<ServicioSalaSalidaDto> listarServiciosSala();
 
-    List<ServicioSalaSalidaDto> listarServicioSalaPorSalaId(Sala sala);
+    List<ServicioSalaSalidaDto> listarServiciosSalaPorSalaId(Sala sala);
 
-    List<ServicioSalaSalidaDto> listarServicioSalaPorServicioId(Servicio servicio);
+    List<ServicioSalaSalidaDto> listarServiciosSalaPorServicioId(Servicio servicio);
 
     ServicioSalaSalidaDto buscarServicioSalaPorId(Long id);
 

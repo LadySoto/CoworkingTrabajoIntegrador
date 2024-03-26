@@ -63,8 +63,6 @@ public class ImagenService implements IImagenService {
         return imagenesPorSalaId;
     }
 
-
-
     @Override
     public ImagenSalidaDto buscarImagenPorId(Long id) {
         Imagen imagenBuscada = null;
@@ -163,6 +161,7 @@ public class ImagenService implements IImagenService {
 
     private Imagen dtoModificadoAEntidad(ImagenModificacionEntradaDto imagenModificacionEntradaDto) {
         Imagen imagen = modelMapper.map(imagenModificacionEntradaDto, Imagen.class);
+
         if (imagenModificacionEntradaDto.getIdSala() != 0){
             imagen.setSala(salaEntradaDtoAEntity(imagenModificacionEntradaDto.getIdSala()));
         }

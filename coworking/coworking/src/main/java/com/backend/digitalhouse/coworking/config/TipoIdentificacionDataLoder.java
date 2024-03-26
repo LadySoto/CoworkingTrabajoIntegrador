@@ -28,10 +28,10 @@ public class TipoIdentificacionDataLoder implements CommandLineRunner {
 
     private void cargaTiposIdentificacionesIniciales() {
         List<TipoIdentificacion> tipoIdentificacionesIniciales = Arrays.asList(
-                new TipoIdentificacion("Nit",1),
                 new TipoIdentificacion("C.C",1),
                 new TipoIdentificacion("C.E",1),
-                new TipoIdentificacion("T.T", 1)
+                new TipoIdentificacion("T.T", 1),
+                new TipoIdentificacion("Nit",1)
         );
         tipoIdentificacionRepository.saveAll(tipoIdentificacionesIniciales);
     }
