@@ -3,6 +3,7 @@ package com.backend.digitalhouse.coworking.dto.salida.sala;
 import com.backend.digitalhouse.coworking.dto.salida.tipoSala.TipoSalaSalidaDto;
 
 import java.util.List;
+import java.util.Map;
 
 public class SalaSalidaDto {
     private Long id;
@@ -13,13 +14,13 @@ public class SalaSalidaDto {
     private int estado;
     private double promedioCalificacion;
     private TipoSalaSalidaDto tipoSala;
-    private List<String> imagenes;
-    private List<String> servicios;
+    private List<Map<Long, String>> imagenes;
+    private List<Map<Long, String>> servicios;
 
     public SalaSalidaDto() {
     }
 
-    public SalaSalidaDto(Long id, String nombre, String descripcion, int capacidad, int disponible, int estado, double promedioCalificacion, TipoSalaSalidaDto tipoSala, List<String> imagenes, List<String> servicios) {
+    public SalaSalidaDto(Long id, String nombre, String descripcion, int capacidad, int disponible, int estado, double promedioCalificacion, TipoSalaSalidaDto tipoSala, List<Map<Long, String>> imagenes, List<Map<Long, String>> servicios) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -96,19 +97,19 @@ public class SalaSalidaDto {
         this.tipoSala = tipoSala;
     }
 
-    public List<String> getImagenes() {
+    public List<Map<Long, String>> getImagenes() {
         return imagenes;
     }
 
-    public void setImagenes(List<String> imagenes) {
+    public void setImagenes(List<Map<Long, String>> imagenes) {
         this.imagenes = imagenes;
     }
 
-    public List<String> getServicios() {
+    public List<Map<Long, String>> getServicios() {
         return servicios;
     }
 
-    public void setServicios(List<String> servicios) {
+    public void setServicios(List<Map<Long, String>> servicios) {
         this.servicios = servicios;
     }
 

@@ -44,7 +44,7 @@ public class ServicioSalaController {
 
     @PreAuthorize("hasAuthority('SAVE_ONE_SERVICIOSALA')")
     @PostMapping("/registrar")
-    public ResponseEntity<ServicioSalaSalidaDto> registrarServicioSala(@Valid @RequestBody ServicioSalaEntradaDto servicioSala) throws BadRequestException {
+    public ResponseEntity<List<ServicioSalaSalidaDto>> registrarServicioSala(@Valid @RequestBody ServicioSalaEntradaDto servicioSala) throws BadRequestException {
         return new ResponseEntity<>(servicioSalaService.registrarServicioSala(servicioSala), HttpStatus.CREATED);
     }
 

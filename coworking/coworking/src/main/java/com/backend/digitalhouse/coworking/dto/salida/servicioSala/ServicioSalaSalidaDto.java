@@ -1,19 +1,20 @@
 package com.backend.digitalhouse.coworking.dto.salida.servicioSala;
 import com.backend.digitalhouse.coworking.dto.salida.sala.SalaSalidaDto;
+import com.backend.digitalhouse.coworking.dto.salida.servicio.ServicioSalidaDto;
 
 public class ServicioSalaSalidaDto {
 
     private Long id;
-    private ServicioSalaSalidaDto servicioSalaSalidaDto;
-    private SalaSalidaDto salaSalidaDto;
+    private ServicioSalidaDto idServicio;
+    private SalaSalidaDto idSala;
 
     public ServicioSalaSalidaDto() {
     }
 
-    public ServicioSalaSalidaDto(Long id, ServicioSalaSalidaDto servicioSalaSalidaDto, SalaSalidaDto salaSalidaDto) {
+    public ServicioSalaSalidaDto(Long id, ServicioSalidaDto idServicio, SalaSalidaDto idSala) {
         this.id = id;
-        this.servicioSalaSalidaDto = servicioSalaSalidaDto;
-        this.salaSalidaDto = salaSalidaDto;
+        this.idServicio = idServicio;
+        this.idSala = idSala;
     }
 
     public Long getId() {
@@ -24,28 +25,28 @@ public class ServicioSalaSalidaDto {
         this.id = id;
     }
 
-    public ServicioSalaSalidaDto getServicioSalaSalidaDto() {
-        return servicioSalaSalidaDto;
+    public ServicioSalidaDto getIdServicio() {
+        return idServicio;
     }
 
-    public void setServicioSalaSalidaDto(ServicioSalaSalidaDto servicioSalaSalidaDto) {
-        this.servicioSalaSalidaDto = servicioSalaSalidaDto;
+    public void setIdServicio(ServicioSalidaDto idServicio) {
+        this.idServicio = idServicio;
     }
 
-    public SalaSalidaDto getSalaSalidaDto() {
-        return salaSalidaDto;
+    public SalaSalidaDto getIdSala() {
+        return idSala;
     }
 
-    public void setSalaSalidaDto(SalaSalidaDto salaSalidaDto) {
-        this.salaSalidaDto = salaSalidaDto;
+    public void setIdSala(SalaSalidaDto idSala) {
+        this.idSala = idSala;
     }
 
     @Override
     public String toString() {
         return "ServicioSalaSalidaDto{" +
                 "id=" + id +
-                ", servicio=" + servicioSalaSalidaDto +
-                ", sala=" + salaSalidaDto +
+                ", idServicio=" + idServicio +
+                ", idSala=" + idSala +
                 '}';
     }
 }
