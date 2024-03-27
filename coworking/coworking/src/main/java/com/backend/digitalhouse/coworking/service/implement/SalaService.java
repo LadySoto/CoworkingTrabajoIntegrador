@@ -10,6 +10,7 @@ import com.backend.digitalhouse.coworking.exceptions.BadRequestException;
 import com.backend.digitalhouse.coworking.exceptions.ResourceNotFoundException;
 import com.backend.digitalhouse.coworking.repository.ImagenRepository;
 import com.backend.digitalhouse.coworking.repository.SalaRepository;
+import com.backend.digitalhouse.coworking.repository.ServicioSalaRepository;
 import com.backend.digitalhouse.coworking.service.ISalaService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -30,15 +31,15 @@ public class SalaService implements ISalaService {
     private final ImagenRepository imagenRepository;
     private final ModelMapper modelMapper;
     private final TipoSalaService tipoSalaService;
-
+    private final ServicioSalaRepository servicioSalaRepository;
 
     @Autowired
-    public SalaService(SalaRepository salaRepository, ImagenRepository imagenRepository, ModelMapper modelMapper, TipoSalaService tipoSalaService) {
+    public SalaService(SalaRepository salaRepository, ImagenRepository imagenRepository, ModelMapper modelMapper, TipoSalaService tipoSalaService, ServicioSalaRepository servicioSalaRepository) {
         this.salaRepository = salaRepository;
         this.imagenRepository = imagenRepository;
         this.modelMapper = modelMapper;
         this.tipoSalaService = tipoSalaService;
-        configureMappings();
+        this.servicioSalaRepository = servicioSalaRepository;
     }
 
     @Override
@@ -84,6 +85,51 @@ public class SalaService implements ISalaService {
             LOGGER.info("Sala por id: {}", salaSalidaDto);
         } else LOGGER.info("Sala por id: {}", id);
         return salaSalidaDto;
+    }
+
+    @Override
+    public List<SalaSalidaDto> buscarSalasPorTipoSala(String nombreTipoSala) {
+        List<Sala> salasBuscadas = salaRepository.findByTipoSalaNombre(nombreTipoSala);
+        List<SalaSalidaDto> salasSalidaDto = new ArrayList<>();
+        if (!salasBuscadas.isEmpty()) {
+            for (Sala sala : salasBuscadas) {
+                salasSalidaDto.add(entidadADtoSalida(sala));
+            }
+            LOGGER.info("Se encontraron {} salas para el tipo de sala: {}", salasBuscadas.size(), nombreTipoSala);
+        } else {
+            LOGGER.info("No se encontraron salas para el tipo de sala: {}", nombreTipoSala);
+        }
+        return salasSalidaDto;
+    }
+
+    @Override
+    public List<SalaSalidaDto> buscarSalasPorNombre(String nombre) {
+        List<Sala> salasBuscadas = salaRepository.findByNombreContaining(nombre);
+        List<SalaSalidaDto> salasSalidaDto = new ArrayList<>();
+        if (!salasBuscadas.isEmpty()) {
+            for (Sala sala : salasBuscadas) {
+                salasSalidaDto.add(entidadADtoSalida(sala));
+            }
+            LOGGER.info("Se encontraron {} salas con el nombre: {}", salasBuscadas.size(), nombre);
+        } else {
+            LOGGER.info("No se encontraron salas con el nombre: {}", nombre);
+        }
+        return salasSalidaDto;
+    }
+
+    @Override
+    public List<SalaSalidaDto> buscarSalaPorServicio(String nombreServicio) {
+        List<ServicioSala> servicioSalas = servicioSalaRepository.findByServicioNombre(nombreServicio);
+        List<SalaSalidaDto> salasSalidaDto = new ArrayList<>();
+        if (!servicioSalas.isEmpty()) {
+            for (ServicioSala servicioSala : servicioSalas) {
+                salasSalidaDto.add(entidadADtoSalida(servicioSala.getSala()));
+            }
+            LOGGER.info("Se encontraron {} salas para el servicio: {}", servicioSalas.size(), nombreServicio);
+        } else {
+            LOGGER.info("No se encontraron salas para el servicio: {}", nombreServicio);
+        }
+        return salasSalidaDto;
     }
 
     @Override
