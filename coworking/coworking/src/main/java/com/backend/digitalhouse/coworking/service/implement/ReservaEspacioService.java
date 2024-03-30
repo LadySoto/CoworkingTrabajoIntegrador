@@ -17,9 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Service
 public class ReservaEspacioService implements IReservaEspacioService {
@@ -55,6 +54,28 @@ public class ReservaEspacioService implements IReservaEspacioService {
                 .map(reservaEspacio -> entidadADtoSalida(reservaEspacio)).toList();
         LOGGER.info("Listado de reservas de espacios: {}", reservaEspacios);
         return reservaEspacios;
+    }
+
+    @Override
+    public List<LocalDateTime> listarFechasDisponibles(Long idSala) {
+        LocalDateTime fechaInicio = LocalDateTime.now();
+        LocalDateTime fechaFin = fechaInicio.plusDays(30);
+
+        List<ReservaEspacio> reservas = reservaEspacioRepository.findBySalaIdAndFechaHoraInicioBetween(idSala,fechaInicio, fechaFin);
+
+        Set<LocalDateTime> todasLasFechas = new HashSet<>();
+        for (ReservaEspacio reserva : reservas) {
+            todasLasFechas.add(reserva.getFechaHoraInicio());
+            todasLasFechas.add(reserva.getFechaHoraFin());
+        }
+
+        List<LocalDateTime> fechasDisponibles = new ArrayList<>();
+        for (LocalDateTime fecha = fechaInicio; fecha.isBefore(fechaFin); fecha = fecha.plusDays(1)) {
+            if (!todasLasFechas.contains(fecha)) {
+                fechasDisponibles.add(fecha);
+            }
+        }
+        return fechasDisponibles;
     }
 
     @Override
