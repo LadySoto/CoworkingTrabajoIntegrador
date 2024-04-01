@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface SalaRepository extends JpaRepository<Sala, Long> {
 
-    List<Sala> findByTipoSalaNombre(String nombre);
+    List<Sala> findByTipoSalaNombreContainingIgnoreCase(String nombre);
     List<Sala> findByNombreContaining(String nombre);
 }

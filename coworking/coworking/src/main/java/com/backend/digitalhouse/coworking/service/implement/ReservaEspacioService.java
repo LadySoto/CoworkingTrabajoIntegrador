@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Service
@@ -38,13 +39,44 @@ public class ReservaEspacioService implements IReservaEspacioService {
 
     @Override
     public ReservaEspacioSalidaDto registrarReservaEspacio(ReservaEspacioEntradaDto reservaEspacio) throws BadRequestException {
-        if (reservaEspacio!= null) {
+
+        UsuarioSalidaDto usuario = usuarioService.buscarUsuarioPorId(reservaEspacio.getIdUsuario());
+        SalaSalidaDto sala = salaService.buscarSalaPorId(reservaEspacio.getIdSala());
+
+        if (usuario == null || sala == null){
+            if (usuario == null && sala == null){
+                LOGGER.info("El usuario y la sala no se encuentran en la base de datos");
+                throw new BadRequestException("El usuario y la sala no se encuentran en la base de datos");
+            } else if (usuario == null) {
+                LOGGER.info("El usuario no se encuentran en la base de datos");
+                throw new BadRequestException("El usuario no se encuentran en la base de datos");
+            } else {
+                LOGGER.info("La sala no se encuentran en la base de datos");
+                throw new BadRequestException("La sala no se encuentran en la base de datos");
+            }
+        }
+
+        if(reservaEspacio.getFechaHoraInicio().equals(reservaEspacio.getFechaHoraFin())){
+            LOGGER.info("Los datos de fechaHoraInicio y fechaHoraFin no pueden ser iguales");
+            throw new BadRequestException("Los datos de fechaHoraInicio y fechaHoraFin no pueden ser iguales");
+        }
+
+       LocalDateTime fechaInicioRedondeada = reservaEspacio.getFechaHoraInicio().truncatedTo(ChronoUnit.HOURS);
+        LocalDateTime fechaFinRedondeada = reservaEspacio.getFechaHoraFin().truncatedTo(ChronoUnit.HOURS);
+        LOGGER.info("Estas son las fechas de inicio: " + fechaInicioRedondeada  + " y fin: " + fechaFinRedondeada);
+
+        List<LocalDateTime> fechasDisponibles = listarFechasDisponibles(reservaEspacio.getIdSala());
+        LOGGER.info("estas son las fechas disponibles" + fechasDisponibles);
+
+        if (fechasDisponibles.contains(fechaInicioRedondeada) && fechasDisponibles.contains(fechaFinRedondeada)) {
+            LOGGER.info("Estas fechas están disponibles");
+
             ReservaEspacioSalidaDto reservaEspacioSalidaDto = entidadADtoSalida(reservaEspacioRepository.save(dtoEntradaAEntidad(reservaEspacio)));
             LOGGER.info("Nueva reserva de espacio registrada con exito: {}", reservaEspacioSalidaDto);
             return reservaEspacioSalidaDto;
         } else {
             LOGGER.error("No se pudo registrar la reserva de espacio");
-            throw new BadRequestException("No se pudo registrar la reserva de espacio");
+            throw new BadRequestException("No se pudo registrar la reserva del espacio porque la fecha no esta disponible");
         }
     }
 
@@ -57,22 +89,38 @@ public class ReservaEspacioService implements IReservaEspacioService {
     }
 
     @Override
-    public List<LocalDateTime> listarFechasDisponibles(Long idSala) {
+    public List<LocalDateTime> listarFechasDisponibles(Long idSala) throws BadRequestException {
         LocalDateTime fechaInicio = LocalDateTime.now();
         LocalDateTime fechaFin = fechaInicio.plusDays(30);
+
+        SalaSalidaDto sala = salaService.buscarSalaPorId(idSala);
+
+        if (sala == null){
+            LOGGER.error("No existe esta sala");
+            throw new BadRequestException("La sala con ID: " + idSala + " no existe");
+        }
 
         List<ReservaEspacio> reservas = reservaEspacioRepository.findBySalaIdAndFechaHoraInicioBetween(idSala,fechaInicio, fechaFin);
 
         Set<LocalDateTime> todasLasFechas = new HashSet<>();
         for (ReservaEspacio reserva : reservas) {
-            todasLasFechas.add(reserva.getFechaHoraInicio());
-            todasLasFechas.add(reserva.getFechaHoraFin());
+            LocalDateTime fechaHoraInicio = reserva.getFechaHoraInicio().truncatedTo(ChronoUnit.HOURS);
+            LocalDateTime fechaHoraFin = reserva.getFechaHoraFin().truncatedTo(ChronoUnit.HOURS);
+
+            while (fechaHoraInicio.isBefore(fechaHoraFin) /*|| fechaInicio.equals(fechaHoraFin)*/) {
+                todasLasFechas.add(fechaHoraInicio);
+                fechaHoraInicio = fechaHoraInicio.plusHours(1);
+            }
         }
 
         List<LocalDateTime> fechasDisponibles = new ArrayList<>();
         for (LocalDateTime fecha = fechaInicio; fecha.isBefore(fechaFin); fecha = fecha.plusDays(1)) {
-            if (!todasLasFechas.contains(fecha)) {
-                fechasDisponibles.add(fecha);
+            LocalDateTime hora = fecha.truncatedTo(ChronoUnit.HOURS);
+            while (hora.isBefore(fecha.plusDays(1))) {
+                if (!todasLasFechas.contains(hora)) {
+                    fechasDisponibles.add(hora);
+                }
+                hora = hora.plusHours(1);
             }
         }
         return fechasDisponibles;
@@ -144,12 +192,26 @@ public class ReservaEspacioService implements IReservaEspacioService {
     private void configureMappings() {
         modelMapper.emptyTypeMap(ReservaEspacioEntradaDto.class, ReservaEspacio.class)
                 .addMappings(mapper -> mapper.map(ReservaEspacioEntradaDto::getIdUsuario, ReservaEspacio::setUsuario))
-                .addMappings(mapper -> mapper.map(ReservaEspacioEntradaDto::getIdSala, ReservaEspacio::setSala));
+                .addMappings(mapper -> mapper.map(ReservaEspacioEntradaDto::getIdSala, ReservaEspacio::setSala))
+                .addMappings(mapper -> mapper.map(ReservaEspacioEntradaDto::getFechaHoraInicio, ReservaEspacio::setFechaHoraInicio))
+                .addMappings(mapper -> mapper.map(ReservaEspacioEntradaDto::getFechaHoraFin, ReservaEspacio::setFechaHoraFin))
+                .addMappings(mapper -> mapper.map(ReservaEspacioEntradaDto::getCalificacion, ReservaEspacio::setCalificacion));
         modelMapper.typeMap(ReservaEspacio.class, ReservaEspacioSalidaDto.class);
         modelMapper.typeMap(ReservaEspacioModificacionEntradaDto.class, ReservaEspacio.class);
         modelMapper.typeMap(UsuarioSalidaDto.class, Usuario.class);
         modelMapper.typeMap(SalaSalidaDto.class, Sala.class);
     }
+
+   /* private void configureMappings() {
+        modelMapper.createTypeMap(ReservaEspacioEntradaDto.class, ReservaEspacio.class)
+                .addMapping(ReservaEspacioEntradaDto::getIdUsuario, ReservaEspacio::setUsuario)
+                .addMapping(ReservaEspacioEntradaDto::getIdSala, ReservaEspacio::setSala);
+
+        modelMapper.typeMap(ReservaEspacio.class, ReservaEspacioSalidaDto.class);
+        modelMapper.typeMap(ReservaEspacioModificacionEntradaDto.class, ReservaEspacio.class);
+        modelMapper.typeMap(UsuarioSalidaDto.class, Usuario.class);
+        modelMapper.typeMap(SalaSalidaDto.class, Sala.class);
+    }*/
 
     private Usuario usuarioEntradaDtoAEntity(Long id) {
         Usuario usuario = modelMapper.map(usuarioService.buscarUsuarioPorId(id), Usuario.class);
@@ -161,10 +223,35 @@ public class ReservaEspacioService implements IReservaEspacioService {
         return sala;
     }
 
-    public ReservaEspacio dtoEntradaAEntidad(ReservaEspacioEntradaDto reservaEspacioEntradaDto) {
+   /* public ReservaEspacio dtoEntradaAEntidad(ReservaEspacioEntradaDto reservaEspacioEntradaDto) {
         ReservaEspacio reservaEspacio = modelMapper.map(reservaEspacioEntradaDto, ReservaEspacio.class);
         reservaEspacio.setUsuario(usuarioEntradaDtoAEntity(reservaEspacioEntradaDto.getIdUsuario()));
         reservaEspacio.setSala(salaEntradaDtoAEntity(reservaEspacioEntradaDto.getIdSala()));
+        return reservaEspacio;
+    }*/
+
+   /* public ReservaEspacio dtoEntradaAEntidad(ReservaEspacioEntradaDto reservaEspacioEntradaDto) {
+        ReservaEspacio reservaEspacio = new ReservaEspacio();
+
+        // Mapear las propiedades de ReservaEspacioEntradaDto directamente a ReservaEspacio
+        modelMapper.map(reservaEspacioEntradaDto, reservaEspacio);
+
+        // Mapear el idUsuario y idSala a las entidades correspondientes
+        reservaEspacio.setUsuario(usuarioEntradaDtoAEntity(reservaEspacioEntradaDto.getIdUsuario()));
+        reservaEspacio.setSala(salaEntradaDtoAEntity(reservaEspacioEntradaDto.getIdSala()));
+
+        return reservaEspacio;
+    }*/
+
+    public ReservaEspacio dtoEntradaAEntidad(ReservaEspacioEntradaDto reservaEspacioEntradaDto) {
+        ReservaEspacio reservaEspacio = new ReservaEspacio();
+
+        reservaEspacio.setUsuario(usuarioEntradaDtoAEntity(reservaEspacioEntradaDto.getIdUsuario()));
+        reservaEspacio.setSala(salaEntradaDtoAEntity(reservaEspacioEntradaDto.getIdSala()));
+        reservaEspacio.setFechaHoraInicio(reservaEspacioEntradaDto.getFechaHoraInicio());
+        reservaEspacio.setFechaHoraFin(reservaEspacioEntradaDto.getFechaHoraFin());
+        reservaEspacio.setCalificacion(reservaEspacioEntradaDto.getCalificacion());
+
         return reservaEspacio;
     }
 
@@ -175,7 +262,8 @@ public class ReservaEspacioService implements IReservaEspacioService {
         return usuarioSalidaDto;
     }
     private SalaSalidaDto entityASalaSalidaDto(Sala sala) {
-        return modelMapper.map(sala, SalaSalidaDto.class);
+        SalaSalidaDto salaSalidaDto = modelMapper.map(sala, SalaSalidaDto.class);
+        return salaSalidaDto;
     }
 
     public ReservaEspacioSalidaDto entidadADtoSalida(ReservaEspacio reservaEspacio) {

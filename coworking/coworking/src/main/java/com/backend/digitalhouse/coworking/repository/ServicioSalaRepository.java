@@ -11,7 +11,8 @@ import java.util.List;
 @Repository
 public interface ServicioSalaRepository extends JpaRepository<ServicioSala, Long> {
 
-    List<ServicioSala> findByServicioNombre(String nombre);
+    List<ServicioSala> findByServicioNombreContainingIgnoreCase(String nombre);
+
     List<ServicioSala> findBySala(Sala sala);
     List<ServicioSala> findByServicio(Servicio servicio);
 }

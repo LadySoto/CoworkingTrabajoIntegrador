@@ -14,7 +14,7 @@ public interface IReservaEspacioService {
 
     List<ReservaEspacioSalidaDto> listarReservaEspacios();
 
-    List<LocalDateTime> listarFechasDisponibles(Long idSala);
+    List<LocalDateTime> listarFechasDisponibles(Long idSala) throws BadRequestException;
 
     ReservaEspacioSalidaDto buscarReservaEspacioPorId(Long id);
 

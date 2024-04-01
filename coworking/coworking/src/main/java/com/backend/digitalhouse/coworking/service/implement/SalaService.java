@@ -98,7 +98,7 @@ public class SalaService implements ISalaService {
 
     @Override
     public List<SalaSalidaDto> buscarSalasPorTipoSala(String nombreTipoSala) {
-        List<Sala> salasBuscadas = salaRepository.findByTipoSalaNombre(nombreTipoSala);
+        List<Sala> salasBuscadas = salaRepository.findByTipoSalaNombreContainingIgnoreCase(nombreTipoSala);
         List<SalaSalidaDto> salasSalidaDto = new ArrayList<>();
         if (!salasBuscadas.isEmpty()) {
             for (Sala sala : salasBuscadas) {
@@ -128,7 +128,7 @@ public class SalaService implements ISalaService {
 
     @Override
     public List<SalaSalidaDto> buscarSalaPorServicio(String nombreServicio) {
-        List<ServicioSala> servicioSalas = servicioSalaRepository.findByServicioNombre(nombreServicio);
+        List<ServicioSala> servicioSalas = servicioSalaRepository.findByServicioNombreContainingIgnoreCase(nombreServicio);
         List<SalaSalidaDto> salasSalidaDto = new ArrayList<>();
         if (!servicioSalas.isEmpty()) {
             for (ServicioSala servicioSala : servicioSalas) {
@@ -213,7 +213,7 @@ public class SalaService implements ISalaService {
         return sala;
     }
 
-    private TipoSalaSalidaDto entityATipoSalaSalidaDto(TipoSala tipoSala) {
+    public TipoSalaSalidaDto entityATipoSalaSalidaDto(TipoSala tipoSala) {
         return modelMapper.map(tipoSala, TipoSalaSalidaDto.class);
     }
 
