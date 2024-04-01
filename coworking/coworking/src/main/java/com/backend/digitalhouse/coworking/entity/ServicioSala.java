@@ -2,6 +2,8 @@ package com.backend.digitalhouse.coworking.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "SEVICIOS_SALAS")
 public class ServicioSala {

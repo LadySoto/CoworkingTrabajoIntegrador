@@ -23,10 +23,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ServicioSalaService implements IServicioSalaService {
@@ -162,23 +160,23 @@ public class ServicioSalaService implements IServicioSalaService {
         TypeMap<ServicioSalaEntradaDto, List> typeMap = modelMapper.createTypeMap(ServicioSalaEntradaDto.class, List.class);
 
         typeMap.setConverter(context -> {
-                    ServicioSalaEntradaDto source = context.getSource();
-                    List<Long> idServicios = source.getIdServicios();
-                    Long idSala = source.getIdSala();
+            ServicioSalaEntradaDto source = context.getSource();
+            List<Long> idServicios = source.getIdServicios();
+            Long idSala = source.getIdSala();
 
-                    List<ServicioSala> servicioSalas = new ArrayList<>();
+            List<ServicioSala> servicioSalas = new ArrayList<>();
 
-                    for (Long idServicio : idServicios) {
-                        ServicioSala servicioSala = new ServicioSala();
-                        servicioSala.setSala(salaRepository.findById(idSala)
-                                .orElseThrow(() -> new IllegalArgumentException("No se pudo encontrar la sala con ID: " + idSala)));
-                        servicioSala.setServicio(servicioRepository.findById(idServicio)
-                                .orElseThrow(() -> new IllegalArgumentException("No se pudo encontrar el servicio con ID: " + idServicio)));
-                        servicioSalas.add(servicioSala);
-                    }
+            for (Long idServicio : idServicios) {
+                ServicioSala servicioSala = new ServicioSala();
+                servicioSala.setSala(salaRepository.findById(idSala)
+                        .orElseThrow(() -> new IllegalArgumentException("No se pudo encontrar la sala con ID: " + idSala)));
+                servicioSala.setServicio(servicioRepository.findById(idServicio)
+                        .orElseThrow(() -> new IllegalArgumentException("No se pudo encontrar el servicio con ID: " + idServicio)));
+                servicioSalas.add(servicioSala);
+            }
 
-                    return servicioSalas;
-                });
+            return servicioSalas;
+        });
         modelMapper.typeMap(ServicioSalaModificacionEntradaDto.class, ServicioSala.class);
         modelMapper.emptyTypeMap(ServicioSalidaDto.class, Servicio.class)
                 .addMappings(mapper -> mapper.map(ServicioSalidaDto::getId, Servicio::setId))

@@ -12,11 +12,11 @@ public class ReservaEspacio {
     @Column(name = "ID_RESERVA_ESPACIO")
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="usuarios_id_usuario")
     private Usuario usuario;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="salas_id_sala")
     private Sala sala;
 

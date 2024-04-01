@@ -116,11 +116,10 @@ public class ReservaEspacioController {
             @ApiResponse(responseCode = "404", description = "Book not found",
                     content = @Content)
     })
-
     @PreAuthorize("hasAuthority('READ_ALL_RESERVAS')")
     @GetMapping("/fechasDisponibles/{idSala}")
-    public ResponseEntity<List<LocalDateTime>> listarFechasDisponibles(@PathVariable Long id) {
-        return new ResponseEntity<>(reservaEspacioService.listarFechasDisponibles(id), HttpStatus.OK);
+    public ResponseEntity<List<LocalDateTime>> listarFechasDisponibles(@PathVariable Long idSala) throws BadRequestException {
+        return new ResponseEntity<>(reservaEspacioService.listarFechasDisponibles(idSala), HttpStatus.OK);
     }
 
     //DELETE
