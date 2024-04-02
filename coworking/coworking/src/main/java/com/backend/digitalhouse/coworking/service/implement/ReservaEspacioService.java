@@ -3,6 +3,8 @@ package com.backend.digitalhouse.coworking.service.implement;
 import com.backend.digitalhouse.coworking.dto.entrada.reservaEspacio.ReservaEspacioEntradaDto;
 import com.backend.digitalhouse.coworking.dto.modificacion.reservaEspacio.ReservaEspacioModificacionEntradaDto;
 import com.backend.digitalhouse.coworking.dto.salida.reservaEspacio.ReservaEspacioSalidaDto;
+import com.backend.digitalhouse.coworking.dto.salida.reservaEspacio.SalaReservaSalidaDto;
+import com.backend.digitalhouse.coworking.dto.salida.reservaEspacio.UsuarioReservaSalidaDto;
 import com.backend.digitalhouse.coworking.dto.salida.sala.SalaSalidaDto;
 import com.backend.digitalhouse.coworking.dto.salida.usuario.UsuarioSalidaDto;
 import com.backend.digitalhouse.coworking.entity.*;
@@ -91,13 +93,13 @@ public class ReservaEspacioService implements IReservaEspacioService {
 
         if (reservaEspacioGuardada.isPresent()) {
             camposAModificar.forEach((key, value) -> {
-                if (key.equals("usuario")){
+                if (key.equals("usuarioReserva")){
                     UsuarioSalidaDto cambioUsuario = usuarioService.buscarUsuarioPorId(convertirALong(value));
                     Usuario usuario = modelMapper.map(cambioUsuario, Usuario.class);
                     Field campoAModificar = ReflectionUtils.findField(ReservaEspacio.class, key);
                     campoAModificar.setAccessible(true);
                     ReflectionUtils.setField(campoAModificar, reservaEspacioGuardada.get(), usuario);
-                } else if (key.equals("sala")) {
+                } else if (key.equals("salaReserva")) {
                     SalaSalidaDto cambioSala = salaService.buscarSalaPorId(convertirALong(value));
                     Sala sala = modelMapper.map(cambioSala, Sala.class);
                     Field campoAModificar = ReflectionUtils.findField(ReservaEspacio.class, key);
@@ -126,8 +128,8 @@ public class ReservaEspacioService implements IReservaEspacioService {
                 .addMappings(mapper -> mapper.map(ReservaEspacioEntradaDto::getIdSala, ReservaEspacio::setSala));
         modelMapper.typeMap(ReservaEspacio.class, ReservaEspacioSalidaDto.class);
         modelMapper.typeMap(ReservaEspacioModificacionEntradaDto.class, ReservaEspacio.class);
-        modelMapper.typeMap(UsuarioSalidaDto.class, Usuario.class);
-        modelMapper.typeMap(SalaSalidaDto.class, Sala.class);
+        modelMapper.typeMap(UsuarioReservaSalidaDto.class, Usuario.class);
+        modelMapper.typeMap(SalaReservaSalidaDto.class, Sala.class);
     }
 
     private Usuario usuarioEntradaDtoAEntity(Long id) {

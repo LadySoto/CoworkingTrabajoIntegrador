@@ -1,6 +1,5 @@
 package com.backend.digitalhouse.coworking.controller;
 
-
 import com.backend.digitalhouse.coworking.dto.entrada.tipoIdenticacion.TipoIdentificacionEntradaDto;
 import com.backend.digitalhouse.coworking.dto.salida.tipoIdentificacion.TipoIdentificacionSalidaDto;
 import com.backend.digitalhouse.coworking.exceptions.BadRequestException;

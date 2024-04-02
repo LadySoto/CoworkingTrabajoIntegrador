@@ -1,43 +1,27 @@
-package com.backend.digitalhouse.coworking.dto.salida.sala;
+package com.backend.digitalhouse.coworking.dto.salida.reservaEspacio;
 
 import com.backend.digitalhouse.coworking.dto.salida.tipoSala.TipoSalaSalidaDto;
 import java.util.List;
 import java.util.Map;
 
-public class SalaSalidaDto {
-    private Long id;
+public class SalaReservaSalidaDto {
     private String nombre;
     private String descripcion;
     private int capacidad;
-    private int disponible;
-    private int estado;
-    private double promedioCalificacion;
     private TipoSalaSalidaDto tipoSala;
     private List<Map<Long, String>> imagenes;
     private List<Map<Long, String>> servicios;
 
-    public SalaSalidaDto() {
+    public SalaReservaSalidaDto() {
     }
 
-    public SalaSalidaDto(Long id, String nombre, String descripcion, int capacidad, int disponible, int estado, double promedioCalificacion, TipoSalaSalidaDto tipoSala, List<Map<Long, String>> imagenes, List<Map<Long, String>> servicios) {
-        this.id = id;
+    public SalaReservaSalidaDto(String nombre, String descripcion, int capacidad, TipoSalaSalidaDto tipoSala, List<Map<Long, String>> imagenes, List<Map<Long, String>> servicios) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.capacidad = capacidad;
-        this.disponible = disponible;
-        this.estado = estado;
-        this.promedioCalificacion = promedioCalificacion;
         this.tipoSala = tipoSala;
         this.imagenes = imagenes;
         this.servicios = servicios;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getNombre() {
@@ -62,30 +46,6 @@ public class SalaSalidaDto {
 
     public void setCapacidad(int capacidad) {
         this.capacidad = capacidad;
-    }
-
-    public int getDisponible() {
-        return disponible;
-    }
-
-    public void setDisponible(int disponible) {
-        this.disponible = disponible;
-    }
-
-    public int getEstado() {
-        return estado;
-    }
-
-    public void setEstado(int estado) {
-        this.estado = estado;
-    }
-
-    public double getPromedioCalificacion() {
-        return promedioCalificacion;
-    }
-
-    public void setPromedioCalificacion(double promedioCalificacion) {
-        this.promedioCalificacion = promedioCalificacion;
     }
 
     public TipoSalaSalidaDto getTipoSala() {
@@ -114,14 +74,10 @@ public class SalaSalidaDto {
 
     @Override
     public String toString() {
-        return "SalaSalidaDto{" +
-                "id=" + id +
-                ", nombre='" + nombre + '\'' +
+        return "SalaReservaSalidaDto{" +
+                "nombre='" + nombre + '\'' +
                 ", descripcion='" + descripcion + '\'' +
                 ", capacidad=" + capacidad +
-                ", disponible=" + disponible +
-                ", estado=" + estado +
-                ", promedioCalificacion=" + promedioCalificacion +
                 ", tipoSala=" + tipoSala +
                 ", imagenes=" + imagenes +
                 ", servicios=" + servicios +
