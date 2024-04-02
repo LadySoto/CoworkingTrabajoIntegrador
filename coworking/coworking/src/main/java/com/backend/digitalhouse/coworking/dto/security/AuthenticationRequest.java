@@ -2,7 +2,6 @@ package com.backend.digitalhouse.coworking.dto.security;
 
 public class AuthenticationRequest {
 
-
   private String correo;
 
   private String contraseña;

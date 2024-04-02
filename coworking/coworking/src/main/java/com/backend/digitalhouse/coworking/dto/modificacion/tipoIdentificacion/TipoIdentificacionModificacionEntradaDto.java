@@ -5,7 +5,6 @@ import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TipoIdentificacionModificacionEntradaDto {
     @NotNull(message = "El campo no puede ser nulo")

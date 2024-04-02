@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 
 public class ReservaEspacioSalidaDto {
     private Long id;
-    private UsuarioSalidaDto usuario;
-    private SalaSalidaDto sala;
+    private UsuarioSalidaDto usuario; //private UsuarioReservaSalidaDto usuarioReserva;
+    private SalaSalidaDto sala; //private SalaReservaSalidaDto salaReserva;
     private LocalDateTime fechaHoraInicio;
     private LocalDateTime fechaHoraFin;
     private int calificacion;
