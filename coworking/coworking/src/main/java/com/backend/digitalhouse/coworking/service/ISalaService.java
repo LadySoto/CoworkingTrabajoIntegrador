@@ -14,6 +14,12 @@ public interface ISalaService {
 
     SalaSalidaDto buscarSalaPorId(Long id);
 
+    List<SalaSalidaDto> buscarSalasPorTipoSala(String nombreTipoSala);
+
+    List<SalaSalidaDto> buscarSalasPorNombre(String nombre);
+
+    List<SalaSalidaDto> buscarSalaPorServicio(String nombreServicio);
+
     void eliminarSala(Long id) throws ResourceNotFoundException;
 
     SalaSalidaDto modificarSala(Long id, Map<String, Object> camposAModificar) throws ResourceNotFoundException;

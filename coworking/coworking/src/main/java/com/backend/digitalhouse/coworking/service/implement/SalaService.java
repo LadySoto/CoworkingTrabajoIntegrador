@@ -34,6 +34,7 @@ public class SalaService implements ISalaService {
     private final ModelMapper modelMapper;
     private final TipoSalaService tipoSalaService;
 
+
     @Autowired
     public SalaService(SalaRepository salaRepository, ImagenRepository imagenRepository, ServicioSalaRepository servicioSalaRepository, ServicioRepository servicioRepository, ModelMapper modelMapper, TipoSalaService tipoSalaService) {
         this.salaRepository = salaRepository;
@@ -93,6 +94,51 @@ public class SalaService implements ISalaService {
             LOGGER.info("Sala por id: {}", salaSalidaDto);
         } else LOGGER.info("Sala por id: {}", id);
         return salaSalidaDto;
+    }
+
+    @Override
+    public List<SalaSalidaDto> buscarSalasPorTipoSala(String nombreTipoSala) {
+        List<Sala> salasBuscadas = salaRepository.findByTipoSalaNombreContainingIgnoreCase(nombreTipoSala);
+        List<SalaSalidaDto> salasSalidaDto = new ArrayList<>();
+        if (!salasBuscadas.isEmpty()) {
+            for (Sala sala : salasBuscadas) {
+                salasSalidaDto.add(entidadADtoSalida(sala));
+            }
+            LOGGER.info("Se encontraron {} salas para el tipo de sala: {}", salasBuscadas.size(), nombreTipoSala);
+        } else {
+            LOGGER.info("No se encontraron salas para el tipo de sala: {}", nombreTipoSala);
+        }
+        return salasSalidaDto;
+    }
+
+    @Override
+    public List<SalaSalidaDto> buscarSalasPorNombre(String nombre) {
+        List<Sala> salasBuscadas = salaRepository.findByNombreContaining(nombre);
+        List<SalaSalidaDto> salasSalidaDto = new ArrayList<>();
+        if (!salasBuscadas.isEmpty()) {
+            for (Sala sala : salasBuscadas) {
+                salasSalidaDto.add(entidadADtoSalida(sala));
+            }
+            LOGGER.info("Se encontraron {} salas con el nombre: {}", salasBuscadas.size(), nombre);
+        } else {
+            LOGGER.info("No se encontraron salas con el nombre: {}", nombre);
+        }
+        return salasSalidaDto;
+    }
+
+    @Override
+    public List<SalaSalidaDto> buscarSalaPorServicio(String nombreServicio) {
+        List<ServicioSala> servicioSalas = servicioSalaRepository.findByServicioNombreContainingIgnoreCase(nombreServicio);
+        List<SalaSalidaDto> salasSalidaDto = new ArrayList<>();
+        if (!servicioSalas.isEmpty()) {
+            for (ServicioSala servicioSala : servicioSalas) {
+                salasSalidaDto.add(entidadADtoSalida(servicioSala.getSala()));
+            }
+            LOGGER.info("Se encontraron {} salas para el servicio: {}", servicioSalas.size(), nombreServicio);
+        } else {
+            LOGGER.info("No se encontraron salas para el servicio: {}", nombreServicio);
+        }
+        return salasSalidaDto;
     }
 
     @Override
@@ -167,7 +213,7 @@ public class SalaService implements ISalaService {
         return sala;
     }
 
-    private TipoSalaSalidaDto entityATipoSalaSalidaDto(TipoSala tipoSala) {
+    public TipoSalaSalidaDto entityATipoSalaSalidaDto(TipoSala tipoSala) {
         return modelMapper.map(tipoSala, TipoSalaSalidaDto.class);
     }
 

@@ -87,6 +87,60 @@ public class SalaController {
         return new ResponseEntity<>(salaService.buscarSalaPorId(id), HttpStatus.OK);
     }
 
+    @Operation(summary = "Búsqueda de una sala por Tipo de Sala")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Sala encontrada correctamente",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = SalaSalidaDto.class))}),
+            @ApiResponse(responseCode = "400", description = "Tipo de Sala inválido",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "No se encuentran salas",
+                    content = @Content),
+            @ApiResponse(responseCode = "500", description = "Server error",
+                    content = @Content)
+    })
+
+    @GetMapping("/porTipoSala/{nombreTipoSala}")
+    public ResponseEntity<List<SalaSalidaDto>> buscarPorTipoSala(@PathVariable String nombreTipoSala) {
+        return new ResponseEntity<>(salaService.buscarSalasPorTipoSala(nombreTipoSala), HttpStatus.OK);
+    }
+
+    @Operation(summary = "Búsqueda de una sala por Nombre")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Sala encontrada correctamente",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = SalaSalidaDto.class))}),
+            @ApiResponse(responseCode = "400", description = "Nombre de Sala inválido",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "No se encuentran salas",
+                    content = @Content),
+            @ApiResponse(responseCode = "500", description = "Server error",
+                    content = @Content)
+    })
+
+    @GetMapping("/porNombre/{nombre}")
+    public ResponseEntity<List<SalaSalidaDto>> buscarPorNombre(@PathVariable String nombre) {
+        return new ResponseEntity<>(salaService.buscarSalasPorNombre(nombre), HttpStatus.OK);
+    }
+
+    @Operation(summary = "Búsqueda de una sala por Servicio")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Sala encontrada correctamente",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = SalaSalidaDto.class))}),
+            @ApiResponse(responseCode = "400", description = "Nombre de Servicio inválido",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "No se encuentran salas",
+                    content = @Content),
+            @ApiResponse(responseCode = "500", description = "Server error",
+                    content = @Content)
+    })
+
+    @GetMapping("/porServicio/{nombreServicio}")
+    public ResponseEntity<List<SalaSalidaDto>> buscarPorServicio(@PathVariable String nombreServicio) {
+        return new ResponseEntity<>(salaService.buscarSalaPorServicio(nombreServicio), HttpStatus.OK);
+    }
+
     @Operation(summary = "Listar todas las salas")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Listado de salas obtenido correctamente",

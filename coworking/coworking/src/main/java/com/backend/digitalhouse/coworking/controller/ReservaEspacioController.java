@@ -16,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -102,6 +104,22 @@ public class ReservaEspacioController {
     @GetMapping("listar")
     public ResponseEntity<List<ReservaEspacioSalidaDto>> listarReservaEspacios() {
         return new ResponseEntity<>(reservaEspacioService.listarReservaEspacios(), HttpStatus.OK);
+    }
+
+    @Operation(summary = "Listar todas las fechas disponibles")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Listado de fechas disponibles obtenido correctamente",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ReservaEspacioSalidaDto.class))}),
+            @ApiResponse(responseCode = "400", description = "Bad request",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Book not found",
+                    content = @Content)
+    })
+    @PreAuthorize("hasAuthority('READ_ALL_RESERVAS')")
+    @GetMapping("/fechasDisponibles/{idSala}")
+    public ResponseEntity<List<LocalDateTime>> listarFechasDisponibles(@PathVariable Long idSala) throws BadRequestException {
+        return new ResponseEntity<>(reservaEspacioService.listarFechasDisponibles(idSala), HttpStatus.OK);
     }
 
     //DELETE
