@@ -6,7 +6,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RolEntradaDto {
     @Size(max = 50, message = "El nombre debe tener hasta 50 caracteres")

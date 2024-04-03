@@ -1,39 +1,20 @@
-package com.backend.digitalhouse.coworking.dto.salida.usuario;
+package com.backend.digitalhouse.coworking.dto.salida.reservaEspacio;
 
-import com.backend.digitalhouse.coworking.dto.salida.rol.RolSalidaDto;
 import com.backend.digitalhouse.coworking.dto.salida.tipoIdentificacion.TipoIdentificacionSalidaDto;
 
-public class UsuarioSalidaDto {
-
-    private Long id;
+public class UsuarioReservaSalidaDto {
     private String nombre;
     private String correo;
-    private String contrasena;
     private TipoIdentificacionSalidaDto idTipoIdentificacion;
     private String numeroIdentificacion;
-    private int estado;
-    private RolSalidaDto idRol;
-
-    public UsuarioSalidaDto() {
+    public UsuarioReservaSalidaDto() {
     }
 
-    public UsuarioSalidaDto(Long id, String nombre, String correo, String contrasena, TipoIdentificacionSalidaDto idTipoIdentificacion, String numeroIdentificacion, int estado, RolSalidaDto idRol) {
-        this.id = id;
+    public UsuarioReservaSalidaDto(String nombre, String correo, TipoIdentificacionSalidaDto idTipoIdentificacion, String numeroIdentificacion) {
         this.nombre = nombre;
         this.correo = correo;
-        this.contrasena = contrasena;
         this.idTipoIdentificacion = idTipoIdentificacion;
         this.numeroIdentificacion = numeroIdentificacion;
-        this.estado = estado;
-        this.idRol = idRol;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getNombre() {
@@ -52,14 +33,6 @@ public class UsuarioSalidaDto {
         this.correo = correo;
     }
 
-    public String getContrasena() {
-        return contrasena;
-    }
-
-    public void setContrasena(String contrasena) {
-        this.contrasena = contrasena;
-    }
-
     public TipoIdentificacionSalidaDto getIdTipoIdentificacion() {
         return idTipoIdentificacion;
     }
@@ -76,33 +49,13 @@ public class UsuarioSalidaDto {
         this.numeroIdentificacion = numeroIdentificacion;
     }
 
-    public int getEstado() {
-        return estado;
-    }
-
-    public void setEstado(int estado) {
-        this.estado = estado;
-    }
-
-    public RolSalidaDto getIdRol() {
-        return idRol;
-    }
-
-    public void setIdRol(RolSalidaDto idRol) {
-        this.idRol = idRol;
-    }
-
     @Override
     public String toString() {
         return "UsuarioReservaSalidaDto{" +
-                "id=" + id +
-                ", nombre='" + nombre + '\'' +
+                "nombre='" + nombre + '\'' +
                 ", correo='" + correo + '\'' +
-                ", contrasena='" + contrasena + '\'' +
                 ", idTipoIdentificacion=" + idTipoIdentificacion +
                 ", numeroIdentificacion='" + numeroIdentificacion + '\'' +
-                ", estado=" + estado +
-                ", idRol=" + idRol +
                 '}';
     }
 }

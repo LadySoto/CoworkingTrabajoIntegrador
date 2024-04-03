@@ -52,6 +52,7 @@ public class ServicioSalaService implements IServicioSalaService {
     public List<ServicioSalaSalidaDto> registrarServicioSala(ServicioSalaEntradaDto servicioSala) throws BadRequestException {
         if (servicioSala != null) {
             List<ServicioSala> listaServiciosSala = dtoEntradaAEntidad(servicioSala);
+            System.out.println("listaServiciosSala: " + listaServiciosSala.toString());
             List<ServicioSalaSalidaDto> serviciosSalaSalidaDto = new ArrayList<>();
             for (ServicioSala servicioSalaEntidad: listaServiciosSala) {
                 System.out.println(servicioSalaEntidad);
@@ -178,6 +179,9 @@ public class ServicioSalaService implements IServicioSalaService {
             return servicioSalas;
         });
         modelMapper.typeMap(ServicioSalaModificacionEntradaDto.class, ServicioSala.class);
+        modelMapper.emptyTypeMap(ServicioSalaEntradaDto.class, ServicioSala.class)
+                .addMappings(mapper -> mapper.map(ServicioSalaEntradaDto::getIdServicios, ServicioSala::setServicio))
+                .addMappings(mapper -> mapper.map(ServicioSalaEntradaDto::getIdSala, ServicioSala::setSala));
         modelMapper.emptyTypeMap(ServicioSalidaDto.class, Servicio.class)
                 .addMappings(mapper -> mapper.map(ServicioSalidaDto::getId, Servicio::setId))
                 .addMappings(mapper -> mapper.map(ServicioSalidaDto::getNombre, Servicio::setNombre))

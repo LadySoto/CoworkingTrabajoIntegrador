@@ -1,7 +1,5 @@
 package com.backend.digitalhouse.coworking.dto.salida.tipoSala;
 
-import java.util.List;
-
 public class TipoSalaSalidaDto {
 
     private Long id;
