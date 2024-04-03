@@ -17,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/serviciosala")
@@ -46,26 +45,6 @@ public class ServicioSalaController {
     @PostMapping("/registrar")
     public ResponseEntity<List<ServicioSalaSalidaDto>> registrarServicioSala(@Valid @RequestBody ServicioSalaEntradaDto servicioSala) throws BadRequestException {
         return new ResponseEntity<>(servicioSalaService.registrarServicioSala(servicioSala), HttpStatus.CREATED);
-    }
-
-    //PATCH
-    @Operation(summary = "Modificacion de un servicio de sala")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Servicio de sala modificado correctamente",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ServicioSalaSalidaDto.class))}),
-            @ApiResponse(responseCode = "400", description = "Bad Request",
-                    content = @Content),
-            @ApiResponse(responseCode = "404", description = "Servicio de sala no encontrado",
-                    content = @Content),
-            @ApiResponse(responseCode = "500", description = "Server error",
-                    content = @Content)
-    })
-
-    @PreAuthorize("hasAuthority('UPDATE_ONE_SERVICIOSALA')")
-    @PatchMapping("/modificar/{id}")
-    public ResponseEntity<ServicioSalaSalidaDto> modificarServicioSala(@PathVariable Long id, @Valid @RequestBody Map<String,Object> camposAModificar) throws ResourceNotFoundException {
-        return new ResponseEntity<>(servicioSalaService.modificarServicioSala(id, camposAModificar), HttpStatus.OK);
     }
 
     //GET

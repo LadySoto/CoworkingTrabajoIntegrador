@@ -16,10 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/reservaespacio")
@@ -47,26 +45,6 @@ public class ReservaEspacioController {
     @PostMapping("/registrar")
     public ResponseEntity<ReservaEspacioSalidaDto> registrarReservaEspacio(@Valid @RequestBody ReservaEspacioEntradaDto reservaEspacio) throws BadRequestException {
         return new ResponseEntity<>(reservaEspacioService.registrarReservaEspacio(reservaEspacio), HttpStatus.CREATED);
-    }
-
-    //PATCH
-    @Operation(summary = "Modificacion de una reserva de espacio")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "La reserva de espacio se ha modificado correctamente",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ReservaEspacioSalidaDto.class))}),
-            @ApiResponse(responseCode = "400", description = "Bad Request",
-                    content = @Content),
-            @ApiResponse(responseCode = "404", description = "Reserva de espacio no encontrada",
-                    content = @Content),
-            @ApiResponse(responseCode = "500", description = "Server error",
-                    content = @Content)
-    })
-
-    @PreAuthorize("hasAuthority('UPDATE_ONE_RESERVA')")
-    @PatchMapping("/modificar/{id}")
-    public ResponseEntity<ReservaEspacioSalidaDto> modificarReservaEspacio(@PathVariable Long id, @Valid @RequestBody Map<String,Object> camposAModificar) throws ResourceNotFoundException {
-        return new ResponseEntity<>(reservaEspacioService.modificarReservaEspacio(id, camposAModificar), HttpStatus.OK);
     }
 
     //GET
@@ -116,8 +94,7 @@ public class ReservaEspacioController {
             @ApiResponse(responseCode = "404", description = "Book not found",
                     content = @Content)
     })
-
-
+  
     @GetMapping("/fechasDisponibles/{idSala}")
     public ResponseEntity<List<LocalDateTime>> listarFechasDisponibles(@PathVariable Long idSala) throws BadRequestException {
         return new ResponseEntity<>(reservaEspacioService.listarFechasDisponibles(idSala), HttpStatus.OK);
@@ -143,6 +120,5 @@ public class ReservaEspacioController {
         reservaEspacioService.eliminarReservaEspacio(id);
         return new ResponseEntity<>("Reserva de espacio eliminada correctamente", HttpStatus.OK);
     }
-
 
 }

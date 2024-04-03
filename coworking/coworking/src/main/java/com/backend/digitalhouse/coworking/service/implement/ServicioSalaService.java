@@ -1,8 +1,6 @@
 package com.backend.digitalhouse.coworking.service.implement;
 
-import com.backend.digitalhouse.coworking.dto.entrada.sala.SalaEntradaDto;
 import com.backend.digitalhouse.coworking.dto.entrada.servicioSala.ServicioSalaEntradaDto;
-import com.backend.digitalhouse.coworking.dto.modificacion.servicioSala.ServicioSalaModificacionEntradaDto;
 import com.backend.digitalhouse.coworking.dto.salida.sala.SalaSalidaDto;
 import com.backend.digitalhouse.coworking.dto.salida.servicio.ServicioSalidaDto;
 import com.backend.digitalhouse.coworking.dto.salida.servicioSala.ServicioSalaSalidaDto;
@@ -21,10 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ReflectionUtils;
-import java.lang.reflect.Field;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class ServicioSalaService implements IServicioSalaService {
@@ -120,43 +115,6 @@ public class ServicioSalaService implements IServicioSalaService {
         }
     }
 
-    @Override
-    public ServicioSalaSalidaDto modificarServicioSala(Long id, Map<String, Object> camposAModificar) throws ResourceNotFoundException {
-        Optional<ServicioSala> servicioSalaGuardado = servicioSalaRepository.findById(id);
-        ServicioSalaSalidaDto servicioSalaSalidaDto = null;
-
-        if (servicioSalaGuardado.isPresent()) {
-            camposAModificar.forEach((key, value) -> {
-                if (key.equals("sala")){
-                    SalaSalidaDto cambioSala = salaService.buscarSalaPorId(convertirALong(value));
-                    Sala sala = modelMapper.map(cambioSala, Sala.class);
-                    Field campoAModificar = ReflectionUtils.findField(ServicioSala.class, key);
-                    campoAModificar.setAccessible(true);
-                    ReflectionUtils.setField(campoAModificar, servicioSalaGuardado.get(), sala);
-                }
-                if (key.equals("servicio")){
-                    ServicioSalidaDto cambioServicio = servicioService.buscarServicioPorId(convertirALong(value));
-                    Servicio servicio = modelMapper.map(cambioServicio, Servicio.class);
-                    Field campoAModificar = ReflectionUtils.findField(ServicioSala.class, key);
-                    campoAModificar.setAccessible(true);
-                    ReflectionUtils.setField(campoAModificar, servicioSalaGuardado.get(), servicio);
-                } else {
-                    Field campoAModificar = ReflectionUtils.findField(ServicioSala.class, key);
-                    campoAModificar.setAccessible(true);
-                    ReflectionUtils.setField(campoAModificar, servicioSalaGuardado.get(), value);
-                }
-            });
-            servicioSalaRepository.save(servicioSalaGuardado.get());
-            servicioSalaSalidaDto = entidadADtoSalida(servicioSalaGuardado.get());
-            LOGGER.info("El servicio de la sala ha sido actualizado: {}", servicioSalaGuardado.get());
-
-            return servicioSalaSalidaDto;
-        } else {
-            LOGGER.error("No fue posible actualizar los datos, el servicio de la sala no se encuentra registrado");
-            throw new ResourceNotFoundException("No fue posible actualizar los datos, el servicio de la sala no se encuentra registrado");
-        }
-    }
-
     private void configureMappings() {
         TypeMap<ServicioSalaEntradaDto, List> typeMap = modelMapper.createTypeMap(ServicioSalaEntradaDto.class, List.class);
 
@@ -178,7 +136,6 @@ public class ServicioSalaService implements IServicioSalaService {
 
             return servicioSalas;
         });
-        modelMapper.typeMap(ServicioSalaModificacionEntradaDto.class, ServicioSala.class);
         modelMapper.emptyTypeMap(ServicioSalaEntradaDto.class, ServicioSala.class)
                 .addMappings(mapper -> mapper.map(ServicioSalaEntradaDto::getIdServicios, ServicioSala::setServicio))
                 .addMappings(mapper -> mapper.map(ServicioSalaEntradaDto::getIdSala, ServicioSala::setSala));
@@ -230,18 +187,6 @@ public class ServicioSalaService implements IServicioSalaService {
                     .orElseThrow(() -> new IllegalArgumentException("No se pudo encontrar la sala con ID: " + servicioSala.getSala().getId()))));
         }
         return servicioSalaSalidaDto;
-    }
-
-    private ServicioSala dtoModificadoAEntidad(ServicioSalaModificacionEntradaDto servicioSalaModificacionEntradaDto) {
-        ServicioSala servicioSala = modelMapper.map(servicioSalaModificacionEntradaDto, ServicioSala.class);
-
-        if (servicioSalaModificacionEntradaDto.getIdSala() != 0){
-            servicioSala.setSala(salaEntradaDtoAEntity(servicioSalaModificacionEntradaDto.getIdSala()));
-        }
-        if (servicioSalaModificacionEntradaDto.getIdServicio() != 0){
-            servicioSala.setServicio(servicioEntradaDtoAEntity(servicioSalaModificacionEntradaDto.getIdServicio()));
-        }
-        return servicioSala;
     }
 
     public Long convertirALong(Object o){

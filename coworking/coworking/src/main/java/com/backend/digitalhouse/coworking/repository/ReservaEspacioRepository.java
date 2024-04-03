@@ -9,6 +9,5 @@ import java.util.List;
 
 @Repository
 public interface ReservaEspacioRepository extends JpaRepository<ReservaEspacio, Long> {
-
     List<ReservaEspacio> findBySalaIdAndFechaHoraInicioBetween(Long salaId, LocalDateTime fechaInicio, LocalDateTime fechaFin);
 }

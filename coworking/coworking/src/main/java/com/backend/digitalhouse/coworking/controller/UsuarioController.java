@@ -116,7 +116,6 @@ public class UsuarioController {
                     content = @Content)
     })
 
-
     @DeleteMapping("eliminar/{id}")
     public ResponseEntity<?> eliminarUsuario(@PathVariable Long id) throws ResourceNotFoundException {
         usuarioService.eliminarUsuario(id);
