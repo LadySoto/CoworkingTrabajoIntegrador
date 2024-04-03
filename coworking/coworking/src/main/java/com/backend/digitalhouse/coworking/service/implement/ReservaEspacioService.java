@@ -1,7 +1,6 @@
 package com.backend.digitalhouse.coworking.service.implement;
 
 import com.backend.digitalhouse.coworking.dto.entrada.reservaEspacio.ReservaEspacioEntradaDto;
-import com.backend.digitalhouse.coworking.dto.modificacion.reservaEspacio.ReservaEspacioModificacionEntradaDto;
 import com.backend.digitalhouse.coworking.dto.salida.reservaEspacio.ReservaEspacioSalidaDto;
 import com.backend.digitalhouse.coworking.dto.salida.reservaEspacio.SalaReservaSalidaDto;
 import com.backend.digitalhouse.coworking.dto.salida.reservaEspacio.UsuarioReservaSalidaDto;
@@ -17,8 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ReflectionUtils;
-import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -37,6 +34,7 @@ public class ReservaEspacioService implements IReservaEspacioService {
         this.modelMapper = modelMapper;
         this.usuarioService = usuarioService;
         this.salaService = salaService;
+        configureMappings();
     }
 
     @Override
@@ -155,42 +153,6 @@ public class ReservaEspacioService implements IReservaEspacioService {
         }
     }
 
-    @Override
-    public ReservaEspacioSalidaDto modificarReservaEspacio(Long id, Map<String, Object> camposAModificar) throws ResourceNotFoundException {
-        Optional<ReservaEspacio> reservaEspacioGuardada = reservaEspacioRepository.findById(id);
-        ReservaEspacioSalidaDto reservaEspacioSalidaDto = null;
-
-        if (reservaEspacioGuardada.isPresent()) {
-            camposAModificar.forEach((key, value) -> {
-                if (key.equals("usuarioReserva")){
-                    UsuarioSalidaDto cambioUsuario = usuarioService.buscarUsuarioPorId(convertirALong(value));
-                    Usuario usuario = modelMapper.map(cambioUsuario, Usuario.class);
-                    Field campoAModificar = ReflectionUtils.findField(ReservaEspacio.class, key);
-                    campoAModificar.setAccessible(true);
-                    ReflectionUtils.setField(campoAModificar, reservaEspacioGuardada.get(), usuario);
-                } else if (key.equals("salaReserva")) {
-                    SalaSalidaDto cambioSala = salaService.buscarSalaPorId(convertirALong(value));
-                    Sala sala = modelMapper.map(cambioSala, Sala.class);
-                    Field campoAModificar = ReflectionUtils.findField(ReservaEspacio.class, key);
-                    campoAModificar.setAccessible(true);
-                    ReflectionUtils.setField(campoAModificar, reservaEspacioGuardada.get(), sala);
-                } else {
-                    Field campoAModificar = ReflectionUtils.findField(ReservaEspacio.class, key);
-                    campoAModificar.setAccessible(true);
-                    ReflectionUtils.setField(campoAModificar,  reservaEspacioGuardada.get(), value);
-                }
-            });
-            reservaEspacioRepository.save(reservaEspacioGuardada.get());
-            reservaEspacioSalidaDto = entidadADtoSalida(reservaEspacioGuardada.get());
-            LOGGER.info("La reserva de espacio ha sido actualizada: {}", reservaEspacioGuardada.get());
-
-            return reservaEspacioSalidaDto;
-        } else {
-            LOGGER.error("No fue posible actualizar los datos, la reserva de espacio no se encuentra registrada");
-            throw new ResourceNotFoundException("No fue posible actualizar los datos, la reserva de espacio no se encuentra registrada");
-        }
-    }
-
     private void configureMappings() {
         modelMapper.emptyTypeMap(ReservaEspacioEntradaDto.class, ReservaEspacio.class)
                 .addMappings(mapper -> mapper.map(ReservaEspacioEntradaDto::getIdUsuario, ReservaEspacio::setUsuario))
@@ -199,21 +161,9 @@ public class ReservaEspacioService implements IReservaEspacioService {
                 .addMappings(mapper -> mapper.map(ReservaEspacioEntradaDto::getFechaHoraFin, ReservaEspacio::setFechaHoraFin))
                 .addMappings(mapper -> mapper.map(ReservaEspacioEntradaDto::getCalificacion, ReservaEspacio::setCalificacion));
         modelMapper.typeMap(ReservaEspacio.class, ReservaEspacioSalidaDto.class);
-        modelMapper.typeMap(ReservaEspacioModificacionEntradaDto.class, ReservaEspacio.class);
         modelMapper.typeMap(UsuarioReservaSalidaDto.class, Usuario.class);
         modelMapper.typeMap(SalaReservaSalidaDto.class, Sala.class);
     }
-
-   /* private void configureMappings() {
-        modelMapper.createTypeMap(ReservaEspacioEntradaDto.class, ReservaEspacio.class)
-                .addMapping(ReservaEspacioEntradaDto::getIdUsuario, ReservaEspacio::setUsuario)
-                .addMapping(ReservaEspacioEntradaDto::getIdSala, ReservaEspacio::setSala);
-
-        modelMapper.typeMap(ReservaEspacio.class, ReservaEspacioSalidaDto.class);
-        modelMapper.typeMap(ReservaEspacioModificacionEntradaDto.class, ReservaEspacio.class);
-        modelMapper.typeMap(UsuarioSalidaDto.class, Usuario.class);
-        modelMapper.typeMap(SalaSalidaDto.class, Sala.class);
-    }*/
 
     private Usuario usuarioEntradaDtoAEntity(Long id) {
         Usuario usuario = modelMapper.map(usuarioService.buscarUsuarioPorId(id), Usuario.class);
@@ -224,26 +174,6 @@ public class ReservaEspacioService implements IReservaEspacioService {
         Sala sala = modelMapper.map(salaService.buscarSalaPorId(id), Sala.class);
         return sala;
     }
-
-   /* public ReservaEspacio dtoEntradaAEntidad(ReservaEspacioEntradaDto reservaEspacioEntradaDto) {
-        ReservaEspacio reservaEspacio = modelMapper.map(reservaEspacioEntradaDto, ReservaEspacio.class);
-        reservaEspacio.setUsuario(usuarioEntradaDtoAEntity(reservaEspacioEntradaDto.getIdUsuario()));
-        reservaEspacio.setSala(salaEntradaDtoAEntity(reservaEspacioEntradaDto.getIdSala()));
-        return reservaEspacio;
-    }*/
-
-   /* public ReservaEspacio dtoEntradaAEntidad(ReservaEspacioEntradaDto reservaEspacioEntradaDto) {
-        ReservaEspacio reservaEspacio = new ReservaEspacio();
-
-        // Mapear las propiedades de ReservaEspacioEntradaDto directamente a ReservaEspacio
-        modelMapper.map(reservaEspacioEntradaDto, reservaEspacio);
-
-        // Mapear el idUsuario y idSala a las entidades correspondientes
-        reservaEspacio.setUsuario(usuarioEntradaDtoAEntity(reservaEspacioEntradaDto.getIdUsuario()));
-        reservaEspacio.setSala(salaEntradaDtoAEntity(reservaEspacioEntradaDto.getIdSala()));
-
-        return reservaEspacio;
-    }*/
 
     public ReservaEspacio dtoEntradaAEntidad(ReservaEspacioEntradaDto reservaEspacioEntradaDto) {
         ReservaEspacio reservaEspacio = new ReservaEspacio();
@@ -273,16 +203,6 @@ public class ReservaEspacioService implements IReservaEspacioService {
         reservaEspacioSalidaDto.setUsuario(entityAUsuarioSalidaDto(reservaEspacio.getUsuario()));
         reservaEspacioSalidaDto.setSala(entityASalaSalidaDto(reservaEspacio.getSala()));
         return reservaEspacioSalidaDto;
-    }
-
-    private ReservaEspacio dtoModificadoAEntidad(ReservaEspacioModificacionEntradaDto reservaEspacioModificacionEntradaDto) {
-        ReservaEspacio reservaEspacio = modelMapper.map(reservaEspacioModificacionEntradaDto, ReservaEspacio.class);
-        if (reservaEspacioModificacionEntradaDto.getIdUsuario() != 0){
-            reservaEspacio.setUsuario(usuarioEntradaDtoAEntity(reservaEspacioModificacionEntradaDto.getIdUsuario()));
-        }
-        if (reservaEspacioModificacionEntradaDto.getIdSala() != 0){
-            reservaEspacio.setSala(salaEntradaDtoAEntity(reservaEspacioModificacionEntradaDto.getIdSala()));
-        } return reservaEspacio;
     }
 
     public Long convertirALong(Object o){

@@ -19,9 +19,6 @@ public class ReservaEspacioEntradaDto {
     @NotNull(message = "Este campo no puede ser nulo, debe especificar fecha y hora de la reserva")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime fechaHoraFin;
-    @Digits(integer = 1, fraction = 0, message = "El numero debe tener como maximo 1 dígito de 1 a 5")
-    @Min(1)
-    @Max(5)
     private int calificacion;
 
     public ReservaEspacioEntradaDto() {
