@@ -95,7 +95,6 @@ public class ReservaEspacioController {
                     content = @Content)
     })
 
-    @PreAuthorize("hasAuthority('READ_ALL_RESERVAS')")
     @GetMapping("/fechasDisponibles/{idSala}")
     public ResponseEntity<List<LocalDateTime>> listarFechasDisponibles(@PathVariable Long idSala) throws BadRequestException {
         return new ResponseEntity<>(reservaEspacioService.listarFechasDisponibles(idSala), HttpStatus.OK);
