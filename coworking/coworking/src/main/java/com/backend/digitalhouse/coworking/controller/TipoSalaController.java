@@ -119,7 +119,6 @@ public class TipoSalaController {
     })
 
 
-    @PreAuthorize("hasAuthority('READ_ALL_TIPOSSALAS')")
     @GetMapping("listar")
 
     public ResponseEntity<List<TipoSalaSalidaDto>> listarTipoSala() {
