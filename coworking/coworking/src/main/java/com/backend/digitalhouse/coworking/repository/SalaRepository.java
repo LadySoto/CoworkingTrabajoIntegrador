@@ -10,4 +10,5 @@ public interface SalaRepository extends JpaRepository<Sala, Long> {
     List<Sala> findByTipoSalaNombreContainingIgnoreCase(String nombre);
 
     List<Sala> findByNombreContaining(String nombre);
+
 }

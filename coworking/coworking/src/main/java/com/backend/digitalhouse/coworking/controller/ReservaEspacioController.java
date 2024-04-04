@@ -2,6 +2,7 @@ package com.backend.digitalhouse.coworking.controller;
 
 import com.backend.digitalhouse.coworking.dto.entrada.reservaEspacio.ReservaEspacioEntradaDto;
 import com.backend.digitalhouse.coworking.dto.salida.reservaEspacio.ReservaEspacioSalidaDto;
+import com.backend.digitalhouse.coworking.dto.salida.sala.SalaSalidaDto;
 import com.backend.digitalhouse.coworking.exceptions.BadRequestException;
 import com.backend.digitalhouse.coworking.exceptions.ResourceNotFoundException;
 import com.backend.digitalhouse.coworking.service.IReservaEspacioService;
@@ -98,6 +99,22 @@ public class ReservaEspacioController {
     @GetMapping("/fechasDisponibles/{idSala}")
     public ResponseEntity<List<LocalDateTime>> listarFechasDisponibles(@PathVariable Long idSala) throws BadRequestException {
         return new ResponseEntity<>(reservaEspacioService.listarFechasDisponibles(idSala), HttpStatus.OK);
+    }
+
+    @Operation(summary = "Listar salas disponibles para una fecha y hora")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Listado de salas disponibles obtenido correctamente",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ReservaEspacioSalidaDto.class))}),
+            @ApiResponse(responseCode = "400", description = "Bad request",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Book not found",
+                    content = @Content)
+    })
+
+    @GetMapping("/salasDisponibles/{fechaHoraInicio}/{fechaHoraFin}")
+    public ResponseEntity<List<SalaSalidaDto>> listarSalasDisponibles(@PathVariable("fechaHoraInicio") LocalDateTime fechaHoraInicio, @PathVariable("fechaHoraFin") LocalDateTime fechaHoraFin) throws BadRequestException {
+        return new ResponseEntity<>(reservaEspacioService.listarSalasDisponibles(fechaHoraInicio, fechaHoraFin), HttpStatus.OK);
     }
 
     //DELETE
