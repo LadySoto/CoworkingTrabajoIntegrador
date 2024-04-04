@@ -10,6 +10,7 @@ import com.backend.digitalhouse.coworking.entity.*;
 import com.backend.digitalhouse.coworking.exceptions.BadRequestException;
 import com.backend.digitalhouse.coworking.exceptions.ResourceNotFoundException;
 import com.backend.digitalhouse.coworking.repository.ReservaEspacioRepository;
+import com.backend.digitalhouse.coworking.repository.SalaRepository;
 import com.backend.digitalhouse.coworking.service.IReservaEspacioService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -19,22 +20,24 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ReservaEspacioService implements IReservaEspacioService {
     private final Logger LOGGER = LoggerFactory.getLogger(ReservaEspacioService.class);
     private final ReservaEspacioRepository reservaEspacioRepository;
+    private final SalaRepository salaRepository;
     private final ModelMapper modelMapper;
     private final UsuarioService usuarioService;
     private final SalaService salaService;
 
     @Autowired
-    public ReservaEspacioService(ReservaEspacioRepository reservaEspacioRepository, ModelMapper modelMapper, UsuarioService usuarioService, SalaService salaService) {
+    public ReservaEspacioService(ReservaEspacioRepository reservaEspacioRepository, SalaRepository salaRepository, ModelMapper modelMapper, UsuarioService usuarioService, SalaService salaService) {
         this.reservaEspacioRepository = reservaEspacioRepository;
+        this.salaRepository = salaRepository;
         this.modelMapper = modelMapper;
         this.usuarioService = usuarioService;
         this.salaService = salaService;
-        configureMappings();
     }
 
     @Override
@@ -129,6 +132,52 @@ public class ReservaEspacioService implements IReservaEspacioService {
             }
         }
         return fechasDisponibles;
+    }
+
+   @Override
+    public List<SalaSalidaDto> listarSalasDisponibles(LocalDateTime fechaHoraInicio, LocalDateTime fechaHoraFin) throws BadRequestException {
+
+        if(fechaHoraInicio.equals(fechaHoraFin)){
+            LOGGER.info("Los datos de fechaHoraInicio y fechaHoraFin no pueden ser iguales");
+            throw new BadRequestException("Los datos de fechaHoraInicio y fechaHoraFin no pueden ser iguales");
+        }
+
+       LocalDateTime fechaAhora = LocalDateTime.now();
+        if (fechaAhora.isBefore(fechaAhora) || fechaHoraFin.isBefore(fechaAhora)){
+            LOGGER.info("La fecha de entrada y salida no pueden ser anteriores a la fecha actual");
+            throw new BadRequestException("La fecha de entrada y salida no pueden ser anteriores a la fecha actual");
+        }
+
+        List<ReservaEspacioSalidaDto> reservasActuales = listarReservaEspacios();
+        List<SalaSalidaDto> listadoSalas = salaService.listarSalas();
+
+       // Filtrar las salas según la disponibilidad
+       List<SalaSalidaDto> salasOcupadas = new ArrayList<>();
+       for (ReservaEspacioSalidaDto reserva : reservasActuales) {
+           LocalDateTime inicioReserva = reserva.getFechaHoraInicio();
+           LocalDateTime finReserva = reserva.getFechaHoraFin();
+
+           LOGGER.info("Fecha y hora del inicio de la reserva ya hecha: " + inicioReserva + " Fecha y hora del inicio de la que quiero la reserva: " + fechaHoraInicio);
+
+           LOGGER.info("Fecha y hora del fin de la reserva ya hecha: " + finReserva + " Fecha y hora del fin de la que quiero la reserva: " + fechaHoraFin);
+
+           if ((inicioReserva.isBefore(fechaHoraInicio) && finReserva.isAfter(fechaHoraInicio)) ||
+                   (inicioReserva.isBefore(fechaHoraFin) && finReserva.isAfter(fechaHoraFin)) ||
+                   (inicioReserva.isAfter(fechaHoraInicio) && finReserva.isBefore(fechaHoraFin)) ||
+                   (inicioReserva.isEqual(fechaHoraInicio) || finReserva.isEqual(fechaHoraFin))) {
+               salasOcupadas.add(reserva.getSala());
+           }
+       }
+
+       LOGGER.info("Estas son las salas ocupadas" + salasOcupadas);
+
+       List<SalaSalidaDto> salasDisponibles = new ArrayList<>(listadoSalas);
+       LOGGER.info("Estas son las salas disponibles sin eliminar las ocupadas" + salasDisponibles);
+
+       salasDisponibles.removeAll(salasOcupadas);
+       LOGGER.info("Estas son las salas disponibles después de eliminar las ocupadas" + salasDisponibles);
+       
+       return salasDisponibles;
     }
 
     @Override

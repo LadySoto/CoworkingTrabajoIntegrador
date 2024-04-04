@@ -99,7 +99,6 @@ public class ServicioController {
                     content = @Content)
     })
 
-    @PreAuthorize("hasAuthority('READ_ALL_SERVICIOS')")
     @GetMapping("listar")
     public ResponseEntity<List<ServicioSalidaDto>> listarServicios() {
         return new ResponseEntity<>(servicioService.listarServicios(), HttpStatus.OK);

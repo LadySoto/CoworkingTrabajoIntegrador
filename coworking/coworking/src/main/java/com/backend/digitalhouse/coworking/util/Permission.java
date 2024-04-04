@@ -5,7 +5,6 @@ import java.util.List;
 
 public enum Permission {
 
-    READ_ALL_TIPOSSALAS,
     SAVE_ONE_TIPOSALA,
     SEARCH_ONE_TIPOSALA,
     UPDATE_ONE_TIPOSALA,
@@ -15,7 +14,6 @@ public enum Permission {
     SEARCH_ONE_SALA,
     UPDATE_ONE_SALA,
     DELETE_ONE_SALA,
-    READ_ALL_SALAS,
 
     READ_ALL_IMAGENES,
     SAVE_ONE_IMAGEN,
@@ -30,7 +28,6 @@ public enum Permission {
     UPDATE_ONE_RESERVA,
     DELETE_ONE_RESERVA,
 
-    READ_ALL_SERVICIOS,
     SAVE_ONE_SERVICIO,
     SEARCH_ONE_SERVICIO,
     UPDATE_ONE_SERVICIO,

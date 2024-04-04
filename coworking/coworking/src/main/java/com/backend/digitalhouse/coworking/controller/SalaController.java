@@ -152,8 +152,7 @@ public class SalaController {
                     content = @Content)
     })
 
-    @PreAuthorize("hasAuthority('READ_ALL_SALAS')")
-    @GetMapping("listar")
+     @GetMapping("listar")
 
     public ResponseEntity<List<SalaSalidaDto>> listarSalas() {
         return new ResponseEntity<>(salaService.listarSalas(), HttpStatus.OK);

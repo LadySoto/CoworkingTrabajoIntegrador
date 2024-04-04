@@ -3,6 +3,7 @@ package com.backend.digitalhouse.coworking.dto.salida.sala;
 import com.backend.digitalhouse.coworking.dto.salida.tipoSala.TipoSalaSalidaDto;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class SalaSalidaDto {
     private Long id;
@@ -30,6 +31,19 @@ public class SalaSalidaDto {
         this.tipoSala = tipoSala;
         this.imagenes = imagenes;
         this.servicios = servicios;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SalaSalidaDto that = (SalaSalidaDto) o;
+        return id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     public Long getId() {
