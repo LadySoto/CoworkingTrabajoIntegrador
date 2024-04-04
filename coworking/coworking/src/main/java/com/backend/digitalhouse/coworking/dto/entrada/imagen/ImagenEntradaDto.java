@@ -13,7 +13,7 @@ public class ImagenEntradaDto {
     @NotBlank(message = "Debe especificarse el nombre de la imagen")
     private String nombre;
 
-    @Size(max = 500, message = "La ruta la imagen debe tener hasta 100 caracteres")
+    @Size(max = 1000, message = "La ruta la imagen debe tener hasta 1000 caracteres")
     @NotNull(message = "Este campo no puede ser nulo")
     @NotBlank(message = "Debe especificarse la ruta de la imagen")
     private String imagen;

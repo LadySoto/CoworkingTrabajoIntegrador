@@ -26,8 +26,8 @@ public class ReservaEspacio {
     @Column(name = "FECHA_HORA_FIN")
     private LocalDateTime fechaHoraFin;
 
-    @Column(name="CANTIDAD_HORA")
-    private int cantidadHora;
+    @Column(name="CANTIDAD_PERSONAS")
+    private int cantidadPersonas;
 
     @Column(name = "CALIFICACION")
     private int calificacion;
@@ -35,12 +35,13 @@ public class ReservaEspacio {
     public ReservaEspacio() {
     }
 
-    public ReservaEspacio(Usuario usuario, Sala sala, LocalDateTime fechaHoraInicio, LocalDateTime fechaHoraFin, int cantidadHora, int calificacion) {
+    public ReservaEspacio(Long id, Usuario usuario, Sala sala, LocalDateTime fechaHoraInicio, LocalDateTime fechaHoraFin, int cantidadPersonas, int calificacion) {
+        this.id = id;
         this.usuario = usuario;
         this.sala = sala;
         this.fechaHoraInicio = fechaHoraInicio;
         this.fechaHoraFin = fechaHoraFin;
-        this.cantidadHora = cantidadHora;
+        this.cantidadPersonas = cantidadPersonas;
         this.calificacion = calificacion;
     }
 
@@ -84,12 +85,12 @@ public class ReservaEspacio {
         this.fechaHoraFin = fechaHoraFin;
     }
 
-    public int getCantidadHora() {
-        return cantidadHora;
+    public int getCantidadPersonas() {
+        return cantidadPersonas;
     }
 
-    public void setCantidadHora(int cantidadHora) {
-        this.cantidadHora = cantidadHora;
+    public void setCantidadPersonas(int cantidadPersonas) {
+        this.cantidadPersonas = cantidadPersonas;
     }
 
     public int getCalificacion() {
@@ -108,7 +109,7 @@ public class ReservaEspacio {
                 ", sala=" + sala +
                 ", fechaHoraInicio=" + fechaHoraInicio +
                 ", fechaHoraFin=" + fechaHoraFin +
-                ", cantidadHora=" + cantidadHora +
+                ", cantidadPersonas=" + cantidadPersonas +
                 ", calificacion=" + calificacion +
                 '}';
     }

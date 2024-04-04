@@ -11,17 +11,19 @@ public class ReservaEspacioSalidaDto {
     private SalaSalidaDto sala; //private SalaReservaSalidaDto salaReserva;
     private LocalDateTime fechaHoraInicio;
     private LocalDateTime fechaHoraFin;
+    private int cantidadPersonas;
     private int calificacion;
 
     public ReservaEspacioSalidaDto() {
     }
 
-    public ReservaEspacioSalidaDto(Long id, UsuarioSalidaDto usuario, SalaSalidaDto sala, LocalDateTime fechaHoraInicio, LocalDateTime fechaHoraFin, int calificacion) {
+    public ReservaEspacioSalidaDto(Long id, UsuarioSalidaDto usuario, SalaSalidaDto sala, LocalDateTime fechaHoraInicio, LocalDateTime fechaHoraFin, int cantidadPersonas, int calificacion) {
         this.id = id;
         this.usuario = usuario;
         this.sala = sala;
         this.fechaHoraInicio = fechaHoraInicio;
         this.fechaHoraFin = fechaHoraFin;
+        this.cantidadPersonas = cantidadPersonas;
         this.calificacion = calificacion;
     }
 
@@ -65,6 +67,14 @@ public class ReservaEspacioSalidaDto {
         this.fechaHoraFin = fechaHoraFin;
     }
 
+    public int getCantidadPersonas() {
+        return cantidadPersonas;
+    }
+
+    public void setCantidadPersonas(int cantidadPersonas) {
+        this.cantidadPersonas = cantidadPersonas;
+    }
+
     public int getCalificacion() {
         return calificacion;
     }
@@ -81,6 +91,7 @@ public class ReservaEspacioSalidaDto {
                 ", sala=" + sala +
                 ", fechaHoraInicio=" + fechaHoraInicio +
                 ", fechaHoraFin=" + fechaHoraFin +
+                ", cantidadPersonas=" + cantidadPersonas +
                 ", calificacion=" + calificacion +
                 '}';
     }
