@@ -1,14 +1,11 @@
 package com.backend.digitalhouse.coworking.dto.salida.reservaEspacio;
 
-import com.backend.digitalhouse.coworking.dto.salida.sala.SalaSalidaDto;
-import com.backend.digitalhouse.coworking.dto.salida.usuario.UsuarioSalidaDto;
-
 import java.time.LocalDateTime;
 
 public class ReservaEspacioSalidaDto {
     private Long id;
-    private UsuarioSalidaDto usuario; //private UsuarioReservaSalidaDto usuarioReserva;
-    private SalaSalidaDto sala; //private SalaReservaSalidaDto salaReserva;
+    private UsuarioReservaSalidaDto usuarioReserva;
+    private SalaReservaSalidaDto salaReserva;
     private LocalDateTime fechaHoraInicio;
     private LocalDateTime fechaHoraFin;
     private int cantidadPersonas;
@@ -17,10 +14,10 @@ public class ReservaEspacioSalidaDto {
     public ReservaEspacioSalidaDto() {
     }
 
-    public ReservaEspacioSalidaDto(Long id, UsuarioSalidaDto usuario, SalaSalidaDto sala, LocalDateTime fechaHoraInicio, LocalDateTime fechaHoraFin, int cantidadPersonas, int calificacion) {
+    public ReservaEspacioSalidaDto(Long id, UsuarioReservaSalidaDto usuarioReserva, SalaReservaSalidaDto salaReserva, LocalDateTime fechaHoraInicio, LocalDateTime fechaHoraFin, int cantidadPersonas, int calificacion) {
         this.id = id;
-        this.usuario = usuario;
-        this.sala = sala;
+        this.usuarioReserva = usuarioReserva;
+        this.salaReserva = salaReserva;
         this.fechaHoraInicio = fechaHoraInicio;
         this.fechaHoraFin = fechaHoraFin;
         this.cantidadPersonas = cantidadPersonas;
@@ -35,20 +32,20 @@ public class ReservaEspacioSalidaDto {
         this.id = id;
     }
 
-    public UsuarioSalidaDto getUsuario() {
-        return usuario;
+    public UsuarioReservaSalidaDto getUsuarioReserva() {
+        return usuarioReserva;
     }
 
-    public void setUsuario(UsuarioSalidaDto usuario) {
-        this.usuario = usuario;
+    public void setUsuarioReserva(UsuarioReservaSalidaDto usuarioReserva) {
+        this.usuarioReserva = usuarioReserva;
     }
 
-    public SalaSalidaDto getSala() {
-        return sala;
+    public SalaReservaSalidaDto getSalaReserva() {
+        return salaReserva;
     }
 
-    public void setSala(SalaSalidaDto sala) {
-        this.sala = sala;
+    public void setSalaReserva(SalaReservaSalidaDto salaReserva) {
+        this.salaReserva = salaReserva;
     }
 
     public LocalDateTime getFechaHoraInicio() {
@@ -87,8 +84,8 @@ public class ReservaEspacioSalidaDto {
     public String toString() {
         return "ReservaEspacioSalidaDto{" +
                 "id=" + id +
-                ", usuario=" + usuario +
-                ", sala=" + sala +
+                ", usuarioReserva=" + usuarioReserva +
+                ", salaReserva=" + salaReserva +
                 ", fechaHoraInicio=" + fechaHoraInicio +
                 ", fechaHoraFin=" + fechaHoraFin +
                 ", cantidadPersonas=" + cantidadPersonas +

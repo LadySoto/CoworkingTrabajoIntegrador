@@ -8,6 +8,7 @@ public class UsuarioEntradaDto {
     @Size(max = 100, message = "El nombre debe tener hasta 100 caracteres")
     @NotNull(message = "El nombre no puede ser nulo")
     @NotBlank(message = "Debe especificarse el nombre del usuario")
+    @Pattern(regexp = "^[a-zA-ZÀ-ÖØ-öø-ÿ']+(?: [a-zA-ZÀ-ÖØ-öø-ÿ']+)*$", message = "El nombre debe tener solo letras")
     private String nombre;
 
     @Size(max = 100, message = "El correo debe tener hasta 100 caracteres")
@@ -25,7 +26,7 @@ public class UsuarioEntradaDto {
     private long  idTipoIdentificacion;
 
     @Size(max = 50, message = "El numero de identificacion debe tener hasta 50 caracteres")
-    @Pattern(regexp = "^[0-9]*", message = "El numero de identificacion debe tener solo numeros y sin caracteres especiales")
+    @Pattern(regexp = "^[0-9]*", message = "El numero de identificacion debe tener solo numeros")
     private String numeroIdentificacion;
 
     @NotNull(message = "El campo no puede ser nulo")

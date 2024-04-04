@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class ReservaEspacioService implements IReservaEspacioService {
@@ -38,6 +37,7 @@ public class ReservaEspacioService implements IReservaEspacioService {
         this.modelMapper = modelMapper;
         this.usuarioService = usuarioService;
         this.salaService = salaService;
+        configureMappings();
     }
 
     @Override
@@ -152,7 +152,7 @@ public class ReservaEspacioService implements IReservaEspacioService {
         List<SalaSalidaDto> listadoSalas = salaService.listarSalas();
 
        // Filtrar las salas según la disponibilidad
-       List<SalaSalidaDto> salasOcupadas = new ArrayList<>();
+       List<SalaReservaSalidaDto> salasOcupadas = new ArrayList<>();
        for (ReservaEspacioSalidaDto reserva : reservasActuales) {
            LocalDateTime inicioReserva = reserva.getFechaHoraInicio();
            LocalDateTime finReserva = reserva.getFechaHoraFin();
@@ -165,7 +165,7 @@ public class ReservaEspacioService implements IReservaEspacioService {
                    (inicioReserva.isBefore(fechaHoraFin) && finReserva.isAfter(fechaHoraFin)) ||
                    (inicioReserva.isAfter(fechaHoraInicio) && finReserva.isBefore(fechaHoraFin)) ||
                    (inicioReserva.isEqual(fechaHoraInicio) || finReserva.isEqual(fechaHoraFin))) {
-               salasOcupadas.add(reserva.getSala());
+               salasOcupadas.add(reserva.getSalaReserva());
            }
        }
 
@@ -243,21 +243,20 @@ public class ReservaEspacioService implements IReservaEspacioService {
         return reservaEspacio;
     }
 
-    private UsuarioSalidaDto entityAUsuarioSalidaDto(Usuario usuario) {
-        UsuarioSalidaDto usuarioSalidaDto = modelMapper.map(usuario, UsuarioSalidaDto.class);
-        usuarioSalidaDto.setIdTipoIdentificacion(usuarioService.entityATipoIdentificacionSalidaDto(usuario.getTipoIdentificacion()));
-        usuarioSalidaDto.setIdRol(usuarioService.entityARolSalidaDto(usuario.getRol()));
-        return usuarioSalidaDto;
+    private UsuarioReservaSalidaDto entityAUsuarioReservaSalidaDto (Usuario usuario) {
+        UsuarioReservaSalidaDto usuarioReservaSalidaDto = modelMapper.map(usuario, UsuarioReservaSalidaDto.class);
+        usuarioReservaSalidaDto.setIdTipoIdentificacion(usuarioService.entityATipoIdentificacionSalidaDto(usuario.getTipoIdentificacion()));
+        return usuarioReservaSalidaDto;
     }
-    private SalaSalidaDto entityASalaSalidaDto(Sala sala) {
-        SalaSalidaDto salaSalidaDto = modelMapper.map(sala, SalaSalidaDto.class);
-        return salaSalidaDto;
+    private SalaReservaSalidaDto entityASalaReservaSalidaDto(Sala sala) {
+        SalaReservaSalidaDto salaReservaSalidaDto = modelMapper.map(sala, SalaReservaSalidaDto.class);
+        return salaReservaSalidaDto;
     }
 
     public ReservaEspacioSalidaDto entidadADtoSalida(ReservaEspacio reservaEspacio) {
         ReservaEspacioSalidaDto reservaEspacioSalidaDto = modelMapper.map(reservaEspacio, ReservaEspacioSalidaDto.class);
-        reservaEspacioSalidaDto.setUsuario(entityAUsuarioSalidaDto(reservaEspacio.getUsuario()));
-        reservaEspacioSalidaDto.setSala(entityASalaSalidaDto(reservaEspacio.getSala()));
+        reservaEspacioSalidaDto.setUsuarioReserva(entityAUsuarioReservaSalidaDto(reservaEspacio.getUsuario()));
+        reservaEspacioSalidaDto.setSalaReserva(entityASalaReservaSalidaDto(reservaEspacio.getSala()));
         return reservaEspacioSalidaDto;
     }
 
