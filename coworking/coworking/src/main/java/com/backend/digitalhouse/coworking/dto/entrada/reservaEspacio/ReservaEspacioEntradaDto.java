@@ -19,32 +19,34 @@ public class ReservaEspacioEntradaDto {
     @NotNull(message = "Este campo no puede ser nulo, debe especificar fecha y hora de la reserva")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime fechaHoraFin;
+    private int cantidadPersonas;
     private int calificacion;
 
     public ReservaEspacioEntradaDto() {
     }
 
-    public ReservaEspacioEntradaDto(long idUsuario, long idSala, LocalDateTime fechaHoraInicio, LocalDateTime fechaHoraFin, int calificacion) {
+    public ReservaEspacioEntradaDto(Long idUsuario, Long idSala, LocalDateTime fechaHoraInicio, LocalDateTime fechaHoraFin, int cantidadPersonas, int calificacion) {
         this.idUsuario = idUsuario;
         this.idSala = idSala;
         this.fechaHoraInicio = fechaHoraInicio;
         this.fechaHoraFin = fechaHoraFin;
+        this.cantidadPersonas = cantidadPersonas;
         this.calificacion = calificacion;
     }
 
-    public long getIdUsuario() {
+    public Long getIdUsuario() {
         return idUsuario;
     }
 
-    public void setIdUsuario(long idUsuario) {
+    public void setIdUsuario(Long idUsuario) {
         this.idUsuario = idUsuario;
     }
 
-    public long getIdSala() {
+    public Long getIdSala() {
         return idSala;
     }
 
-    public void setIdSala(long idSala) {
+    public void setIdSala(Long idSala) {
         this.idSala = idSala;
     }
 
@@ -64,6 +66,14 @@ public class ReservaEspacioEntradaDto {
         this.fechaHoraFin = fechaHoraFin;
     }
 
+    public int getCantidadPersonas() {
+        return cantidadPersonas;
+    }
+
+    public void setCantidadPersonas(int cantidadPersonas) {
+        this.cantidadPersonas = cantidadPersonas;
+    }
+
     public int getCalificacion() {
         return calificacion;
     }
@@ -79,6 +89,7 @@ public class ReservaEspacioEntradaDto {
                 ", idSala=" + idSala +
                 ", fechaHoraInicio=" + fechaHoraInicio +
                 ", fechaHoraFin=" + fechaHoraFin +
+                ", cantidadPersonas=" + cantidadPersonas +
                 ", calificacion=" + calificacion +
                 '}';
     }

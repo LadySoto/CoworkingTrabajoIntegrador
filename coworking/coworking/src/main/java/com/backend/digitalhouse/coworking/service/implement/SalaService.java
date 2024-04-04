@@ -49,13 +49,19 @@ public class SalaService implements ISalaService {
     @Override
     public SalaSalidaDto registrarSala(SalaEntradaDto sala) throws BadRequestException {
         if (sala != null) {
-            SalaSalidaDto salaSalidaDto = entidadADtoSalida(salaRepository.save(dtoEntradaAEntidad(sala)));
-            //Asigna las imagenes
-            salaSalidaDto.setImagenes(imagenesPorSalaId(modelMapper.map(salaSalidaDto, Sala.class)));
-            //Asigna los servicios
-            salaSalidaDto.setServicios(serviciosSalaPorSalaId(modelMapper.map(salaSalidaDto, Sala.class)));
-            LOGGER.info("Sala guardada: {}", salaSalidaDto);
-            return salaSalidaDto;
+            List<SalaSalidaDto> salaConElMismoNombre = buscarSalasPorNombre(sala.getNombre());
+            if (salaConElMismoNombre.isEmpty()) {
+                SalaSalidaDto salaSalidaDto = entidadADtoSalida(salaRepository.save(dtoEntradaAEntidad(sala)));
+                //Asigna las imagenes
+                salaSalidaDto.setImagenes(imagenesPorSalaId(modelMapper.map(salaSalidaDto, Sala.class)));
+                //Asigna los servicios
+                salaSalidaDto.setServicios(serviciosSalaPorSalaId(modelMapper.map(salaSalidaDto, Sala.class)));
+                LOGGER.info("Sala guardada: {}", salaSalidaDto);
+                return salaSalidaDto;
+            } else {
+                LOGGER.error("No se pudo registrar la sala, por que ya existe una con el mismo nombre");
+                throw new BadRequestException("No se pudo registrar la sala, por que ya existe una con el mismo nombre");
+            }
         } else {
             LOGGER.error("No se pudo registrar la sala");
             throw new BadRequestException("No se pudo registrar la sala");
@@ -143,7 +149,26 @@ public class SalaService implements ISalaService {
 
     @Override
     public void eliminarSala(Long id) throws ResourceNotFoundException {
-        if (buscarSalaPorId(id) != null) {
+        SalaSalidaDto salaAEliminar = buscarSalaPorId(id);
+        if (salaAEliminar != null) {
+            if(!salaAEliminar.getImagenes().isEmpty()){
+                for (Map<Long, String> imagenAEliminar: salaAEliminar.getImagenes()) {
+                    // Iterar sobre las claves del mapa
+                    for (Long clave : imagenAEliminar.keySet()) {
+                        System.out.println("Clave de imagen a borrar: " + clave);
+                        imagenRepository.deleteById(clave);
+                    }
+                }
+            }
+            if(!salaAEliminar.getServicios().isEmpty()){
+                for (Map<Long, String> servicioAEliminar: salaAEliminar.getServicios()) {
+                    // Iterar sobre las claves del mapa
+                    for (Long clave : servicioAEliminar.keySet()) {
+                        System.out.println("Clave de servicio a borrar: " + clave);
+                        servicioSalaRepository.deleteById(clave);
+                    }
+                }
+            }
             salaRepository.deleteById(id);
             LOGGER.warn("Se ha eliminado la sala con id: {}", id);
         } else {

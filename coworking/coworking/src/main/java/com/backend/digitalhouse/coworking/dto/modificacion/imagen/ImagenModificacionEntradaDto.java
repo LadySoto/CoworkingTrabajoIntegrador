@@ -11,7 +11,7 @@ public class ImagenModificacionEntradaDto {
     @Size(max = 100, message = "El nombre de la imagen debe tener hasta 100 caracteres")
     private String nombre;
 
-    @Size(max = 100, message = "La ruta la imagen debe tener hasta 100 caracteres")
+    @Size(max = 1000, message = "La ruta la imagen debe tener hasta 1000 caracteres")
     private String imagen;
 
     private long idSala;

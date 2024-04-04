@@ -56,6 +56,11 @@ public class ReservaEspacioService implements IReservaEspacioService {
             }
         }
 
+        if (sala.getCapacidad() < reservaEspacio.getCantidadPersonas()) {
+            LOGGER.info("La cantidad de personas no puede superar la capacidad de la sala");
+            throw new BadRequestException("La cantidad de personas no puede superar la capacidad de la sala");
+        }
+
         if(reservaEspacio.getFechaHoraInicio().equals(reservaEspacio.getFechaHoraFin())){
             LOGGER.info("Los datos de fechaHoraInicio y fechaHoraFin no pueden ser iguales");
             throw new BadRequestException("Los datos de fechaHoraInicio y fechaHoraFin no pueden ser iguales");
@@ -159,6 +164,7 @@ public class ReservaEspacioService implements IReservaEspacioService {
                 .addMappings(mapper -> mapper.map(ReservaEspacioEntradaDto::getIdSala, ReservaEspacio::setSala))
                 .addMappings(mapper -> mapper.map(ReservaEspacioEntradaDto::getFechaHoraInicio, ReservaEspacio::setFechaHoraInicio))
                 .addMappings(mapper -> mapper.map(ReservaEspacioEntradaDto::getFechaHoraFin, ReservaEspacio::setFechaHoraFin))
+                .addMappings(mapper -> mapper.map(ReservaEspacioEntradaDto::getCantidadPersonas, ReservaEspacio::setCantidadPersonas))
                 .addMappings(mapper -> mapper.map(ReservaEspacioEntradaDto::getCalificacion, ReservaEspacio::setCalificacion));
         modelMapper.typeMap(ReservaEspacio.class, ReservaEspacioSalidaDto.class);
         modelMapper.typeMap(UsuarioReservaSalidaDto.class, Usuario.class);
@@ -182,6 +188,7 @@ public class ReservaEspacioService implements IReservaEspacioService {
         reservaEspacio.setSala(salaEntradaDtoAEntity(reservaEspacioEntradaDto.getIdSala()));
         reservaEspacio.setFechaHoraInicio(reservaEspacioEntradaDto.getFechaHoraInicio());
         reservaEspacio.setFechaHoraFin(reservaEspacioEntradaDto.getFechaHoraFin());
+        reservaEspacio.setCantidadPersonas(reservaEspacioEntradaDto.getCantidadPersonas());
         reservaEspacio.setCalificacion(reservaEspacioEntradaDto.getCalificacion());
 
         return reservaEspacio;
