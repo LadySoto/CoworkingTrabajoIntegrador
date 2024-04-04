@@ -61,7 +61,7 @@ public class UsuarioController {
     })
 
     @PatchMapping("/modificar/{id}")
-    public ResponseEntity<UsuarioSalidaDto> modificarUsuario(@PathVariable Long id, @Valid @RequestBody Map<String,Object> camposAModificar) throws ResourceNotFoundException {
+    public ResponseEntity<UsuarioSalidaDto> modificarUsuario(@PathVariable Long id, @Valid @RequestBody Map<String,Object> camposAModificar) throws ResourceNotFoundException, BadRequestException {
         return new ResponseEntity<>(usuarioService.modificarUsuario(id, camposAModificar), HttpStatus.OK);
     }
 

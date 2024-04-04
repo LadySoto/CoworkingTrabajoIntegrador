@@ -14,7 +14,11 @@ public interface IUsuarioService {
 
     UsuarioSalidaDto buscarUsuarioPorId(Long id);
 
+    UsuarioSalidaDto buscarUsuarioPorCorreo(String correo);
+
+    UsuarioSalidaDto buscarUsuarioPorNumeroIdentificacion(String numeroIdentificacion);
+
     void eliminarUsuario(Long id) throws ResourceNotFoundException;
 
-    UsuarioSalidaDto modificarUsuario(Long id, Map<String, Object> camposAModificar) throws ResourceNotFoundException;
+    UsuarioSalidaDto modificarUsuario(Long id, Map<String, Object> camposAModificar) throws ResourceNotFoundException, BadRequestException;
 }
