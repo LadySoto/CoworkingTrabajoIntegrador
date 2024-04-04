@@ -2,6 +2,7 @@ package com.backend.digitalhouse.coworking.service;
 
 import com.backend.digitalhouse.coworking.dto.entrada.reservaEspacio.ReservaEspacioEntradaDto;
 import com.backend.digitalhouse.coworking.dto.salida.reservaEspacio.ReservaEspacioSalidaDto;
+import com.backend.digitalhouse.coworking.dto.salida.sala.SalaSalidaDto;
 import com.backend.digitalhouse.coworking.exceptions.BadRequestException;
 import com.backend.digitalhouse.coworking.exceptions.ResourceNotFoundException;
 import java.time.LocalDateTime;
@@ -13,6 +14,8 @@ public interface IReservaEspacioService {
     List<ReservaEspacioSalidaDto> listarReservaEspacios();
 
     List<LocalDateTime> listarFechasDisponibles(Long idSala) throws BadRequestException;
+
+    List<SalaSalidaDto> listarSalasDisponibles(LocalDateTime fechaHoraInicio, LocalDateTime fechaHoraFin) throws BadRequestException;
 
     ReservaEspacioSalidaDto buscarReservaEspacioPorId(Long id);
 
