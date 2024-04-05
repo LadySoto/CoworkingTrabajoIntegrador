@@ -12,12 +12,10 @@ public class ReservaEspacioEntradaDto {
     @NotNull(message = "Este campo no puede ser nulo")
     private Long idSala;
     @FutureOrPresent(message = "La fecha no puede ser anterior al dia de hoy")
-    @NotBlank(message = "Debe especificarse fecha y hora de la reserva")
     @NotNull(message = "Este campo no puede ser nulo, debe especificar fecha y hora de la reserva")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime fechaHoraInicio;
     @FutureOrPresent(message = "La fecha no puede ser anterior al dia de hoy")
-    @NotBlank(message = "Debe especificarse fecha y hora de la reserva")
     @NotNull(message = "Este campo no puede ser nulo, debe especificar fecha y hora de la reserva")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime fechaHoraFin;
