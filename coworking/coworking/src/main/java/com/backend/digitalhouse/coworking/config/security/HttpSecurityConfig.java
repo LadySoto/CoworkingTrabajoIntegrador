@@ -80,6 +80,7 @@ public class HttpSecurityConfig {
             authConfig.requestMatchers(HttpMethod.PATCH, "/serviciosala/modificar/{id}").hasAuthority(Permission.UPDATE_ONE_SERVICIOSALA.name());
             authConfig.requestMatchers(HttpMethod.DELETE, "/serviciosala/eliminar/{id}").hasAuthority(Permission.DELETE_ONE_SERVICIOSALA.name());
 
+            authConfig.requestMatchers(HttpMethod.PATCH, "/usuario/rol/{id}/{nuevoIdRol}").hasAuthority(Permission.UPDATE_ONE_ROLUSUARIO.name());
             authConfig.requestMatchers(HttpMethod.GET, "/usuario/listar").hasAuthority(Permission.READ_ALL_USUARIOS.name());
             authConfig.requestMatchers(HttpMethod.GET, "/usuario/busqueda/{id}").hasAuthority(Permission.SEARCH_ONE_USUARIO.name());
 

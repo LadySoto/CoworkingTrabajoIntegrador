@@ -17,4 +17,6 @@ public interface IUsuarioService {
     void eliminarUsuario(Long id) throws ResourceNotFoundException;
 
     UsuarioSalidaDto modificarUsuario(Long id, Map<String, Object> camposAModificar) throws ResourceNotFoundException;
+
+    UsuarioSalidaDto modificarIdRolUsuario(Long id, Long nuevoIdRol) throws ResourceNotFoundException;
 }

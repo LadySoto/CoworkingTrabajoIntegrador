@@ -64,6 +64,23 @@ public class UsuarioController {
     public ResponseEntity<UsuarioSalidaDto> modificarUsuario(@PathVariable Long id, @Valid @RequestBody Map<String,Object> camposAModificar) throws ResourceNotFoundException {
         return new ResponseEntity<>(usuarioService.modificarUsuario(id, camposAModificar), HttpStatus.OK);
     }
+    @Operation(summary = "Modificación de rol de usuario")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Rol de usuario modificado correctamente",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = UsuarioSalidaDto.class))}),
+            @ApiResponse(responseCode = "400", description = "Bad Request",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado",
+                    content = @Content),
+            @ApiResponse(responseCode = "500", description = "Server error",
+                    content = @Content)
+    })
+    @PreAuthorize("hasAuthority('UPDATE_ONE_ROLUSUARIO')")
+    @PatchMapping("rol/{id}/{nuevoIdRol}")
+    public ResponseEntity<UsuarioSalidaDto> modificarRolUsuario(@PathVariable Long id, @PathVariable Long nuevoIdRol) throws ResourceNotFoundException {
+        return new ResponseEntity<>(usuarioService.modificarIdRolUsuario(id, nuevoIdRol), HttpStatus.OK);
+    }
 
     //GET
     @Operation(summary = "Búsqueda de usuario por Id")

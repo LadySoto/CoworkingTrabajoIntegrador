@@ -8,6 +8,7 @@ import com.backend.digitalhouse.coworking.dto.salida.usuario.UsuarioSalidaDto;
 import com.backend.digitalhouse.coworking.entity.*;
 import com.backend.digitalhouse.coworking.exceptions.BadRequestException;
 import com.backend.digitalhouse.coworking.exceptions.ResourceNotFoundException;
+import com.backend.digitalhouse.coworking.repository.RolRepository;
 import com.backend.digitalhouse.coworking.repository.UsuarioRepository;
 import com.backend.digitalhouse.coworking.service.IUsuarioService;
 import com.backend.digitalhouse.coworking.util.Role;
@@ -29,22 +30,25 @@ public class UsuarioService implements IUsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final ModelMapper modelMapper;
     private final TipoIdentificacionService tipoIdentificacionService;
+
+    private final RolRepository rolRepository;
     private final RolService rolService;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UsuarioService(UsuarioRepository usuarioRepository, ModelMapper modelMapper, TipoIdentificacionService tipoIdentificacionService, RolService rolService, PasswordEncoder passwordEncoder) {
+    public UsuarioService(UsuarioRepository usuarioRepository, ModelMapper modelMapper, TipoIdentificacionService tipoIdentificacionService, RolRepository rolRepository, RolService rolService, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
         this.modelMapper = modelMapper;
         this.tipoIdentificacionService = tipoIdentificacionService;
         this.rolService = rolService;
+        this.rolRepository = rolRepository;
         this.passwordEncoder = passwordEncoder;
         configureMappings();
     }
 
     @Override
     public UsuarioSalidaDto registrarUsuario(UsuarioEntradaDto usuario) throws BadRequestException {
-         if (usuario != null) {
+        if (usuario != null) {
 
             Usuario usuarioEntity = dtoEntradaAEntidad(usuario);
             String contrasenaEncriptada = passwordEncoder.encode(usuarioEntity.getContrasena());
@@ -70,9 +74,9 @@ public class UsuarioService implements IUsuarioService {
     @Override
     public UsuarioSalidaDto buscarUsuarioPorId(Long id) {
         Usuario usuarioBuscado = null;
-        try{
+        try {
             usuarioBuscado = usuarioRepository.findById(id).orElse(null);
-        }catch(Exception e){
+        } catch (Exception e) {
             LOGGER.info("el Id del usuario no se encuentra");
         }
         UsuarioSalidaDto usuarioSalidaDto = null;
@@ -101,15 +105,15 @@ public class UsuarioService implements IUsuarioService {
 
         if (usuarioGuardado.isPresent()) {
             camposAModificar.forEach((key, value) -> {
-                if (key.equals("rol")){
-                   RolSalidaDto cambioRol = rolService.buscarRolPorId(convertirALong(value));
-                   Rol rol = modelMapper.map(cambioRol, Rol.class);
+                if (key.equals("rol")) {
+                    RolSalidaDto cambioRol = rolService.buscarRolPorId(convertirALong(value));
+                    Rol rol = modelMapper.map(cambioRol, Rol.class);
                     Field campoAModificar = ReflectionUtils.findField(Usuario.class, key);
                     campoAModificar.setAccessible(true);
                     ReflectionUtils.setField(campoAModificar, usuarioGuardado.get(), rol);
                 } else if (key.equals("tipoIdentificacion")) {
                     TipoIdentificacionSalidaDto cambioTipoIdentificacion = tipoIdentificacionService.buscarTipoIdentificacionPorId(convertirALong(value));
-                    TipoIdentificacion tipoIdentificacion  = modelMapper.map(cambioTipoIdentificacion, TipoIdentificacion.class);
+                    TipoIdentificacion tipoIdentificacion = modelMapper.map(cambioTipoIdentificacion, TipoIdentificacion.class);
                     Field campoAModificar = ReflectionUtils.findField(Usuario.class, key);
                     campoAModificar.setAccessible(true);
                     ReflectionUtils.setField(campoAModificar, usuarioGuardado.get(), tipoIdentificacion);
@@ -129,6 +133,35 @@ public class UsuarioService implements IUsuarioService {
             throw new ResourceNotFoundException("No fue posible actualizar los datos, el usuario no se encuentra registrado");
         }
     }
+
+    @Override
+    public UsuarioSalidaDto modificarIdRolUsuario(Long id, Long nuevoIdRol) throws ResourceNotFoundException {
+        LOGGER.info("Inicio modificar rol usuario");
+        Optional<Usuario> usuarioGuardadoOptional = usuarioRepository.findById(id);
+
+        if (usuarioGuardadoOptional.isPresent()) {
+            Usuario usuarioGuardado = usuarioGuardadoOptional.get();
+
+            usuarioGuardado.setRol(rolRepository.findById(nuevoIdRol)
+            .orElseThrow(() -> new ResourceNotFoundException("Rol no encontrado con ID: " + nuevoIdRol)));
+
+            if (usuarioGuardado.getRol().getId()==1){
+                usuarioGuardado.setRole(Role.ADMINISTRATOR);
+            }
+            else {
+                usuarioGuardado.setRole(Role.CUSTOMER);
+            }
+            Usuario usuarioActualizado = usuarioRepository.save(usuarioGuardado);
+
+            UsuarioSalidaDto usuarioSalidaDto = entidadADtoSalida(usuarioActualizado);
+            LOGGER.info("El rol de usuario ha sido actualizado: {}", usuarioActualizado);
+            return usuarioSalidaDto;
+        } else {
+            LOGGER.error("No fue posible actualizar los datos, el usuario no se encuentra registrado");
+            throw new ResourceNotFoundException("No fue posible actualizar los datos, el usuario no se encuentra registrado");
+        }
+    }
+
 
     private void configureMappings() {
         modelMapper.emptyTypeMap(UsuarioEntradaDto.class, Usuario.class)
