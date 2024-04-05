@@ -102,6 +102,22 @@ public class ReservaEspacioController {
         return new ResponseEntity<>(reservaEspacioService.listarFechasDisponibles(idSala), HttpStatus.OK);
     }
 
+    @Operation(summary = "Listar todas las fechas ocupadas")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Listado de fechas ocupadas obtenido correctamente",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ReservaEspacioSalidaDto.class))}),
+            @ApiResponse(responseCode = "400", description = "Bad request",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Book not found",
+                    content = @Content)
+    })
+
+    @GetMapping("/fechasOcupadas/{idSala}")
+    public ResponseEntity<List<LocalDateTime>> listarFechasOcupadas(@PathVariable Long idSala) throws BadRequestException {
+        return new ResponseEntity<>(reservaEspacioService.listarFechasOcupadas(idSala), HttpStatus.OK);
+    }
+
     @Operation(summary = "Listar salas disponibles para una fecha y hora")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Listado de salas disponibles obtenido correctamente",
