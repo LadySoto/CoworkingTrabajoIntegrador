@@ -1,6 +1,7 @@
 package com.backend.digitalhouse.coworking.service;
 
 import com.backend.digitalhouse.coworking.dto.entrada.servicio.ServicioEntradaDto;
+import com.backend.digitalhouse.coworking.dto.salida.sala.SalaSalidaDto;
 import com.backend.digitalhouse.coworking.dto.salida.servicio.ServicioSalidaDto;
 import com.backend.digitalhouse.coworking.exceptions.BadRequestException;
 import com.backend.digitalhouse.coworking.exceptions.ResourceNotFoundException;
@@ -13,6 +14,8 @@ public interface IServicioService {
     List<ServicioSalidaDto> listarServicios();
 
     ServicioSalidaDto buscarServicioPorId(Long id);
+
+    List<ServicioSalidaDto> buscarServiciosPorNombre(String nombre);
 
     void eliminarServicio(Long id) throws ResourceNotFoundException;
 
