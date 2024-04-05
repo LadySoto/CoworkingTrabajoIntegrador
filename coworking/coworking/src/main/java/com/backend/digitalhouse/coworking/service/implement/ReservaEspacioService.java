@@ -116,7 +116,7 @@ public class ReservaEspacioService implements IReservaEspacioService {
             LocalDateTime fechaHoraInicio = reserva.getFechaHoraInicio().truncatedTo(ChronoUnit.HOURS);
             LocalDateTime fechaHoraFin = reserva.getFechaHoraFin().truncatedTo(ChronoUnit.HOURS);
 
-            while (fechaHoraInicio.isBefore(fechaHoraFin) /*|| fechaInicio.equals(fechaHoraFin)*/) {
+            while (fechaHoraInicio.isBefore(fechaHoraFin) || fechaInicio.equals(fechaHoraFin)) {
                 todasLasFechas.add(fechaHoraInicio);
                 fechaHoraInicio = fechaHoraInicio.plusHours(1);
             }
@@ -133,6 +133,53 @@ public class ReservaEspacioService implements IReservaEspacioService {
             }
         }
         return fechasDisponibles;
+    }
+
+    @Override
+    public List<LocalDateTime> listarFechasOcupadas(Long idSala) throws BadRequestException {
+        LocalDateTime fechaInicio = LocalDateTime.now();
+        LocalDateTime fechaFin = fechaInicio.plusDays(30);
+
+        SalaSalidaDto sala = salaService.buscarSalaPorId(idSala);
+
+        if (sala == null) {
+            LOGGER.error("No existe esta sala");
+            throw new BadRequestException("La sala con ID: " + idSala + " no existe");
+        }
+
+        List<ReservaEspacio> reservas = reservaEspacioRepository.findBySalaIdAndFechaHoraInicioBetween(idSala, fechaInicio, fechaFin);
+
+        Set<LocalDateTime> todasLasFechas = new HashSet<>();
+        for (ReservaEspacio reserva : reservas) {
+            LocalDateTime fechaHoraInicio = reserva.getFechaHoraInicio().truncatedTo(ChronoUnit.HOURS);
+            LocalDateTime fechaHoraFin = reserva.getFechaHoraFin().truncatedTo(ChronoUnit.HOURS);
+
+            LOGGER.info("fecha y hora de inicio: " + fechaHoraInicio + "fecha y hora de fin: " + fechaHoraFin);
+
+            while (fechaHoraInicio.isBefore(fechaHoraFin) || fechaInicio.equals(fechaHoraFin)) {
+                todasLasFechas.add(fechaHoraInicio);
+                fechaHoraInicio = fechaHoraInicio.plusHours(1);
+            }
+
+            LOGGER.info("fecha y hora de inicio: " + fechaHoraInicio + "fecha y hora de fin: " + fechaHoraFin);
+        }
+
+        List<LocalDateTime> fechasOcupadas = new ArrayList<>();
+        for (LocalDateTime fecha = fechaInicio; fecha.isBefore(fechaFin); fecha = fecha.plusDays(1)) {
+            LocalDateTime hora = fecha.truncatedTo(ChronoUnit.HOURS);
+
+            while (hora.isBefore(fecha.plusDays(1))) {
+                if (todasLasFechas.contains(hora)) {
+                    fechasOcupadas.add(hora);
+                }
+                hora = hora.plusHours(1);
+            }
+
+            LOGGER.info("fecha: " + fecha + "hora: " + hora);
+        }
+        LOGGER.info("Estas son las fechas y horas ocupadas: " + fechasOcupadas);
+
+        return fechasOcupadas;
     }
 
    @Override
@@ -190,38 +237,6 @@ public class ReservaEspacioService implements IReservaEspacioService {
        LOGGER.info("Estas son las salas disponibles después de eliminar las ocupadas" + salasDisponibles);
 
        return salasDisponibles;
-
-       /* List<ReservaEspacioSalidaDto> reservasActuales = listarReservaEspacios();
-        List<SalaSalidaDto> listadoSalas = salaService.listarSalas();
-
-       // Filtrar las salas según la disponibilidad
-       List<SalaReservaSalidaDto> salasOcupadas = new ArrayList<>();
-       for (ReservaEspacioSalidaDto reserva : reservasActuales) {
-           LocalDateTime inicioReserva = reserva.getFechaHoraInicio();
-           LocalDateTime finReserva = reserva.getFechaHoraFin();
-
-           LOGGER.info("Fecha y hora del inicio de la reserva ya hecha: " + inicioReserva + " Fecha y hora del inicio de la que quiero la reserva: " + fechaHoraInicio);
-
-           LOGGER.info("Fecha y hora del fin de la reserva ya hecha: " + finReserva + " Fecha y hora del fin de la que quiero la reserva: " + fechaHoraFin);
-
-           if ((inicioReserva.isBefore(fechaHoraInicio) && finReserva.isAfter(fechaHoraInicio)) ||
-                   (inicioReserva.isBefore(fechaHoraFin) && finReserva.isAfter(fechaHoraFin)) ||
-                   (inicioReserva.isAfter(fechaHoraInicio) && finReserva.isBefore(fechaHoraFin)) ||
-                   (inicioReserva.isEqual(fechaHoraInicio) || finReserva.isEqual(fechaHoraFin))) {
-               salasOcupadas.add(reserva.getSalaReserva());
-           }
-       }
-
-       LOGGER.info("Estas son las salas ocupadas" + salasOcupadas);
-
-       List<SalaSalidaDto> salasDisponibles = new ArrayList<>(listadoSalas);
-       LOGGER.info("Estas son las salas disponibles sin eliminar las ocupadas" + salasDisponibles);
-
-       salasDisponibles.removeAll(salasOcupadas);
-       LOGGER.info("Estas son las salas disponibles después de eliminar las ocupadas" + salasDisponibles);
-       
-       return salasDisponibles;*/
-
     }
 
     @Override
