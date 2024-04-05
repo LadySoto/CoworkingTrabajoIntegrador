@@ -1,10 +1,14 @@
 package com.backend.digitalhouse.coworking.dto.salida.reservaEspacio;
 
+import com.backend.digitalhouse.coworking.dto.salida.sala.SalaSalidaDto;
 import com.backend.digitalhouse.coworking.dto.salida.tipoSala.TipoSalaSalidaDto;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class SalaReservaSalidaDto {
+
+    private Long id;
     private String nombre;
     private String descripcion;
     private int capacidad;
@@ -15,13 +19,35 @@ public class SalaReservaSalidaDto {
     public SalaReservaSalidaDto() {
     }
 
-    public SalaReservaSalidaDto(String nombre, String descripcion, int capacidad, TipoSalaSalidaDto tipoSala, List<Map<Long, String>> imagenes, List<Map<Long, String>> servicios) {
+    public SalaReservaSalidaDto(Long id, String nombre, String descripcion, int capacidad, TipoSalaSalidaDto tipoSala, List<Map<Long, String>> imagenes, List<Map<Long, String>> servicios) {
+        this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.capacidad = capacidad;
         this.tipoSala = tipoSala;
         this.imagenes = imagenes;
         this.servicios = servicios;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SalaReservaSalidaDto that = (SalaReservaSalidaDto) o;
+        return id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNombre() {
@@ -75,7 +101,8 @@ public class SalaReservaSalidaDto {
     @Override
     public String toString() {
         return "SalaReservaSalidaDto{" +
-                "nombre='" + nombre + '\'' +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
                 ", descripcion='" + descripcion + '\'' +
                 ", capacidad=" + capacidad +
                 ", tipoSala=" + tipoSala +

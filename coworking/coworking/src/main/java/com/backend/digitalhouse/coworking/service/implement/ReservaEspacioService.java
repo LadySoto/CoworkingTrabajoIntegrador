@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ReservaEspacioService implements IReservaEspacioService {
@@ -135,7 +136,7 @@ public class ReservaEspacioService implements IReservaEspacioService {
     }
 
    @Override
-    public List<SalaSalidaDto> listarSalasDisponibles(LocalDateTime fechaHoraInicio, LocalDateTime fechaHoraFin) throws BadRequestException {
+    public List<SalaReservaSalidaDto> listarSalasDisponibles(LocalDateTime fechaHoraInicio, LocalDateTime fechaHoraFin) throws BadRequestException {
 
         if(fechaHoraInicio.equals(fechaHoraFin)){
             LOGGER.info("Los datos de fechaHoraInicio y fechaHoraFin no pueden ser iguales");
@@ -148,7 +149,49 @@ public class ReservaEspacioService implements IReservaEspacioService {
             throw new BadRequestException("La fecha de entrada y salida no pueden ser anteriores a la fecha actual");
         }
 
-        List<ReservaEspacioSalidaDto> reservasActuales = listarReservaEspacios();
+       List<ReservaEspacioSalidaDto> reservasActuales = listarReservaEspacios();
+       List<SalaSalidaDto> listadoSalas = salaService.listarSalas();
+
+       // Filtrar las salas según la disponibilidad
+       List<SalaReservaSalidaDto> salasOcupadas = new ArrayList<>();
+       for (ReservaEspacioSalidaDto reserva : reservasActuales) {
+           LocalDateTime inicioReserva = reserva.getFechaHoraInicio();
+           LocalDateTime finReserva = reserva.getFechaHoraFin();
+
+           LOGGER.info("Fecha y hora del inicio de la reserva ya hecha: " + inicioReserva + " Fecha y hora del inicio de la que quiero la reserva: " + fechaHoraInicio);
+
+           LOGGER.info("Fecha y hora del fin de la reserva ya hecha: " + finReserva + " Fecha y hora del fin de la que quiero la reserva: " + fechaHoraFin);
+
+           if ((inicioReserva.isBefore(fechaHoraInicio) && finReserva.isAfter(fechaHoraInicio)) ||
+                   (inicioReserva.isBefore(fechaHoraFin) && finReserva.isAfter(fechaHoraFin)) ||
+                   (inicioReserva.isAfter(fechaHoraInicio) && finReserva.isBefore(fechaHoraFin)) ||
+                   (inicioReserva.isEqual(fechaHoraInicio) || finReserva.isEqual(fechaHoraFin))) {
+               salasOcupadas.add(reserva.getSalaReserva());
+           }
+       }
+
+       LOGGER.info("Estas son las salas ocupadas" + salasOcupadas);
+
+       // Convertir las salas disponibles a SalaReservaSalidaDto
+       List<SalaReservaSalidaDto> salasDisponibles = listadoSalas.stream()
+               .map(sala -> new SalaReservaSalidaDto(sala.getId(), sala.getNombre(), sala.getDescripcion(), sala.getCapacidad(), sala.getTipoSala(), sala.getImagenes(), sala.getServicios()))
+               .collect(Collectors.toList());
+
+       // Filtrar las salas disponibles basado en los identificadores de las salas ocupadas
+       List<Long> idsSalasOcupadas = salasOcupadas.stream().map(SalaReservaSalidaDto::getId).collect(Collectors.toList());
+       Iterator<SalaReservaSalidaDto> iterator = salasDisponibles.iterator();
+       while (iterator.hasNext()) {
+           SalaReservaSalidaDto sala = iterator.next();
+           if (idsSalasOcupadas.contains(sala.getId())) {
+               iterator.remove();
+           }
+       }
+
+       LOGGER.info("Estas son las salas disponibles después de eliminar las ocupadas" + salasDisponibles);
+
+       return salasDisponibles;
+
+       /* List<ReservaEspacioSalidaDto> reservasActuales = listarReservaEspacios();
         List<SalaSalidaDto> listadoSalas = salaService.listarSalas();
 
        // Filtrar las salas según la disponibilidad
@@ -177,7 +220,8 @@ public class ReservaEspacioService implements IReservaEspacioService {
        salasDisponibles.removeAll(salasOcupadas);
        LOGGER.info("Estas son las salas disponibles después de eliminar las ocupadas" + salasDisponibles);
        
-       return salasDisponibles;
+       return salasDisponibles;*/
+
     }
 
     @Override
