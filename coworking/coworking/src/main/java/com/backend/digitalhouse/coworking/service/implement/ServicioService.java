@@ -2,7 +2,9 @@ package com.backend.digitalhouse.coworking.service.implement;
 
 import com.backend.digitalhouse.coworking.dto.entrada.servicio.ServicioEntradaDto;
 import com.backend.digitalhouse.coworking.dto.modificacion.servicio.ServicioModificacionEntradaDto;
+import com.backend.digitalhouse.coworking.dto.salida.sala.SalaSalidaDto;
 import com.backend.digitalhouse.coworking.dto.salida.servicio.ServicioSalidaDto;
+import com.backend.digitalhouse.coworking.entity.Sala;
 import com.backend.digitalhouse.coworking.entity.Servicio;
 import com.backend.digitalhouse.coworking.exceptions.BadRequestException;
 import com.backend.digitalhouse.coworking.exceptions.ResourceNotFoundException;
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -35,15 +38,22 @@ public class ServicioService implements IServicioService {
     @Override
     public ServicioSalidaDto registrarServicio(ServicioEntradaDto servicio) throws BadRequestException {
         if (servicio != null) {
-            Servicio servicioGuardado = servicioRepository.save(dtoEntradaAEntidad(servicio));
-            ServicioSalidaDto servicioSalidaDto = entidadADtoSalida(servicioGuardado);
-            LOGGER.info("Servicio registrado: {}", servicioSalidaDto);
-            return servicioSalidaDto;
-        } else {
-            LOGGER.error("No se pudo registrar el servicio");
-            throw new BadRequestException("No se pudo registrar el servicio");
+            List<ServicioSalidaDto> servicioConElMismoNombre = buscarServiciosPorNombre(servicio.getNombre());
+            if (servicioConElMismoNombre.isEmpty()) {
+                Servicio servicioGuardado = servicioRepository.save(dtoEntradaAEntidad(servicio));
+                ServicioSalidaDto servicioSalidaDto = entidadADtoSalida(servicioGuardado);
+                LOGGER.info("Servicio registrado: {}", servicioSalidaDto);
+                return servicioSalidaDto;
+            } else {
+                LOGGER.error("No se pudo registrar el servicio, por que ya existe uno con el mismo nombre");
+                throw new BadRequestException("No se pudo registrar el servicio, por que ya existe uno con el mismo nombre");
+            }
+        }else {
+                LOGGER.error("No se pudo registrar el servicio");
+                throw new BadRequestException("No se pudo registrar el servicio");
         }
     }
+
 
     @Override
     public List<ServicioSalidaDto> listarServicios() {
@@ -67,6 +77,21 @@ public class ServicioService implements IServicioService {
             LOGGER.info("Servicio por id: {}", servicioSalidaDto);
         } else LOGGER.info("Servicio por id: {}", id);
         return servicioSalidaDto;
+    }
+
+    @Override
+    public List<ServicioSalidaDto> buscarServiciosPorNombre(String nombre) {
+        List<Servicio> serviciosBuscados = servicioRepository.findByNombreContaining(nombre);
+        List<ServicioSalidaDto> serviciosSalidaDto = new ArrayList<>();
+        if (!serviciosBuscados.isEmpty()) {
+            for (Servicio servicio : serviciosBuscados) {
+                serviciosSalidaDto.add(entidadADtoSalida(servicio));
+            }
+            LOGGER.info("Se encontraron {} servicios con el nombre: {}", serviciosBuscados.size(), nombre);
+        } else {
+            LOGGER.info("No se encontraron servicios con el nombre: {}", nombre);
+        }
+        return serviciosSalidaDto;
     }
 
     @Override
