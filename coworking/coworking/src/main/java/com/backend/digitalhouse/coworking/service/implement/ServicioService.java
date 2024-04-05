@@ -2,9 +2,7 @@ package com.backend.digitalhouse.coworking.service.implement;
 
 import com.backend.digitalhouse.coworking.dto.entrada.servicio.ServicioEntradaDto;
 import com.backend.digitalhouse.coworking.dto.modificacion.servicio.ServicioModificacionEntradaDto;
-import com.backend.digitalhouse.coworking.dto.salida.sala.SalaSalidaDto;
 import com.backend.digitalhouse.coworking.dto.salida.servicio.ServicioSalidaDto;
-import com.backend.digitalhouse.coworking.entity.Sala;
 import com.backend.digitalhouse.coworking.entity.Servicio;
 import com.backend.digitalhouse.coworking.exceptions.BadRequestException;
 import com.backend.digitalhouse.coworking.exceptions.ResourceNotFoundException;
