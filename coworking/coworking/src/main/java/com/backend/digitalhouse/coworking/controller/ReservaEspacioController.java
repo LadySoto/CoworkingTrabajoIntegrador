@@ -2,6 +2,7 @@ package com.backend.digitalhouse.coworking.controller;
 
 import com.backend.digitalhouse.coworking.dto.entrada.reservaEspacio.ReservaEspacioEntradaDto;
 import com.backend.digitalhouse.coworking.dto.salida.reservaEspacio.ReservaEspacioSalidaDto;
+import com.backend.digitalhouse.coworking.dto.salida.reservaEspacio.SalaReservaSalidaDto;
 import com.backend.digitalhouse.coworking.dto.salida.sala.SalaSalidaDto;
 import com.backend.digitalhouse.coworking.exceptions.BadRequestException;
 import com.backend.digitalhouse.coworking.exceptions.ResourceNotFoundException;
@@ -113,7 +114,7 @@ public class ReservaEspacioController {
     })
 
     @GetMapping("/salasDisponibles/{fechaHoraInicio}/{fechaHoraFin}")
-    public ResponseEntity<List<SalaSalidaDto>> listarSalasDisponibles(@PathVariable("fechaHoraInicio") LocalDateTime fechaHoraInicio, @PathVariable("fechaHoraFin") LocalDateTime fechaHoraFin) throws BadRequestException {
+    public ResponseEntity<List<SalaReservaSalidaDto>> listarSalasDisponibles(@PathVariable("fechaHoraInicio") LocalDateTime fechaHoraInicio, @PathVariable("fechaHoraFin") LocalDateTime fechaHoraFin) throws BadRequestException {
         return new ResponseEntity<>(reservaEspacioService.listarSalasDisponibles(fechaHoraInicio, fechaHoraFin), HttpStatus.OK);
     }
 
